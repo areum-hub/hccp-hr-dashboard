@@ -88,19 +88,21 @@ h3{font-size:1.08rem!important}
   white-space: nowrap;
 }
 [data-testid="stSidebar"] .sidebar-caption {
-  display: block;
-  width: 100%;
+  display: inline-block;
+  max-width: 100%;
   box-sizing: border-box;
-  min-height: 30px;
   margin: 0;
-  padding: 7px 9px;
-  background: #F1F5F9;
-  border-radius: 7px;
-  color: #64748B;
+  padding: 6px 10px;
+  border: 1px solid #BFDBFE;
+  background: #EFF6FF;
+  border-radius: 999px;
+  color: #1D4ED8;
   font-size: 10px;
-  font-weight: 620;
+  font-weight: 800;
+  letter-spacing: .04em;
   line-height: 1.5;
   white-space: normal;
+  word-break: keep-all;
 }
 /* Native st.caption headings: no absolute, negative or forced element gaps. */
 [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
