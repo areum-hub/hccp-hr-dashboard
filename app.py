@@ -264,17 +264,6 @@ def theory_path_diagram():
     st.caption('가설의 예상 방향을 나타낸 모형입니다. 실제 추정값이나 인과효과를 의미하지 않습니다.')
 
 
-def theory_result_style(value):
-    colors={
-        '방향 일치':('#0F766E','#F0FDFA'),
-        '모형 간 부호 불일치':('#92400E','#FFFBEB'),
-        '예상과 반대':('#92400E','#FFFBEB'),
-        '탐색적 간접경로':('#6D28D9','#F5F3FF'),
-    }
-    color,bg=colors.get(value,('#334155','#FFFFFF'))
-    return f'color: {color}; background-color: {bg}; font-weight: 600'
-
-
 def research_reference_link():
     reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
     reference_label='연구 정보'
@@ -413,7 +402,7 @@ if page=='overview':
 
 elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
-               '실무질문에서 X→Y의 예상 방향을 도출하고, 가설·통제변수·매개경로와 결과 해석을 연결합니다.')
+               '이론적 근거에서 연구가설을 도출하고, 변수·통제변수·탐색적 간접경로와 해석의 범위를 정리합니다.')
     theory_lines=(BASE/'THEORY_AND_HYPOTHESES.md').read_text(encoding='utf-8').splitlines()
     # Keep the original research Markdown as the single source of truth.
     if theory_lines and theory_lines[0].startswith('# '):
@@ -455,6 +444,7 @@ elif page=='theory':
         theory_path_diagram()
         # Preserve variable definitions, controls table and model-method discussion.
         st.markdown(design.strip())
+        st.caption('가설 검증 결과는 03 다중회귀 OLS, 04 순서형 로짓, 05 구조방정식 SEM에서 확인할 수 있습니다.')
     else:
         # If the Markdown structure changes, show the full original text rather
         # than dropping any paragraphs or failing on a changed heading.
@@ -462,23 +452,8 @@ elif page=='theory':
             '### 3. 이론과 다르게 나타난 결과를 어떻게 해석하는가?')
         st.markdown(theory_design.rstrip())
 
-    section_title('3. 연구가설과 분석 결과 비교','OLS는 H1–H5의 주 분석, 순서형 로짓은 보완 분석, SEM은 구조경로와 H6의 탐색적 간접경로 분석입니다.')
-    ols=ols_table()
-    rows=[]
-    for hyp in SEM_HYPOTHESES:
-        key=hyp['id']; v=SEM_EFFECTS[key]
-        o=ols.loc[ols['가설']==key]
-        rows.append({'가설':key,'가설 경로':hyp['path'],'예상 방향':hyp['direction'],
-                     'OLS B': '주 분석 아님' if o.empty else f'{o.iloc[0]["OLS B"]:+.3f}',
-                     'SEM B':fmt(v['estimate']),
-                     'SEM 95% CI':f'[{fmt(v["ci_low"])}, {fmt(v["ci_high"])}]',
-                     '해석': ('탐색적 간접경로' if key=='H6' else '모형 간 부호 불일치' if key=='H2' else '예상과 반대' if key=='H4' else '방향 일치')})
-    styled=pd.DataFrame(rows).style.apply(lambda col: col.map(theory_result_style),subset=['해석'])
-    st.dataframe(styled,use_container_width=True,hide_index=True)
-    st.caption('해석 유의사항 | OLS와 SEM은 추정·측정 방법이 달라 계수(B)의 크기를 직접 비교할 수 없습니다.')
-
     if structured:
-        section_title('4. 이론적 해석 및 대안 설명')
+        section_title('3. 이론적 해석 및 대안 설명')
         interpretation_cards=[]
         for part,(tag,tone) in zip(discussion_parts,(
             ('방향 일치','teal'),('모형 간 부호 불일치','amber'),
@@ -487,7 +462,7 @@ elif page=='theory':
             interpretation_cards.append((tag,heading+':**',body,tone))
         theory_cards('interpretation',interpretation_cards,2)
 
-        section_title('5. 후속 연구 방향')
+        section_title('4. 후속 연구 방향')
         future_cards=[]
         for idx,line in enumerate(step_lines):
             heading,_,body=line[3:].partition('**: ')
@@ -496,8 +471,8 @@ elif page=='theory':
         with theory_container('theory_practice',card=True):
             st.markdown('**실무 연결:**'+practice)
     elif discussion_heading:
-        original_discussion='### 4. 이론적 해석 및 대안 설명'+theory_discussion
-        original_discussion=original_discussion.replace('### 4. 대안 설명을 줄이기 위한 후속 연구 제안','### 5. 후속 연구 방향',1)
+        original_discussion='### 3. 이론적 해석 및 대안 설명'+theory_discussion
+        original_discussion=original_discussion.replace('### 4. 대안 설명을 줄이기 위한 후속 연구 제안','### 4. 후속 연구 방향',1)
         st.markdown(original_discussion.strip())
 
 elif page=='reliability':
