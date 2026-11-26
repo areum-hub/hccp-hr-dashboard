@@ -195,6 +195,86 @@ def ols_table():
     return pd.DataFrame(rows)
 
 
+def theory_container(key, card=False):
+    """Use native containers; keep a bordered fallback for older Streamlit."""
+    try:
+        return st.container(key=key)
+    except TypeError:
+        return st.container(border=card)
+
+
+def theory_cards(group, cards, columns):
+    """Render the original Markdown text in responsive, scoped cards."""
+    with theory_container('theory_grid_'+group):
+        for start in range(0,len(cards),columns):
+            cols=st.columns(columns,gap='medium')
+            for index,(kicker,heading,body,tone) in enumerate(cards[start:start+columns]):
+                with cols[index]:
+                    with theory_container(f'theory_card_{group}_{start+index}',card=True):
+                        st.markdown(
+                            f'<div class="theory-card-kicker {tone}">{escape(kicker)}</div>',
+                            unsafe_allow_html=True,
+                        )
+                        st.markdown(heading)
+                        st.markdown(body)
+
+
+def theory_path_diagram():
+    """Hypothesized directions only; no fitted coefficients or causal claims."""
+    svg = '''
+<svg xmlns="http://www.w3.org/2000/svg" width="960" height="320" viewBox="0 0 960 320" role="img" aria-label="H1–H5의 예상 방향: 조직신뢰와 의사소통에서 직무만족, 그리고 이직 고려 의향으로 연결되는 연구가설">
+  <defs>
+    <marker id="plusArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L7 4 L0 8 Z" fill="#2563EB"/></marker>
+    <marker id="minusArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L7 4 L0 8 Z" fill="#0D9488"/></marker>
+  </defs>
+  <rect x="1" y="1" width="958" height="318" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
+  <g font-family="Pretendard, Noto Sans KR, Malgun Gothic, sans-serif" text-anchor="middle" font-weight="700">
+    <g fill="none" stroke-width="2.2" stroke-linejoin="round">
+      <path d="M248 82 L366 143" stroke="#2563EB" marker-end="url(#plusArrow)"/>
+      <path d="M248 238 L366 177" stroke="#2563EB" marker-end="url(#plusArrow)"/>
+      <path d="M142 48 L142 25 L822 25 L822 126" stroke="#0D9488" marker-end="url(#minusArrow)"/>
+      <path d="M142 272 L142 295 L822 295 L822 194" stroke="#0D9488" marker-end="url(#minusArrow)"/>
+      <path d="M580 160 L720 160" stroke="#0D9488" marker-end="url(#minusArrow)"/>
+    </g>
+    <g font-size="16">
+      <text x="306" y="91" fill="#2563EB">H1 (+)</text>
+      <text x="306" y="238" fill="#2563EB">H2 (+)</text>
+      <text x="480" y="19" fill="#0D9488">H3 (−)</text>
+      <text x="480" y="312" fill="#0D9488">H4 (−)</text>
+      <text x="650" y="148" fill="#0D9488">H5 (−)</text>
+    </g>
+    <rect x="36" y="48" width="212" height="68" rx="11" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <rect x="36" y="204" width="212" height="68" rx="11" fill="#EFF6FF" stroke="#BFDBFE"/>
+    <rect x="366" y="126" width="214" height="68" rx="11" fill="#F5F3FF" stroke="#C4B5FD"/>
+    <rect x="720" y="126" width="204" height="68" rx="11" fill="#F0FDFA" stroke="#99F6E4"/>
+    <g font-size="21" dominant-baseline="middle">
+      <text x="142" y="82" fill="#1D4ED8">조직신뢰</text>
+      <text x="142" y="238" fill="#1D4ED8">의사소통</text>
+      <text x="473" y="160" fill="#6D28D9">직무만족</text>
+      <text x="822" y="160" fill="#0F766E">이직 고려 의향</text>
+    </g>
+  </g>
+</svg>'''
+    st.image(svg, use_container_width=True)
+    st.markdown(
+        '<div class="theory-indirect"><strong>H6 · 탐색적 간접경로 (−)</strong>'
+        '<span>조직신뢰 → 직무만족 → 이직 고려 의향</span></div>',
+        unsafe_allow_html=True,
+    )
+    st.caption('가설의 예상 방향을 나타낸 모형입니다. 실제 추정값이나 인과효과를 의미하지 않습니다.')
+
+
+def theory_result_style(value):
+    colors={
+        '방향 일치':('#0F766E','#F0FDFA'),
+        '모형 간 부호 불일치':('#92400E','#FFFBEB'),
+        '예상과 반대':('#92400E','#FFFBEB'),
+        '탐색적 간접경로':('#6D28D9','#F5F3FF'),
+    }
+    color,bg=colors.get(value,('#334155','#FFFFFF'))
+    return f'color: {color}; background-color: {bg}; font-weight: 600'
+
+
 def research_reference_link():
     reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
     reference_label='연구 정보'
@@ -335,12 +415,46 @@ elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
                '실무질문에서 X→Y의 예상 방향을 도출하고, 가설·통제변수·매개경로와 결과 해석을 연결합니다.')
     theory_lines=(BASE/'THEORY_AND_HYPOTHESES.md').read_text(encoding='utf-8').splitlines()
-    # The page already has a title; omit the standalone Markdown document heading.
+    # Keep the original research Markdown as the single source of truth.
     if theory_lines and theory_lines[0].startswith('# '):
         theory_lines=theory_lines[1:]
     theory_text='\n'.join(theory_lines).lstrip()
-    theory_design,discussion_heading,theory_discussion=theory_text.partition('### 3. 이론과 다르게 나타난 결과를 어떻게 해석하는가?')
-    st.markdown(theory_design.rstrip())
+    intro,h1,remaining=theory_text.partition('### 1. 이론과 선행연구에서 가설을 도출하는 과정')
+    foundations,h2,remaining=remaining.partition('### 2. 이론에서 연구모형으로: 무엇을 측정·통제했는가?')
+    design,h3,remaining=remaining.partition('### 3. 이론과 다르게 나타난 결과를 어떻게 해석하는가?')
+    discussion,h4,future=remaining.partition('### 4. 대안 설명을 줄이기 위한 후속 연구 제안')
+    foundation_parts=foundations.strip().split('\n\n')
+    discussion_parts=discussion.strip().split('\n\n')
+    future_steps,practice_heading,practice=future.strip().partition('\n\n**실무 연결:**')
+    step_lines=[line for line in future_steps.strip().splitlines() if line.strip()]
+    structured=(
+        all((h1,h2,h3,h4,practice_heading)) and len(foundation_parts)==3
+        and all('\n' in part for part in foundation_parts)
+        and len(discussion_parts)==4 and all(':** ' in part for part in discussion_parts)
+        and len(step_lines)==3
+        and all(line.startswith(f'{idx+1}. **') and '**: ' in line for idx,line in enumerate(step_lines))
+    )
+    if structured:
+        with theory_container('theory_question',card=True):
+            st.markdown(intro.strip())
+        section_title('1. 이론과 선행연구에서 가설을 도출하는 과정')
+        foundation_cards=[]
+        for idx,(part,tag) in enumerate(zip(foundation_parts,('H1 · H3','H2 · H4','H5 · H6'))):
+            heading,body=part.split('\n',1)
+            foundation_cards.append((f'THEORY 0{idx+1} · {tag}',heading.strip(),body,'blue'))
+        theory_cards('foundations',foundation_cards,3)
+
+        section_title('2. 이론에서 연구모형으로: 무엇을 측정·통제했는가?')
+        theory_path_diagram()
+        # Preserve variable definitions, controls table and model-method discussion.
+        st.markdown(design.strip())
+    else:
+        # If the Markdown structure changes, show the full original text rather
+        # than dropping any paragraphs or failing on a changed heading.
+        theory_design,discussion_heading,theory_discussion=theory_text.partition(
+            '### 3. 이론과 다르게 나타난 결과를 어떻게 해석하는가?')
+        st.markdown(theory_design.rstrip())
+
     section_title('3. 연구가설과 분석 결과 비교','OLS는 H1–H5의 주 분석, 순서형 로짓은 보완 분석, SEM은 구조경로와 H6의 탐색적 간접경로 분석입니다.')
     ols=ols_table()
     rows=[]
@@ -352,12 +466,32 @@ elif page=='theory':
                      'SEM B':fmt(v['estimate']),
                      'SEM 95% CI':f'[{fmt(v["ci_low"])}, {fmt(v["ci_high"])}]',
                      '해석': ('탐색적 간접경로' if key=='H6' else '모형 간 부호 불일치' if key=='H2' else '예상과 반대' if key=='H4' else '방향 일치')})
-    st.dataframe(pd.DataFrame(rows),use_container_width=True,hide_index=True)
+    styled=pd.DataFrame(rows).style.apply(lambda col: col.map(theory_result_style),subset=['해석'])
+    st.dataframe(styled,use_container_width=True,hide_index=True)
     st.caption('해석 유의사항 | OLS와 SEM은 추정·측정 방법이 달라 계수(B)의 크기를 직접 비교할 수 없습니다.')
-    if discussion_heading:
-        discussion='### 4. 이론적 해석 및 대안 설명'+theory_discussion
-        discussion=discussion.replace('### 4. 대안 설명을 줄이기 위한 후속 연구 제안','### 5. 후속 연구 방향',1)
-        st.markdown(discussion.strip())
+
+    if structured:
+        section_title('4. 이론적 해석 및 대안 설명')
+        interpretation_cards=[]
+        for part,(tag,tone) in zip(discussion_parts,(
+            ('방향 일치','teal'),('모형 간 부호 불일치','amber'),
+            ('예상과 반대','amber'),('탐색적 간접경로','purple'))):
+            heading,_,body=part.partition(':** ')
+            interpretation_cards.append((tag,heading+':**',body,tone))
+        theory_cards('interpretation',interpretation_cards,2)
+
+        section_title('5. 후속 연구 방향')
+        future_cards=[]
+        for idx,line in enumerate(step_lines):
+            heading,_,body=line[3:].partition('**: ')
+            future_cards.append((f'0{idx+1}',heading+'**:',body,'blue'))
+        theory_cards('future',future_cards,3)
+        with theory_container('theory_practice',card=True):
+            st.markdown('**실무 연결:**'+practice)
+    elif discussion_heading:
+        original_discussion='### 4. 이론적 해석 및 대안 설명'+theory_discussion
+        original_discussion=original_discussion.replace('### 4. 대안 설명을 줄이기 위한 후속 연구 제안','### 5. 후속 연구 방향',1)
+        st.markdown(original_discussion.strip())
 
 elif page=='reliability':
     page_intro('DATA ANALYSIS  /  01','측정 신뢰도 및 타당성','조직신뢰·의사소통 문항의 내적 일관성을 살펴보고, 두 구성개념을 구분할 수 있는지 점검합니다.')
