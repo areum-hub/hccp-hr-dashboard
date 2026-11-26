@@ -437,12 +437,19 @@ elif page=='theory':
     if structured:
         with theory_container('theory_question',card=True):
             st.markdown(intro.strip())
-        section_title('1. 이론과 선행연구에서 가설을 도출하는 과정')
-        foundation_cards=[]
-        for idx,(part,tag) in enumerate(zip(foundation_parts,('H1 · H3','H2 · H4','H5 · H6'))):
-            heading,body=part.split('\n',1)
-            foundation_cards.append((f'THEORY 0{idx+1} · {tag}',heading.strip(),body,'blue'))
+        section_title('1. 이론과 선행연구에서 가설을 도출하는 과정',
+                      '이론에 근거한 가설의 예상 방향입니다. 실제 검증 결과와 구분합니다.')
+        foundation_cards=[
+            ('H1 · H3','**사회교환이론**',
+             'Blau(1964)\n\n조직신뢰 ↑ → 직무만족 ↑  \n조직신뢰 ↑ → 이직 고려 의향 ↓','blue'),
+            ('H2 · H4','**직무요구-자원(JD-R) 모형**',
+             'Bakker & Demerouti(2007)\n\n의사소통 ↑ → 직무만족 ↑  \n의사소통 ↑ → 이직 고려 의향 ↓','blue'),
+            ('H5 · H6','**직무태도와 이직과정**',
+             'Tett & Meyer(1993)\n\n직무만족 ↑ → 이직 고려 의향 ↓  \n조직신뢰 → 직무만족 → 이직 고려 의향 (탐색적 간접경로)','blue'),
+        ]
         theory_cards('foundations',foundation_cards,3)
+        with st.expander('이론적 근거 및 선행연구 상세 보기',expanded=False):
+            st.markdown(foundations.strip())
 
         section_title('2. 이론에서 연구모형으로: 무엇을 측정·통제했는가?')
         theory_path_diagram()
