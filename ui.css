@@ -267,7 +267,7 @@ h3{font-size:1.08rem!important}
   .decision-panel{min-height:unset}
 }
 
-/* Shared research-reference footer: link-style native control. */
+/* Executive summary research-reference link. */
 .st-key-research_reference_link [data-testid="stButton"] button,
 .st-key-research_reference_info button {
   border: 0 !important;
@@ -304,4 +304,29 @@ h3{font-size:1.08rem!important}
 .st-key-research_reference_info button:focus-visible {
   outline: 2px solid var(--blue);
   outline-offset: 3px;
+}
+
+/* Treat the summary and its native reference link as one visual card. */
+.st-key-executive_summary {
+  background: linear-gradient(113deg,#FFFFFF 0%,#FFFFFF 65%,#EFF6FF 100%);
+  border: 1px solid #DBEAFE;
+  border-radius: 16px;
+  padding: 33px 38px 22px;
+  margin-bottom: 19px;
+  box-shadow: var(--shadow);
+}
+.st-key-executive_summary .executive-hero {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+}
+.st-key-executive_summary .st-key-research_reference_link {
+  border-top: 1px solid #DBEAFE;
+  padding-top: 8px;
+}
+@media(max-width:800px) {
+  .st-key-executive_summary { padding: 26px 22px 18px; }
 }

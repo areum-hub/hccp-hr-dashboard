@@ -195,7 +195,7 @@ def ols_table():
     return pd.DataFrame(rows)
 
 
-def research_reference_footer():
+def research_reference_link():
     reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
     reference_label='자료 출처 · 참고문헌 · AI 활용 · 연구윤리 ↗'
     dialog=getattr(st,'dialog',None) or getattr(st,'experimental_dialog',None)
@@ -203,7 +203,7 @@ def research_reference_footer():
         @dialog('연구 참고 정보',width='large')
         def show_reference_information():
             st.markdown(reference_text)
-        # The container key scopes link styling to this footer control only.
+        # The container key scopes styling to this research reference control only.
         try:
             link_container=st.container(key='research_reference_link')
         except TypeError:
@@ -258,14 +258,20 @@ st.markdown(
 )
 
 if page=='overview':
-    st.markdown(
-      '<div class="executive-hero"><span class="executive-label">EXECUTIVE SUMMARY</span>'
-      '<h1>조직의 신뢰와 소통,<br>어디부터 진단할 것인가?</h1>'
-      '<p>HCCPⅡ 근로자 조사로 조직신뢰·의사소통·직무만족·이직 고려 의향의 관련성을 검토하고, '
-      'HR이 우선 진단할 집단과 실행 절차를 제안합니다.</p>'
-      '<div class="hero-tags"><span>H1–H5 주 검증</span><span>H6 탐색적 SEM</span>'
-      '<span>비인과적 관찰연구</span></div></div>',unsafe_allow_html=True,
-    )
+    try:
+        summary_container=st.container(key='executive_summary')
+    except TypeError:
+        summary_container=st.container()
+    with summary_container:
+        st.markdown(
+          '<div class="executive-hero"><span class="executive-label">EXECUTIVE SUMMARY</span>'
+          '<h1>조직의 신뢰와 소통,<br>어디부터 진단할 것인가?</h1>'
+          '<p>HCCPⅡ 근로자 조사로 조직신뢰·의사소통·직무만족·이직 고려 의향의 관련성을 검토하고, '
+          'HR이 우선 진단할 집단과 실행 절차를 제안합니다.</p>'
+          '<div class="hero-tags"><span>H1–H5 주 검증</span><span>H6 탐색적 SEM</span>'
+          '<span>비인과적 관찰연구</span></div></div>',unsafe_allow_html=True,
+        )
+        research_reference_link()
     st.markdown('**실무질문** · '+MAIN_QUESTION)
 
     a,b,c,d=st.columns(4,gap='medium')
@@ -584,10 +590,6 @@ elif page=='decision':
     panel('우선 진단에서 후속 평가까지',
           '기본 선별과 공변량 조정 결과를 종합하여 현장 진단의 우선순위를 정합니다. 신뢰·만족 관련 지표를 모니터링하고 소통의 관련성은 현장 맥락과 함께 확인합니다. 현장 진단에서 확인된 문제에 한해 비용·실행 가능성·직원 보호 기준을 검토한 뒤 시범사업을 평가합니다.',
           'teal','정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
-
-# Shared reference footer on all eight pages. Source attribution is in the sidebar.
-st.divider()
-research_reference_footer()
 
 # Run after the destination page has rendered, not on filter/widget reruns.
 scroll_to_page_top()
