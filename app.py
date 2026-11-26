@@ -758,81 +758,82 @@ elif page=='decision':
     with theory_container('decision_group_04',card=True):
         st.markdown(
             '<div class="decision-section-head"><span class="decision-section-number">04</span>'
-            '<div><h2>연구의 한계 및 후속 연구</h2><p>확인된 해석 한계와 후속 검증 과제를 구분합니다.</p></div></div>',unsafe_allow_html=True,
+            '<div><h2>연구의 한계 및 후속 연구</h2><p>연구의 한계와 이를 보완하기 위한 검증 과제를 연결합니다.</p></div></div>',
+            unsafe_allow_html=True,
         )
-        section_title('연구의 한계')
+        limitation_pairs=[
+            ('자료 및 인과관계',
+             '2023년 단면 조사이며 조사 가중치를 적용하지 않았습니다. 시간적 선후, 미관측 교란 및 대표성에 주의해야 합니다.',
+             '종단자료 및 대표성 검토',
+             '반복 조사에서 조직신뢰·소통을 먼저 측정하고 이후 직무만족·이직 고려 의향, 가능하면 실제 퇴사와 연결합니다. 가중치 적용 가능성과 대표성도 점검합니다.'),
+            ('측정 타당성',
+             '조직신뢰와 의사소통의 구성개념 중첩이 확인되었습니다. 직무만족과 이직 고려 의향은 단일문항이며, 이직 고려 의향은 실제 퇴사율과 다릅니다.',
+             '측정도구 및 누락변수 보완',
+             '업무요구·관리자 지원·고충 보고·소통 만족을 분리해 측정합니다. 신뢰와 소통의 판별타당성(CFA)을 재점검하고 직무만족·이직 고려 의향의 다문항 측정 가능성을 검토합니다.'),
+            ('분석 모형',
+             'OLS의 전체 VIF·정식 잔차 진단은 미확인입니다. 순서형 로짓의 비례오즈 가정에서 일부 위배 신호가 있으며, SEM 적합도와 판별타당성에도 한계가 있습니다.',
+             '모형 가정 및 적합도 추가 검증',
+             '원자료로 전체 VIF·잔차·영향점을 점검합니다. 직무만족 결과 모형을 포함해 비례오즈 가정을 추가 검토하고, SEM의 대안 측정모형과 적합도를 비교합니다.'),
+            ('실무 적용',
+             '후보 선별 후 추가 분석은 탐색적입니다. 개인별 이직 위험이나 개선 정책의 인과효과·ROI는 추정하지 않았습니다.',
+             '독립적 진단 및 정책 평가',
+             '재조사로 진단 후보의 관련성을 확인하고 자발적 현장 조사를 실시합니다. 개입 효과는 별도의 시범사업에서 사전·사후 측정 및 가능한 비교집단을 통해 평가합니다.'),
+        ]
+        limit_rows=[]
+        for idx,(category,limitation,task,proposal) in enumerate(limitation_pairs,1):
+            limit_rows.append(
+                '<article class="limit-pair-row">'
+                f'<div class="limit-pair-category"><span>{idx:02d}</span><strong>{escape(category)}</strong></div>'
+                f'<div class="limit-pair-current"><small>연구의 한계</small><p>{escape(limitation)}</p></div>'
+                f'<div class="limit-pair-next"><small>후속 연구 방향</small><strong>{escape(task)}</strong><p>{escape(proposal)}</p></div>'
+                '</article>'
+            )
         st.markdown(
-            '<div class="decision-limits-grid">'
-            '<article><strong>자료 및 인과관계</strong><p>2023년 단면 조사이며 조사 가중치를 적용하지 않았습니다. 시간적 선후, 미관측 교란 및 대표성에 주의해야 합니다.</p></article>'
-            '<article><strong>측정 타당성</strong><p>조직신뢰와 의사소통의 구성개념 중첩이 확인되었습니다. 직무만족과 이직 고려 의향은 단일문항이며 실제 퇴사율과 구분됩니다.</p></article>'
-            '<article><strong>분석 모형</strong><p>OLS의 전체 VIF·정식 잔차 진단은 미확인입니다. 순서형 로짓의 비례오즈 가정에 일부 위배 신호가 있으며, SEM 적합도와 판별타당성에도 한계가 있습니다.</p></article>'
-            '<article><strong>실무 적용</strong><p>후보 선별 후 추가 분석은 탐색적입니다. 개인별 이직 위험이나 개선 정책의 인과효과·ROI는 추정하지 않았습니다.</p></article>'
-            '</div>',unsafe_allow_html=True,
+            '<div class="limit-pair-matrix">'
+            '<div class="limit-pair-header"><span>검토 영역</span><span>연구의 한계</span><span>후속 연구 방향</span></div>'
+            +''.join(limit_rows)+'</div>',
+            unsafe_allow_html=True,
         )
-        st.caption('세부 점검 결과는 01 측정 신뢰도, 03 다중회귀 OLS, 04 순서형 로짓, 05 구조방정식 SEM에서 확인할 수 있습니다.')
-        section_title('후속 연구 방향','단면 자료와 측정상의 한계를 보완하고, 실제 개입 효과는 별도 연구에서 확인합니다.')
-        step_lines=[line for line in research['step_lines'] if line.strip()]
-        if research['has_practice'] and len(step_lines)==3 and all(
-            line.startswith(f'{idx+1}. **') and '**: ' in line for idx,line in enumerate(step_lines)
-        ):
-            future_cards=[]
-            for idx,line in enumerate(step_lines):
-                heading,_,body=line[3:].partition('**: ')
-                future_cards.append((f'0{idx+1}',heading+'**:',body,'blue'))
-            theory_cards('future',future_cards,3)
-        else:
-            st.markdown(research['future'])
+        st.caption('한계는 기존 분석에서 확인된 범위입니다. 후속 연구는 제안 단계이며 추가 검증을 수행한 결과가 아닙니다. 세부 점검은 측정 신뢰도, 다중회귀 OLS, 순서형 로짓, 구조방정식 SEM에서 확인할 수 있습니다.')
 
     with theory_container('decision_group_05',card=True):
         st.markdown(
             '<div class="decision-section-head"><span class="decision-section-number">05</span>'
-            '<div><h2>최종 결론 및 실무 제언</h2><p>연구질문에 대한 답변과 실제 적용 범위를 정리합니다.</p></div></div>',
+            '<div><h2>최종 결론 및 실무 제언</h2><p>연구질문에 대한 답변과 학술적·실무적 의의를 정리합니다.</p></div></div>',
             unsafe_allow_html=True,
         )
         if customer_support is not None and adjusted is not None:
-            candidate_html=(
-                '<div class="conclusion-priority">'
-                '<div class="conclusion-eyebrow">우선 진단 대상</div>'
-                f'<div class="conclusion-candidate">{escape(customer_support["group_name"])} 직무</div>'
-                '<div class="conclusion-metric-label">이직 고려 의향 · 5점 척도</div>'
-                '<div class="conclusion-evidence">'
-                '<div><small>평균 차이</small>'
-                f'<strong>{fmt(customer_support["adverse_difference"])}점</strong></div>'
-                '<div><small>공변량 조정 후 계수</small>'
-                f'<strong>{fmt(adjusted["adjusted_coef"])}점</strong></div>'
-                '</div><p>현장 진단의 우선 후보이며, 개선 정책의 효과나 개인별 위험이 확정되었다는 뜻은 아닙니다.</p></div>'
+            recommendation=(
+                f'{customer_support["group_name"]} 직무를 우선 진단 후보로 검토합니다. '
+                '조직신뢰와 직무만족을 지속적으로 살피되, 의사소통은 현장 맥락에 따라 해석하고 '
+                '실제 원인이 확인된 문제에 한해 개선 여부를 판단합니다.'
             )
         else:
-            candidate_html=(
-                '<div class="conclusion-priority"><div class="conclusion-eyebrow">우선 진단 대상</div>'
-                '<p>기본 선별 기준을 충족한 집단을 확인하고, 현장 원인을 검증합니다.</p></div>'
+            recommendation=(
+                '기본 선별 기준을 충족한 집단을 현장 진단 후보로 검토합니다. '
+                '조직신뢰와 직무만족을 지속적으로 살피되, 의사소통은 현장 맥락에 따라 해석하고 '
+                '실제 원인이 확인된 문제에 한해 개선 여부를 판단합니다.'
             )
         st.markdown(
             '<div class="decision-conclusion">'
-            '<div class="conclusion-headline">데이터로 진단의 우선순위를 정하고, 현장에서 검증합니다.</div>'
-            '<div class="conclusion-top">'
-            '<div class="conclusion-findings"><div class="conclusion-eyebrow">연구질문에 대한 답변</div>'
-            '<div class="conclusion-relation"><span>조직신뢰 – 직무만족</span><strong class="positive">양(+)의 관련성</strong></div>'
-            '<div class="conclusion-relation"><span>조직신뢰·직무만족 – 이직 고려 의향</span><strong class="negative">음(−)의 관련성</strong></div>'
-            '<div class="conclusion-relation"><span>의사소통</span><strong class="caution">해석 주의</strong></div>'
-            '<p>의사소통은 모형과 통제 조건에 따라 해석에 주의가 필요합니다.</p></div>'
-            +candidate_html+'</div>'
-            '<div class="conclusion-action-title">우선 진단에서 후속 평가까지</div>'
-            '<div class="conclusion-action-flow">'
-            '<article><small>01 · 진단</small><strong>우선순위 설정</strong>'
-            '<p>기본 선별과 공변량 조정 결과를 종합하여 현장 진단의 우선순위를 정합니다.</p></article>'
-            '<article><small>02 · 확인</small><strong>조직지표 모니터링</strong>'
-            '<p>신뢰·만족 관련 지표를 모니터링하고 소통의 관련성은 현장 맥락과 함께 확인합니다.</p></article>'
-            '<article><small>03 · 평가</small><strong>제한적 시범사업</strong>'
-            '<p>현장 진단에서 확인된 문제에 한해 비용·실행 가능성·직원 보호 기준을 검토한 뒤 시범사업을 평가합니다.</p></article>'
+            '<div class="conclusion-answer">'
+            '<div class="conclusion-eyebrow">연구질문에 대한 최종 답변</div>'
+            '<div class="conclusion-headline">조직신뢰와 직무만족은 구성원 유지 진단에서 주목할 지표입니다.</div>'
+            '<p>조직신뢰는 직무만족과 양(+)의 관련성을, 조직신뢰와 직무만족은 이직 고려 의향과 음(−)의 관련성을 보였습니다. 의사소통은 모형과 통제 조건에 따라 해석에 주의가 필요합니다. 이는 관찰된 통계적 관련성이며 인과효과를 의미하지 않습니다.</p>'
+            '</div>'
+            '<div class="conclusion-insights">'
+            '<article><div class="conclusion-eyebrow">연구의 학술적·실무적 의의</div>'
+            '<strong>가설 검증에서 진단 근거로</strong>'
+            '<p>주 분석과 보완 모형을 비교해 일관된 관련성과 모형에 민감한 관계를 구분하고, 탐색적 간접경로를 검토했습니다. 집단별 분석을 함께 활용하여 조직요인과 우선 진단 후보를 연결했다는 점에 의의가 있습니다.</p></article>'
+            '<article><div class="conclusion-eyebrow">HR 의사결정에 대한 최종 제언</div>'
+            '<strong>현장 근거를 바탕으로 개선 여부 판단</strong>'
+            f'<p>{escape(recommendation)}</p></article>'
             '</div></div>',
             unsafe_allow_html=True,
         )
-        if research['has_practice']:
-            with theory_container('decision_conclusion_scope'):
-                st.markdown('**실무 연결:** '+research['practice'])
-                st.caption('정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
-        else:
+        with theory_container('decision_conclusion_scope'):
+            if research['has_practice']:
+                st.markdown('**연구의 활용 범위:** '+research['practice'])
             st.caption('정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
 
 # Run after the destination page has rendered, not on filter/widget reruns.
