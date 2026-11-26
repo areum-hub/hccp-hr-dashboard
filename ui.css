@@ -150,7 +150,7 @@ h3{font-size:1.08rem!important}
   background: #F1F5F9;
   border-radius: 7px;
   font-family: var(--sidebar-font);
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 750;
   line-height: 1.55;
   letter-spacing: -.015em;
@@ -184,7 +184,7 @@ h3{font-size:1.08rem!important}
   align-items: center !important;
   text-align: center !important;
   font-family: var(--sidebar-font) !important;
-  font-size: 10px !important;
+  font-size: 12px !important;
   font-weight: 600 !important;
   letter-spacing: -.025em !important;
   line-height: 1.5 !important;
@@ -194,7 +194,7 @@ h3{font-size:1.08rem!important}
   font-family: var(--sidebar-font) !important;
   text-align: center !important;
   color: inherit !important;
-  font-size: 10px !important;
+  font-size: 12px !important;
   font-weight: inherit !important;
   letter-spacing: inherit !important;
   line-height: inherit !important;
@@ -207,7 +207,7 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] [data-testid="stButton"] button [data-testid="stMarkdownContainer"],
 [data-testid="stSidebar"] [data-testid="stButton"] button [data-testid="stMarkdownContainer"] p,
 [data-testid="stSidebar"] [data-testid="stButton"] button [data-testid="stMarkdownContainer"] span {
-  font-size: 10px !important;
+  font-size: 12px !important;
 }
 [data-testid="stSidebar"] [data-testid="stButton"] button:hover {
   background: #F1F5F9 !important;
