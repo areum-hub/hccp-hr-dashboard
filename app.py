@@ -89,7 +89,7 @@ def scroll_to_page_top():
     if not st.session_state.pop('_page_scroll_pending',False):
         return
     # The script is static except for an internally generated integer.
-    # A new nonce ensures the zero-height iframe executes on every navigation.
+    # A new nonce ensures the one-pixel iframe executes on every navigation.
     nonce=int(st.session_state.get('_page_scroll_nonce',0))
     script="""
 <script>
@@ -113,10 +113,10 @@ def scroll_to_page_top():
 <!-- navigation: SCROLL_NONCE -->
 """.replace('SCROLL_NONCE',str(nonce))
     if hasattr(st,'iframe'):
-        st.iframe(script,height=0,tab_index=-1)
+        st.iframe(script,height=1,tab_index=-1)
     else:
         import streamlit.components.v1 as components
-        components.html(script,height=0,scrolling=False)
+        components.html(script,height=1,scrolling=False)
 
 
 def eyebrow(value):
