@@ -623,3 +623,68 @@ h3{font-size:1.08rem!important}
   .foundation-grid { grid-template-columns: 1fr; }
   .foundation-card { padding: 16px; }
 }
+
+/* Compact theoretical diagram; keep the same expected paths and labels. */
+.st-key-theory_path_visual {
+  box-sizing: border-box;
+  width: 100% !important;
+  max-width: 720px;
+  margin: 0 auto 12px;
+}
+.st-key-theory_path_visual [data-testid="stImage"] {
+  max-width: 100%;
+}
+.st-key-theory_path_visual img {
+  max-width: 100%;
+  height: auto;
+}
+.st-key-theory_path_visual .theory-indirect {
+  padding: 9px 12px;
+  font-size: 13px;
+  gap: 6px 12px;
+}
+/* Design-stage sequence, with no fitted results. */
+.theory-method-flow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(min(100%,155px),1fr));
+  gap: 10px;
+  align-items: stretch;
+  margin-bottom: 8px;
+}
+.theory-method-flow > div {
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+  padding: 14px 13px;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  background: #FFF;
+  box-shadow: var(--shadow);
+}
+.theory-method-flow span {
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 8px;
+  background: var(--bluewash);
+  color: #1D4ED8;
+  font-size: 13px;
+  font-weight: 800;
+}
+.theory-method-flow strong {
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.5;
+  word-break: keep-all;
+}
+.theory-method-flow small {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.6;
+  word-break: keep-all;
+}

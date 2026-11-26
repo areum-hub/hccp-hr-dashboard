@@ -222,7 +222,7 @@ def theory_cards(group, cards, columns):
 def theory_path_diagram():
     """Hypothesized directions only; no fitted coefficients or causal claims."""
     svg = '''
-<svg xmlns="http://www.w3.org/2000/svg" width="960" height="320" viewBox="0 0 960 320" role="img" aria-label="H1–H5의 예상 방향: 조직신뢰와 의사소통에서 직무만족, 그리고 이직 고려 의향으로 연결되는 연구가설">
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="240" viewBox="0 0 960 320" role="img" aria-label="H1–H5의 예상 방향: 조직신뢰와 의사소통에서 직무만족, 그리고 이직 고려 의향으로 연결되는 연구가설">
   <defs>
     <marker id="plusArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L7 4 L0 8 Z" fill="#2563EB"/></marker>
     <marker id="minusArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L7 4 L0 8 Z" fill="#0D9488"/></marker>
@@ -255,13 +255,33 @@ def theory_path_diagram():
     </g>
   </g>
 </svg>'''
-    st.image(svg, use_container_width=True)
-    st.markdown(
-        '<div class="theory-indirect"><strong>H6 · 탐색적 간접경로 (−)</strong>'
-        '<span>조직신뢰 → 직무만족 → 이직 고려 의향</span></div>',
-        unsafe_allow_html=True,
-    )
-    st.caption('가설의 예상 방향을 나타낸 모형입니다. 실제 추정값이나 인과효과를 의미하지 않습니다.')
+    with theory_container('theory_path_visual'):
+        st.image(svg, width=720)
+        st.markdown(
+            '<div class="theory-indirect"><strong>H6 · 탐색적 간접경로 (−)</strong>'
+            '<span>조직신뢰 → 직무만족 → 이직 고려 의향</span></div>',
+            unsafe_allow_html=True,
+        )
+        st.caption('가설의 예상 방향을 나타낸 모형입니다. 실제 추정값이나 인과효과를 의미하지 않습니다.')
+
+
+def research_text_sections():
+    """Separate research design from result interpretation without editing the source."""
+    lines=(BASE/'THEORY_AND_HYPOTHESES.md').read_text(encoding='utf-8').splitlines()
+    if lines and lines[0].startswith('# '):
+        lines=lines[1:]
+    text='\n'.join(lines).lstrip()
+    design_text,h3,outcomes=text.partition('### 3. 이론과 다르게 나타난 결과를 어떻게 해석하는가?')
+    intro,h1,remaining=design_text.partition('### 1. 이론과 선행연구에서 가설을 도출하는 과정')
+    foundations,h2,design=remaining.partition('### 2. 이론에서 연구모형으로: 무엇을 측정·통제했는가?')
+    measurement,method_heading,methods=design.partition('**모형과 질문의 대응**:')
+    discussion,h4,future=outcomes.partition('### 4. 대안 설명을 줄이기 위한 후속 연구 제안')
+    future_steps,practice_heading,practice=future.strip().partition('\n\n**실무 연결:**')
+    return dict(design_text=design_text.strip(),ready=bool(h1 and h2 and method_heading),
+                intro=intro.strip(),foundations=foundations.strip(),measurement=measurement.strip(),
+                methods=(method_heading+methods).strip(),discussion=discussion.strip(),
+                future=future.strip(),step_lines=future_steps.strip().splitlines(),
+                practice=practice.strip(),has_practice=bool(practice_heading))
 
 
 def research_reference_link():
@@ -402,32 +422,14 @@ if page=='overview':
 
 elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
-               '이론적 근거에서 연구가설을 도출하고, 변수·통제변수·탐색적 간접경로와 해석의 범위를 정리합니다.')
-    theory_lines=(BASE/'THEORY_AND_HYPOTHESES.md').read_text(encoding='utf-8').splitlines()
-    # Keep the original research Markdown as the single source of truth.
-    if theory_lines and theory_lines[0].startswith('# '):
-        theory_lines=theory_lines[1:]
-    theory_text='\n'.join(theory_lines).lstrip()
-    intro,h1,remaining=theory_text.partition('### 1. 이론과 선행연구에서 가설을 도출하는 과정')
-    foundations,h2,remaining=remaining.partition('### 2. 이론에서 연구모형으로: 무엇을 측정·통제했는가?')
-    design,h3,remaining=remaining.partition('### 3. 이론과 다르게 나타난 결과를 어떻게 해석하는가?')
-    discussion,h4,future=remaining.partition('### 4. 대안 설명을 줄이기 위한 후속 연구 제안')
-    foundation_parts=foundations.strip().split('\n\n')
-    discussion_parts=discussion.strip().split('\n\n')
-    future_steps,practice_heading,practice=future.strip().partition('\n\n**실무 연결:**')
-    step_lines=[line for line in future_steps.strip().splitlines() if line.strip()]
-    structured=(
-        all((h1,h2,h3,h4,practice_heading)) and len(foundation_parts)==3
-        and all('\n' in part for part in foundation_parts)
-        and len(discussion_parts)==4 and all(':** ' in part for part in discussion_parts)
-        and len(step_lines)==3
-        and all(line.startswith(f'{idx+1}. **') and '**: ' in line for idx,line in enumerate(step_lines))
-    )
-    if structured:
+               '실무질문에서 이론과 연구가설을 도출하고, 측정변수·통제변수 및 분석 절차를 정리합니다.')
+    research=research_text_sections()
+    if research['ready']:
         with theory_container('theory_question',card=True):
-            st.markdown(intro.strip())
-        section_title('1. 이론과 선행연구에서 가설을 도출하는 과정',
+            st.markdown(research['intro'])
+        section_title('1. 이론적 배경 및 선행연구',
                       '이론에 근거한 가설의 예상 방향입니다. 실제 검증 결과와 구분합니다.')
+        foundations=research['foundations']
         foundation_cards=[
             ('사회교환이론','Blau (1964)',
              '신뢰와 상호성에 기반한 관계에서 긍정적인 직무태도를 예상합니다.',
@@ -462,40 +464,25 @@ elif page=='theory':
         with st.expander('이론적 근거 및 선행연구 상세 보기',expanded=False):
             st.markdown(foundations.strip())
 
-        section_title('2. 이론에서 연구모형으로: 무엇을 측정·통제했는가?')
+        section_title('2. 연구가설 및 연구모형','H1–H5의 예상 방향과 H6의 탐색적 간접경로를 나타냅니다.')
         theory_path_diagram()
-        # Preserve variable definitions, controls table and model-method discussion.
-        st.markdown(design.strip())
-        st.caption('가설 검증 결과는 03 다중회귀 OLS, 04 순서형 로짓, 05 구조방정식 SEM에서 확인할 수 있습니다.')
+
+        section_title('3. 측정변수 및 통제변수')
+        st.markdown(research['measurement'])
+
+        section_title('4. 분석 방법 및 검증 절차','측정도구 검토에서 가설 검증까지 순차적으로 진행합니다.')
+        st.markdown(
+            '<div class="theory-method-flow">'
+            '<div><span>01</span><strong>측정 신뢰도</strong><small>문항 및 측정모형 점검</small></div>'
+            '<div><span>02</span><strong>기술통계 · 집단 비교</strong><small>관찰 평균 및 상관 확인</small></div>'
+            '<div><span>03</span><strong>다중회귀 OLS</strong><small>H1–H5 주 검증</small></div>'
+            '<div><span>04</span><strong>순서형 로짓</strong><small>대안 모형 및 가정 점검</small></div>'
+            '<div><span>05</span><strong>구조방정식 SEM</strong><small>구조경로 및 H6 탐색</small></div>'
+            '</div>',unsafe_allow_html=True,
+        )
+        st.markdown(research['methods'])
     else:
-        # If the Markdown structure changes, show the full original text rather
-        # than dropping any paragraphs or failing on a changed heading.
-        theory_design,discussion_heading,theory_discussion=theory_text.partition(
-            '### 3. 이론과 다르게 나타난 결과를 어떻게 해석하는가?')
-        st.markdown(theory_design.rstrip())
-
-    if structured:
-        section_title('3. 이론적 해석 및 대안 설명')
-        interpretation_cards=[]
-        for part,(tag,tone) in zip(discussion_parts,(
-            ('방향 일치','teal'),('모형 간 부호 불일치','amber'),
-            ('예상과 반대','amber'),('탐색적 간접경로','purple'))):
-            heading,_,body=part.partition(':** ')
-            interpretation_cards.append((tag,heading+':**',body,tone))
-        theory_cards('interpretation',interpretation_cards,2)
-
-        section_title('4. 후속 연구 방향')
-        future_cards=[]
-        for idx,line in enumerate(step_lines):
-            heading,_,body=line[3:].partition('**: ')
-            future_cards.append((f'0{idx+1}',heading+'**:',body,'blue'))
-        theory_cards('future',future_cards,3)
-        with theory_container('theory_practice',card=True):
-            st.markdown('**실무 연결:**'+practice)
-    elif discussion_heading:
-        original_discussion='### 3. 이론적 해석 및 대안 설명'+theory_discussion
-        original_discussion=original_discussion.replace('### 4. 대안 설명을 줄이기 위한 후속 연구 제안','### 4. 후속 연구 방향',1)
-        st.markdown(original_discussion.strip())
+        st.markdown(research['design_text'])
 
 elif page=='reliability':
     page_intro('DATA ANALYSIS  /  01','측정 신뢰도 및 타당성','조직신뢰·의사소통 문항의 내적 일관성을 살펴보고, 두 구성개념을 구분할 수 있는지 점검합니다.')
@@ -653,6 +640,20 @@ elif page=='sem':
 elif page=='decision':
     page_intro('HR DECISION SUPPORT  /  ACTION','HR 의사결정 지원','HR 담당자, 현업 리더 및 경영진이 분석 결과를 확인하고, 실제 개선 조치를 시행하기 전에 필요한 검증 절차를 검토할 수 있습니다.')
     st.caption('활용 범위 | 집단 수준의 진단 근거와 후속 평가 절차를 제공합니다. 개인별 이직 예측, 자동 인사결정 및 정책 효과 시뮬레이션은 지원하지 않습니다.')
+    research=research_text_sections()
+    section_title('연구 결과의 종합 해석','주 분석과 보완 모형의 결과를 함께 해석하며, 이론적 기대와 관찰된 관련성을 구분합니다.')
+    discussion_parts=research['discussion'].split('\n\n')
+    if len(discussion_parts)==4 and all(':** ' in part for part in discussion_parts):
+        interpretation_cards=[]
+        for part,(tag,tone) in zip(discussion_parts,(
+            ('방향 일치','teal'),('모형 간 부호 불일치','amber'),
+            ('예상과 반대','amber'),('탐색적 간접경로','purple'))):
+            heading,_,body=part.partition(':** ')
+            interpretation_cards.append((tag,heading+':**',body,tone))
+        theory_cards('interpretation',interpretation_cards,2)
+    else:
+        st.markdown(research['discussion'])
+
     section_title('우선 진단 후보 · 사전 계산된 152개 비교','기본 기준: 불리한 차이 ≥0.3점, 응답자 50명·기업 10개 이상, CI 하한>0, BH q<0.05.')
     selected=PR['selected_at_default']
     st.dataframe(pd.DataFrame([{'집단':row['group_name'],'분류':row['dimension'],'지표':row['metric_name'],
@@ -738,10 +739,25 @@ elif page=='decision':
     ]),hide_index=True,use_container_width=True)
     st.caption('평가 계획 | HR은 시범사업 시작 전 기준값·평가 기간·성공 및 중단 기준을 정하고, 현업 리더는 익명 설문과 업무 맥락을 확인합니다. 가능하면 비교집단과 동일한 시점에 반복 측정하고, 경영진은 결과·비용·직원 보호 여부를 종합하여 확대 또는 중단을 판단합니다.')
     st.caption('기대효과는 후속 평가에서 확인할 목표 방향이며, 본 연구에서 검증한 정책 효과나 예측 수치가 아닙니다. 이직 고려 의향과 실제 이직률은 서로 다른 지표입니다.')
+    section_title('연구의 한계 및 후속 연구 방향','단면 자료와 측정상의 한계를 보완하고, 실제 개입 효과는 별도 연구에서 확인합니다.')
+    step_lines=[line for line in research['step_lines'] if line.strip()]
+    if research['has_practice'] and len(step_lines)==3 and all(
+        line.startswith(f'{idx+1}. **') and '**: ' in line for idx,line in enumerate(step_lines)
+    ):
+        future_cards=[]
+        for idx,line in enumerate(step_lines):
+            heading,_,body=line[3:].partition('**: ')
+            future_cards.append((f'0{idx+1}',heading+'**:',body,'blue'))
+        theory_cards('future',future_cards,3)
+    else:
+        st.markdown(research['future'])
+
     section_title('최종 결론 및 실무 제언')
     panel('우선 진단에서 후속 평가까지',
           '기본 선별과 공변량 조정 결과를 종합하여 현장 진단의 우선순위를 정합니다. 신뢰·만족 관련 지표를 모니터링하고 소통의 관련성은 현장 맥락과 함께 확인합니다. 현장 진단에서 확인된 문제에 한해 비용·실행 가능성·직원 보호 기준을 검토한 뒤 시범사업을 평가합니다.',
           'teal','정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
+    if research['has_practice']:
+        st.markdown('**실무 연결:** '+research['practice'])
 
 # Run after the destination page has rendered, not on filter/widget reruns.
 scroll_to_page_top()
