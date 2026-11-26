@@ -135,7 +135,7 @@ h3{font-size:1.08rem!important}
   border-radius: 12px;
 }
 [data-testid="stSidebar"] .st-key-sidebar_nav_group_0 {
-  margin-top: 12px;
+  margin-top: 24px;
 }
 [data-testid="stSidebar"] [class*="st-key-sidebar_nav_group_"] [data-testid="stVerticalBlock"] {
   gap: 3px !important;
