@@ -326,3 +326,19 @@ h3{font-size:1.08rem!important}
 .st-key-next_overview button p {
   font-weight: 500 !important;
 }
+
+/* Consistent, immediately accessible next-page control in the shared footer. */
+[class*="st-key-next_"] button,
+[class*="st-key-next_"] button p {
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: .8rem !important;
+  line-height: 1.65 !important;
+  letter-spacing: normal !important;
+  font-weight: 500 !important;
+  white-space: normal !important;
+  word-break: keep-all;
+}
+[class*="st-key-next_"] button {
+  min-height: 42px !important;
+  padding: 8px 12px !important;
+}
