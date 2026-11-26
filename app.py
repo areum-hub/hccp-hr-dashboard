@@ -592,21 +592,11 @@ elif page=='decision':
           '기본 선별과 공변량 조정 결과를 종합하여 현장 진단의 우선순위를 정합니다. 신뢰·만족 관련 지표를 모니터링하고 소통의 관련성은 현장 맥락과 함께 확인합니다. 현장 진단에서 확인된 문제에 한해 비용·실행 가능성·직원 보호 기준을 검토한 뒤 시범사업을 평가합니다.',
           'teal','정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
 
-# Unified source and navigation footer.
+# Unified source footer. Page navigation is handled by the sidebar.
 st.divider()
-current_index=ALL_NAV_KEYS.index(page)
-if current_index<len(ALL_NAV_KEYS)-1:
-    next_page=ALL_NAV_KEYS[current_index+1]
-    source_col,nav_col=st.columns([2.7,1.3],gap='medium')
-    with source_col:
-        source_line(plain=True)
-        if page=='overview':
-            overview_reference_footer()
-    with nav_col:
-        st.button('→',key='next_'+page,help=NAV_LABELS[next_page]+' 화면으로 이동',
-                  use_container_width=False,on_click=move_to,args=(next_page,))
-else:
-    source_line(plain=True)
+source_line(plain=True)
+if page=='overview':
+    overview_reference_footer()
 
 # Run after the destination page has rendered, not on filter/widget reruns.
 scroll_to_page_top()
