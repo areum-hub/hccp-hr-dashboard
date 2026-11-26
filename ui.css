@@ -225,13 +225,13 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] .st-key-nav_decision button::before {
   content: "";
   display: block;
-  width: 16px;
+  width: 20px;
   height: 16px;
-  flex: 0 0 16px;
+  flex: 0 0 20px;
   background-color: currentColor;
   opacity: .88;
-  -webkit-mask: var(--nav-icon) center / contain no-repeat;
-  mask: var(--nav-icon) center / contain no-repeat;
+  -webkit-mask: var(--nav-icon) center / 16px 16px no-repeat;
+  mask: var(--nav-icon) center / 16px 16px no-repeat;
 }
 [data-testid="stSidebar"] .st-key-nav_overview button { --nav-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m3%2010%209-7%209%207v10a1%201%200%200%201-1%201H4a1%201%200%200%201-1-1z%22%2F%3E%3Cpath%20d%3D%22M9%2021v-8h6v8%22%2F%3E%3C%2Fsvg%3E"); }
 [data-testid="stSidebar"] .st-key-nav_theory button { --nav-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m12%203%2010%205-10%205L2%208zM2%2012l10%205%2010-5M2%2016l10%205%2010-5%22%2F%3E%3C%2Fsvg%3E"); }
@@ -240,6 +240,47 @@ h3{font-size:1.08rem!important}
   font-variant-numeric: tabular-nums;
   white-space: pre-wrap !important;
 }
+
+/* Force the actual Streamlit label wrapper to fill the remaining row.
+   A fixed prefix column aligns every numbered and icon-based navigation item. */
+[data-testid="stSidebar"] [class*="st-key-nav_"] [data-testid="stButton"] button {
+  display: flex !important;
+  justify-content: flex-start !important;
+  align-items: center !important;
+  gap: 12px !important;
+  text-align: left !important;
+}
+[data-testid="stSidebar"] [class*="st-key-nav_"] button > div,
+[data-testid="stSidebar"] [class*="st-key-nav_"] button [data-testid="stMarkdownContainer"] {
+  flex: 1 1 0% !important;
+  width: auto !important;
+  min-width: 0 !important;
+  margin: 0 !important;
+  display: block !important;
+  text-align: left !important;
+  align-items: flex-start !important;
+  justify-content: flex-start !important;
+}
+[data-testid="stSidebar"] [class*="st-key-nav_"] button p {
+  width: 100% !important;
+  text-align: left !important;
+  margin: 0 !important;
+}
+[data-testid="stSidebar"] .st-key-sidebar_nav_group_1 [data-testid="stButton"] button::before {
+  display: block;
+  flex: 0 0 20px;
+  width: 20px;
+  text-align: center;
+  font: inherit;
+  font-variant-numeric: tabular-nums;
+  color: inherit;
+  opacity: .88;
+}
+[data-testid="stSidebar"] .st-key-nav_reliability button::before { content: "01"; }
+[data-testid="stSidebar"] .st-key-nav_descriptive button::before { content: "02"; }
+[data-testid="stSidebar"] .st-key-nav_ols button::before { content: "03"; }
+[data-testid="stSidebar"] .st-key-nav_ordinal button::before { content: "04"; }
+[data-testid="stSidebar"] .st-key-nav_sem button::before { content: "05"; }
 [data-testid="stSidebar"] .sidebar-footer {
   margin-top: 2px;
   padding: 0;

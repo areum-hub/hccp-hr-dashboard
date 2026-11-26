@@ -358,7 +358,8 @@ with st.sidebar:
         with theory_container(f'sidebar_nav_group_{group_index}'):
             for item_key,item_label in items_in_group:
                 is_active=(st.session_state['page']==item_key)
-                st.button(item_label,key='nav_'+item_key,type='primary' if is_active else 'secondary',
+                button_label=item_label.split('  ',1)[1] if group_index==1 else item_label
+                st.button(button_label,key='nav_'+item_key,type='primary' if is_active else 'secondary',
                           use_container_width=True,on_click=move_to,args=(item_key,))
     st.markdown(
       '<div class="sidebar-footer"><div class="sidebar-meta">'
