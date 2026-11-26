@@ -200,7 +200,6 @@ def source_line(plain=False):
     st.markdown(
       f'<div class="{css}"><strong>DATA SOURCE</strong> · '
       '한국직업능력연구원(KRIVET) · HCCPⅡ 제4차(2023) 근로자 조사 '
-      '· <a href="https://www.krivet.re.kr/kor/sub.do?menuSn=18" target="_blank">공식 조사 안내</a>'
       ' · <span>통계값은 연구자가 산출한 추정치</span></div>',
       unsafe_allow_html=True,
     )
@@ -604,8 +603,8 @@ if current_index<len(ALL_NAV_KEYS)-1:
         if page=='overview':
             overview_reference_footer()
     with nav_col:
-        st.button('다음 화면 · '+NAV_LABELS[next_page],key='next_'+page,
-                  use_container_width=True,on_click=move_to,args=(next_page,))
+        st.button('→',key='next_'+page,help=NAV_LABELS[next_page]+' 화면으로 이동',
+                  use_container_width=False,on_click=move_to,args=(next_page,))
 else:
     source_line(plain=True)
 

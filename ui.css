@@ -327,18 +327,35 @@ h3{font-size:1.08rem!important}
   font-weight: 500 !important;
 }
 
-/* Consistent, immediately accessible next-page control in the shared footer. */
-[class*="st-key-next_"] button,
-[class*="st-key-next_"] button p {
-  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-size: .8rem !important;
-  line-height: 1.65 !important;
-  letter-spacing: normal !important;
-  font-weight: 500 !important;
-  white-space: normal !important;
-  word-break: keep-all;
+/* Minimal arrow navigation in the shared footer. */
+[class*="st-key-next_"] {
+  display: flex;
+  justify-content: flex-end;
 }
 [class*="st-key-next_"] button {
-  min-height: 42px !important;
-  padding: 8px 12px !important;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  width: 44px !important;
+  padding: 0 !important;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+  color: var(--blue) !important;
+  justify-content: center !important;
+}
+[class*="st-key-next_"] button p {
+  margin: 0 !important;
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", sans-serif !important;
+  font-size: 1.5rem !important;
+  line-height: 1 !important;
+  font-weight: 500 !important;
+  color: var(--blue) !important;
+}
+[class*="st-key-next_"] button:hover {
+  background: #EFF6FF !important;
+  border-radius: 8px !important;
+}
+[class*="st-key-next_"] button:focus-visible {
+  outline: 2px solid var(--blue) !important;
+  outline-offset: 2px;
 }
