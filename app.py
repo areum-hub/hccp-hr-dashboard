@@ -786,16 +786,54 @@ elif page=='decision':
     with theory_container('decision_group_05',card=True):
         st.markdown(
             '<div class="decision-section-head"><span class="decision-section-number">05</span>'
-            '<div><h2>최종 결론 및 실무 제언</h2><p>연구질문에 대한 답변과 실제 적용 범위를 정리합니다.</p></div></div>',unsafe_allow_html=True,
+            '<div><h2>최종 결론 및 실무 제언</h2><p>연구질문에 대한 답변과 실제 적용 범위를 정리합니다.</p></div></div>',
+            unsafe_allow_html=True,
         )
-        st.markdown('**연구질문에 대한 답변** · 조직신뢰는 직무만족과 양(+)의 관련성을, 조직신뢰와 직무만족은 이직 고려 의향과 음(-)의 관련성을 보였습니다. 의사소통은 모형과 통제 조건에 따라 해석에 주의가 필요합니다.')
         if customer_support is not None and adjusted is not None:
-            st.markdown('**우선 진단 대상** · 대고객지원 직무를 현장 진단의 우선 후보로 검토합니다. 이는 개선 정책의 효과나 개인별 위험이 확정되었다는 뜻은 아닙니다.')
-        panel('우선 진단에서 후속 평가까지',
-              '기본 선별과 공변량 조정 결과를 종합하여 현장 진단의 우선순위를 정합니다. 신뢰·만족 관련 지표를 모니터링하고 소통의 관련성은 현장 맥락과 함께 확인합니다. 현장 진단에서 확인된 문제에 한해 비용·실행 가능성·직원 보호 기준을 검토한 뒤 시범사업을 평가합니다.',
-              'teal','정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
+            candidate_html=(
+                '<div class="conclusion-priority">'
+                '<div class="conclusion-eyebrow">우선 진단 대상</div>'
+                f'<div class="conclusion-candidate">{escape(customer_support["group_name"])} 직무</div>'
+                '<div class="conclusion-metric-label">이직 고려 의향 · 5점 척도</div>'
+                '<div class="conclusion-evidence">'
+                '<div><small>평균 차이</small>'
+                f'<strong>{fmt(customer_support["adverse_difference"])}점</strong></div>'
+                '<div><small>공변량 조정 후 계수</small>'
+                f'<strong>{fmt(adjusted["adjusted_coef"])}점</strong></div>'
+                '</div><p>현장 진단의 우선 후보이며, 개선 정책의 효과나 개인별 위험이 확정되었다는 뜻은 아닙니다.</p></div>'
+            )
+        else:
+            candidate_html=(
+                '<div class="conclusion-priority"><div class="conclusion-eyebrow">우선 진단 대상</div>'
+                '<p>기본 선별 기준을 충족한 집단을 확인하고, 현장 원인을 검증합니다.</p></div>'
+            )
+        st.markdown(
+            '<div class="decision-conclusion">'
+            '<div class="conclusion-headline">데이터로 진단의 우선순위를 정하고, 현장에서 검증합니다.</div>'
+            '<div class="conclusion-top">'
+            '<div class="conclusion-findings"><div class="conclusion-eyebrow">연구질문에 대한 답변</div>'
+            '<div class="conclusion-relation"><span>조직신뢰 – 직무만족</span><strong class="positive">양(+)의 관련성</strong></div>'
+            '<div class="conclusion-relation"><span>조직신뢰·직무만족 – 이직 고려 의향</span><strong class="negative">음(−)의 관련성</strong></div>'
+            '<div class="conclusion-relation"><span>의사소통</span><strong class="caution">해석 주의</strong></div>'
+            '<p>의사소통은 모형과 통제 조건에 따라 해석에 주의가 필요합니다.</p></div>'
+            +candidate_html+'</div>'
+            '<div class="conclusion-action-title">우선 진단에서 후속 평가까지</div>'
+            '<div class="conclusion-action-flow">'
+            '<article><small>01 · 진단</small><strong>우선순위 설정</strong>'
+            '<p>기본 선별과 공변량 조정 결과를 종합하여 현장 진단의 우선순위를 정합니다.</p></article>'
+            '<article><small>02 · 확인</small><strong>조직지표 모니터링</strong>'
+            '<p>신뢰·만족 관련 지표를 모니터링하고 소통의 관련성은 현장 맥락과 함께 확인합니다.</p></article>'
+            '<article><small>03 · 평가</small><strong>제한적 시범사업</strong>'
+            '<p>현장 진단에서 확인된 문제에 한해 비용·실행 가능성·직원 보호 기준을 검토한 뒤 시범사업을 평가합니다.</p></article>'
+            '</div></div>',
+            unsafe_allow_html=True,
+        )
         if research['has_practice']:
-            st.markdown('**실무 연결:** '+research['practice'])
+            with theory_container('decision_conclusion_scope'):
+                st.markdown('**실무 연결:** '+research['practice'])
+                st.caption('정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
+        else:
+            st.caption('정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
 
 # Run after the destination page has rendered, not on filter/widget reruns.
 scroll_to_page_top()
