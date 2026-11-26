@@ -1,0 +1,13 @@
+data.csv
+*raw*.csv
+*raw*.xlsx
+*raw*.sav
+dashboard_preview.html
+research_header.html
+priority_inference.csv
+sem_structural_bootstrap.csv
+__pycache__/
+.pytest_cache/
+*.pyc
+.env
+.streamlit/secrets.toml

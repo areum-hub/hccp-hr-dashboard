@@ -1,0 +1,30 @@
+{
+  "source_name": "인적자본기업패널Ⅱ(HCCPⅡ) 제4차(2023) 근로자 조사",
+  "organization": "한국직업능력연구원(KRIVET), 고용노동부 협력 조사",
+  "official_website": "https://www.krivet.re.kr/kor/sub.do?menuSn=18",
+  "official_report": "https://www.krivet.re.kr/kor/sub.do?menuSn=12&pstNo=PB0000000425",
+  "user_guide": "https://www.krivet.re.kr/ht/file/hccp/HCCP_%ED%86%B5%ED%95%A9_%EC%82%AC%EC%9A%A9%EC%9E%90%EC%A7%80%EC%B9%A8%EC%84%9C%282024%29.pdf",
+  "source_rows": 10759,
+  "analysis_rows": 10731,
+  "analysis_firms": 497,
+  "excluded_rows": 28,
+  "overall_means": {
+    "trust": 3.408,
+    "comm": 3.3084,
+    "satisfaction": 3.4287,
+    "turnover": 3.2185
+  },
+  "item_means": {
+    "W23Q22D": 3.5492,
+    "W23Q24D": 3.4686,
+    "W23Q24F": 3.2063,
+    "W23Q22F": 3.5364,
+    "W23Q24A": 3.1035,
+    "W23Q24B": 3.2725,
+    "W23Q24C": 3.3212
+  },
+  "alpha_trust": 0.7879317785683007,
+  "alpha_comm": 0.8297303760240702,
+  "disclosure": "배포용 결과조회 앱: 근로자별 응답·기업식별자 없음. 전체와 사전에 검토한 집계 통계만 표시. 임의 다중 필터·개인 위험 예측은 제공하지 않음.",
+  "metrics_are_researcher_derived": true
+}

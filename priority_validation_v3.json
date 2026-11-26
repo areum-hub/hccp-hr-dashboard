@@ -1,0 +1,58 @@
+{
+  "n": 10731,
+  "firms": 497,
+  "contrasts": 152,
+  "method": "집단 대 나머지 평균 차이 OLS · 기업(W23ID1) 군집강건 표준오차(자유도 조정 포함) · 전체 152개 비교 BH-FDR",
+  "screening_definition": {
+    "adverse_gap_default": 0.3,
+    "group_n_at_least": 50,
+    "firms_in_group_at_least": 10,
+    "ci_low_above_zero": true,
+    "q_bh_below": 0.05
+  },
+  "sensitivity_counts": {
+    "g0.2_n30": 5,
+    "g0.2_n50": 5,
+    "g0.2_n100": 5,
+    "g0.3_n30": 1,
+    "g0.3_n50": 1,
+    "g0.3_n100": 1,
+    "g0.4_n30": 0,
+    "g0.4_n50": 0,
+    "g0.4_n100": 0
+  },
+  "selected_at_default": [
+    {
+      "dimension": "직무",
+      "group_name": "대고객지원",
+      "metric_name": "이직 고려 의향",
+      "n": 273,
+      "firms_in_group": 76,
+      "adverse_difference": 0.3358047574914909,
+      "adverse_ci_low": 0.1423857369062424,
+      "adverse_ci_high": 0.5292237780767395,
+      "q_bh_152": 0.00664809791193656
+    }
+  ],
+  "same_group_turnover_and_negative_factors_at_0_2": [],
+  "adjusted_selected_follow_up": [
+    {
+      "field": "W23Q04",
+      "code": 5,
+      "metric": "turnover",
+      "adjusted_coef": 0.239781914011762,
+      "adjusted_ci": [
+        0.04822196027886286,
+        0.4313418677446611
+      ],
+      "adjusted_p": 0.01425905993936808,
+      "control_note": "선택된 분류 이외의 산업·규모·직급·직무·성별 및 근속·연령·근로조건 통제; 선별 후 탐색적 검토"
+    }
+  ],
+  "candidate_interpretation": "기준을 충족하면 현장 진단 대상일 뿐 자동 투자 대상은 아님. 개입 타당성, 비용, 실행 가능성, 실제 퇴사·반복 측정 등 추가 자료 필요.",
+  "limitations": [
+    "기준 0.3점은 통계적으로 유일한 컷오프가 아닌 연구용 탐색 규칙",
+    "기업 군집과 다중비교는 보정했지만 집단 차이는 교란변수를 완전히 제거한 인과효과가 아님",
+    "성별 차이는 공정성 검토 대상이며 특정 성별의 기회 제한이나 차별적 운영에 사용해서는 안 됨"
+  ]
+}
