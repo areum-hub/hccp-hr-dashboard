@@ -203,6 +203,16 @@ def theory_container(key, card=False):
         return st.container(border=card)
 
 
+def research_section_header(number,title,note=''):
+    """Use the same numbered section hierarchy as the HR decision page."""
+    st.markdown(
+        f'<div class="decision-section-head"><span class="decision-section-number">{escape(number)}</span>'
+        f'<div><h2>{escape(title)}</h2>'
+        +(f'<p>{escape(note)}</p>' if note else '')
+        +'</div></div>',unsafe_allow_html=True,
+    )
+
+
 def theory_cards(group, cards, columns):
     """Render the original Markdown text in responsive, scoped cards."""
     with theory_container('theory_grid_'+group):
@@ -383,48 +393,55 @@ if page=='overview':
     )
     st.markdown('**실무질문** · '+MAIN_QUESTION)
 
-    a,b,c,d=st.columns(4,gap='medium')
-    a.metric('분석 근로자',f'{P["analysis_rows"]:,}명')
-    b.metric('대상 기업',f'{P["analysis_firms"]:,}개')
-    c.metric('주 검증 가설','H1–H5')
-    d.metric('조사 기준 연도','2023')
-    st.caption('전체 응답자 10,759명 중 연령 결측 28명 제외 · 공개 범위: 집계 통계 및 사전 추정 결과(원자료 제외)')
-    section_title('핵심 연구 결과','표본 10,731명에 대한 조건부 관련성 결과입니다. 정책 효과나 인과관계를 추정하지 않았습니다.')
-    cols=st.columns(3,gap='medium')
-    with cols[0]: panel('01 · 이직 고려 의향 관련 요인','조직신뢰와 직무만족은 통제 후 이직 고려 의향과 음(-)의 관련성을 보였습니다.','blue','H3·H5 · OLS 주 분석')
-    with cols[1]: panel('02 · 의사소통 해석 주의','H2는 OLS와 SEM에서 부호가 다르고, H4는 예상과 달리 양(+)의 부호를 보였습니다.','amber','측정 중첩·역인과·누락변수 가능성')
-    with cols[2]:
-        candidates=PR['selected_at_default']
-        if len(candidates)==1:
-            lead=candidates[0]
-            panel('03 · 실무 의사결정',
-                  f'{lead["group_name"]} {lead["dimension"]}가 우선 진단 후보로 도출되었습니다. 현장 원인 확인 후 시범사업 평가를 제안합니다.',
-                  'teal',f'{lead["metric_name"]} {lead["adverse_difference"]:+.3f}점 · {PR["contrasts"]}개 비교 중 1건')
-        else:
-            panel('03 · 실무 의사결정',
-                  '통계적 선별 결과를 바탕으로 현장 원인을 확인하고, 효과는 별도의 시범사업에서 평가합니다.',
-                  'teal',f'{PR["contrasts"]}개 비교 · 기본 기준 충족 {len(candidates)}건')
-    left,right=st.columns([1.12,1],gap='large')
-    with left:
-        section_title('4개 핵심 지표의 관찰 평균','모두 5점 척도의 연구자 산출 평균. 응답 점수의 인과적 의미는 없습니다.')
-        fig=go.Figure(go.Bar(
-          x=list(P['overall_means'].values()),y=list(metrics.values()),orientation='h',
-          marker_color=[viz.METRIC_COLORS[k] for k in metrics],
-          text=[f'{P["overall_means"][k]:.2f}' for k in metrics],textposition='outside',
-          hovertemplate='%{y}<br>관찰 평균 %{x:.3f}/5<extra></extra>',
-        ))
-        fig.update_yaxes(autorange='reversed')
-        fig.update_xaxes(range=[0,5.4],title='전체 표본 평균(5점 척도)')
-        plot(viz.frame(fig,height=325),key='overview_means')
-    with right:
-        section_title('연구 진행 흐름','분석 결과가 실제 HR 의사결정에 연결되는 경로')
-        st.markdown(
-            '<div class="step-list overview-flow">'
-            '<div><span>01</span><strong>실무질문과 이론</strong><small>어떤 조직요인이 직무만족·이직 고려와 관련되는가?</small></div>'
-            '<div><span>02</span><strong>5단계 분석</strong><small>신뢰도 → 집단 평균 → OLS → 순서형 로짓 → SEM</small></div>'
-            '<div><span>03</span><strong>HR 의사결정</strong><small>진단 후보 선별 → 현장 검증 → 제한적 시범사업 평가</small></div>'
-            '</div>',unsafe_allow_html=True,
-        )
+    with theory_container('research_section_overview_01',card=True):
+        research_section_header('01',"연구 표본 및 범위","공통 분석표본과 공개 자료의 범위를 확인합니다.")
+        a,b,c,d=st.columns(4,gap='medium')
+        a.metric('분석 근로자',f'{P["analysis_rows"]:,}명')
+        b.metric('대상 기업',f'{P["analysis_firms"]:,}개')
+        c.metric('주 검증 가설','H1–H5')
+        d.metric('조사 기준 연도','2023')
+        st.caption('전체 응답자 10,759명 중 연령 결측 28명 제외 · 공개 범위: 집계 통계 및 사전 추정 결과(원자료 제외)')
+
+    with theory_container('research_section_overview_02',card=True):
+        research_section_header('02',"핵심 연구 결과","표본 10,731명에 대한 조건부 관련성 결과입니다. 정책 효과나 인과관계를 추정하지 않았습니다.")
+        cols=st.columns(3,gap='medium')
+        with cols[0]: panel('01 · 이직 고려 의향 관련 요인','조직신뢰와 직무만족은 통제 후 이직 고려 의향과 음(-)의 관련성을 보였습니다.','blue','H3·H5 · OLS 주 분석')
+        with cols[1]: panel('02 · 의사소통 해석 주의','H2는 OLS와 SEM에서 부호가 다르고, H4는 예상과 달리 양(+)의 부호를 보였습니다.','amber','측정 중첩·역인과·누락변수 가능성')
+        with cols[2]:
+            candidates=PR['selected_at_default']
+            if len(candidates)==1:
+                lead=candidates[0]
+                panel('03 · 실무 의사결정',
+                      f'{lead["group_name"]} {lead["dimension"]}가 우선 진단 후보로 도출되었습니다. 현장 원인 확인 후 시범사업 평가를 제안합니다.',
+                      'teal',f'{lead["metric_name"]} {lead["adverse_difference"]:+.3f}점 · {PR["contrasts"]}개 비교 중 1건')
+            else:
+                panel('03 · 실무 의사결정',
+                      '통계적 선별 결과를 바탕으로 현장 원인을 확인하고, 효과는 별도의 시범사업에서 평가합니다.',
+                      'teal',f'{PR["contrasts"]}개 비교 · 기본 기준 충족 {len(candidates)}건')
+
+    with theory_container('research_section_overview_03',card=True):
+        research_section_header('03',"핵심 지표 및 연구 진행 흐름","관찰 평균에서 HR 의사결정으로 이어지는 연구 구조입니다.")
+        left,right=st.columns([1.12,1],gap='large')
+        with left:
+            section_title('4개 핵심 지표의 관찰 평균','모두 5점 척도의 연구자 산출 평균. 응답 점수의 인과적 의미는 없습니다.')
+            fig=go.Figure(go.Bar(
+              x=list(P['overall_means'].values()),y=list(metrics.values()),orientation='h',
+              marker_color=[viz.METRIC_COLORS[k] for k in metrics],
+              text=[f'{P["overall_means"][k]:.2f}' for k in metrics],textposition='outside',
+              hovertemplate='%{y}<br>관찰 평균 %{x:.3f}/5<extra></extra>',
+            ))
+            fig.update_yaxes(autorange='reversed')
+            fig.update_xaxes(range=[0,5.4],title='전체 표본 평균(5점 척도)')
+            plot(viz.frame(fig,height=325),key='overview_means')
+        with right:
+            section_title('연구 진행 흐름','분석 결과가 실제 HR 의사결정에 연결되는 경로')
+            st.markdown(
+                '<div class="step-list overview-flow">'
+                '<div><span>01</span><strong>실무질문과 이론</strong><small>어떤 조직요인이 직무만족·이직 고려와 관련되는가?</small></div>'
+                '<div><span>02</span><strong>5단계 분석</strong><small>신뢰도 → 집단 평균 → OLS → 순서형 로짓 → SEM</small></div>'
+                '<div><span>03</span><strong>HR 의사결정</strong><small>진단 후보 선별 → 현장 검증 → 제한적 시범사업 평가</small></div>'
+                '</div>',unsafe_allow_html=True,
+            )
 
 elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
@@ -433,215 +450,248 @@ elif page=='theory':
     if research['ready']:
         with theory_container('theory_question',card=True):
             st.markdown(research['intro'])
-        section_title('1. 이론적 배경 및 선행연구',
-                      '이론에 근거한 가설의 예상 방향입니다. 실제 검증 결과와 구분합니다.')
-        foundations=research['foundations']
-        foundation_cards=[
-            ('사회교환이론','Blau (1964)',
-             '신뢰와 상호성에 기반한 관계에서 긍정적인 직무태도를 예상합니다.',
-             [('H1','조직신뢰 → 직무만족','+'),
-              ('H3','조직신뢰 → 이직 고려 의향','−')]),
-            ('직무요구-자원(JD-R) 모형','Bakker & Demerouti (2007)',
-             '의사소통을 정보·지원 자원의 대리지표로 해석합니다.',
-             [('H2','의사소통 → 직무만족','+'),
-              ('H4','의사소통 → 이직 고려 의향','−')]),
-            ('직무태도와 이직과정','Tett & Meyer (1993)',
-             '직무만족과 이직 고려 의향의 관계 및 탐색적 간접경로를 검토합니다.',
-             [('H5','직무만족 → 이직 고려 의향','−'),
-              ('H6','조직신뢰 → 직무만족 → 이직 고려 의향','간접 −')]),
-        ]
-        card_html=[]
-        for title,author,summary,paths in foundation_cards:
-            relations=[]
-            for hid,path,direction in paths:
-                tone='purple' if hid=='H6' else 'blue' if direction=='+' else 'teal'
-                relations.append(
-                    f'<div class="foundation-relation"><span class="foundation-hypothesis">{escape(hid)}</span>'
-                    f'<span class="foundation-path">{escape(path)}</span>'
-                    f'<span class="foundation-direction {tone}">{escape(direction)}</span></div>'
+        with theory_container('research_section_theory_01',card=True):
+            research_section_header('01',"이론적 배경 및 선행연구","이론에 근거한 가설의 예상 방향입니다. 실제 검증 결과와 구분합니다.")
+            foundations=research['foundations']
+            foundation_cards=[
+                ('사회교환이론','Blau (1964)',
+                 '신뢰와 상호성에 기반한 관계에서 긍정적인 직무태도를 예상합니다.',
+                 [('H1','조직신뢰 → 직무만족','+'),
+                  ('H3','조직신뢰 → 이직 고려 의향','−')]),
+                ('직무요구-자원(JD-R) 모형','Bakker & Demerouti (2007)',
+                 '의사소통을 정보·지원 자원의 대리지표로 해석합니다.',
+                 [('H2','의사소통 → 직무만족','+'),
+                  ('H4','의사소통 → 이직 고려 의향','−')]),
+                ('직무태도와 이직과정','Tett & Meyer (1993)',
+                 '직무만족과 이직 고려 의향의 관계 및 탐색적 간접경로를 검토합니다.',
+                 [('H5','직무만족 → 이직 고려 의향','−'),
+                  ('H6','조직신뢰 → 직무만족 → 이직 고려 의향','간접 −')]),
+            ]
+            card_html=[]
+            for title,author,summary,paths in foundation_cards:
+                relations=[]
+                for hid,path,direction in paths:
+                    tone='purple' if hid=='H6' else 'blue' if direction=='+' else 'teal'
+                    relations.append(
+                        f'<div class="foundation-relation"><span class="foundation-hypothesis">{escape(hid)}</span>'
+                        f'<span class="foundation-path">{escape(path)}</span>'
+                        f'<span class="foundation-direction {tone}">{escape(direction)}</span></div>'
+                    )
+                card_html.append(
+                    f'<article class="foundation-card"><div class="foundation-title">{escape(title)}</div>'
+                    f'<div class="foundation-author">{escape(author)}</div>'
+                    f'<div class="foundation-summary">{escape(summary)}</div>'
+                    '<div class="foundation-relations">'+''.join(relations)+'</div></article>'
                 )
-            card_html.append(
-                f'<article class="foundation-card"><div class="foundation-title">{escape(title)}</div>'
-                f'<div class="foundation-author">{escape(author)}</div>'
-                f'<div class="foundation-summary">{escape(summary)}</div>'
-                '<div class="foundation-relations">'+''.join(relations)+'</div></article>'
+            st.markdown('<div class="foundation-grid">'+''.join(card_html)+'</div>',unsafe_allow_html=True)
+            with st.expander('이론적 근거 및 선행연구 상세 보기',expanded=False):
+                st.markdown(foundations.strip())
+
+        with theory_container('research_section_theory_02',card=True):
+            research_section_header('02',"연구가설 및 연구모형","H1–H5의 예상 방향과 H6의 탐색적 간접경로를 나타냅니다.")
+            theory_path_diagram()
+
+        with theory_container('research_section_theory_03',card=True):
+            research_section_header('03',"측정변수 및 통제변수","")
+            st.markdown(research['measurement'])
+
+        with theory_container('research_section_theory_04',card=True):
+            research_section_header('04',"분석 방법 및 검증 절차","측정도구 검토에서 가설 검증까지 순차적으로 진행합니다.")
+            st.markdown(
+                '<div class="theory-method-flow">'
+                '<div><span>01</span><strong>측정 신뢰도</strong><small>문항 및 측정모형 점검</small></div>'
+                '<div><span>02</span><strong>기술통계 · 집단 비교</strong><small>관찰 평균 및 상관 확인</small></div>'
+                '<div><span>03</span><strong>다중회귀 OLS</strong><small>H1–H5 주 검증</small></div>'
+                '<div><span>04</span><strong>순서형 로짓</strong><small>대안 모형 및 가정 점검</small></div>'
+                '<div><span>05</span><strong>구조방정식 SEM</strong><small>구조경로 및 H6 탐색</small></div>'
+                '</div>',unsafe_allow_html=True,
             )
-        st.markdown('<div class="foundation-grid">'+''.join(card_html)+'</div>',unsafe_allow_html=True)
-        with st.expander('이론적 근거 및 선행연구 상세 보기',expanded=False):
-            st.markdown(foundations.strip())
+            st.markdown(research['methods'])
 
-        section_title('2. 연구가설 및 연구모형','H1–H5의 예상 방향과 H6의 탐색적 간접경로를 나타냅니다.')
-        theory_path_diagram()
-
-        section_title('3. 측정변수 및 통제변수')
-        st.markdown(research['measurement'])
-
-        section_title('4. 분석 방법 및 검증 절차','측정도구 검토에서 가설 검증까지 순차적으로 진행합니다.')
-        st.markdown(
-            '<div class="theory-method-flow">'
-            '<div><span>01</span><strong>측정 신뢰도</strong><small>문항 및 측정모형 점검</small></div>'
-            '<div><span>02</span><strong>기술통계 · 집단 비교</strong><small>관찰 평균 및 상관 확인</small></div>'
-            '<div><span>03</span><strong>다중회귀 OLS</strong><small>H1–H5 주 검증</small></div>'
-            '<div><span>04</span><strong>순서형 로짓</strong><small>대안 모형 및 가정 점검</small></div>'
-            '<div><span>05</span><strong>구조방정식 SEM</strong><small>구조경로 및 H6 탐색</small></div>'
-            '</div>',unsafe_allow_html=True,
-        )
-        st.markdown(research['methods'])
     else:
         st.markdown(research['design_text'])
 
 elif page=='reliability':
     page_intro('DATA ANALYSIS  /  01','측정 신뢰도 및 타당성','조직신뢰·의사소통 문항의 내적 일관성을 살펴보고, 두 구성개념을 구분할 수 있는지 점검합니다.')
-    c1,c2,c3=st.columns(3)
-    c1.metric('조직신뢰 · Cronbach α',f'{P["alpha_trust"]:.3f}')
-    c2.metric('의사소통 · Cronbach α',f'{P["alpha_comm"]:.3f}')
-    c3.metric('2요인 CFA · 요인상관',f'{SA["latent_correlation"]:.3f}')
-    panel('측정 타당성 · 판별타당성 미확보',
-          f'두 요인 간 상관이 {SA["latent_correlation"]:.3f}이며, 2요인 CFA의 CFI {SA["two_factor"]["cfi"]:.3f}, RMSEA {SA["two_factor"]["rmsea"]:.3f}는 측정모형의 한계를 보여줍니다.',
-          'amber','내적 일관성이 양호하더라도 조직신뢰와 의사소통을 통계적으로 명확하게 구분하기는 어렵습니다.')
-    section_title('문항별 5점 평균')
-    pairs=[('조직신뢰',['W23Q22D','W23Q24D','W23Q24F'],BLUE),
-           ('의사소통',['W23Q22F','W23Q24A','W23Q24B','W23Q24C'],TEAL)]
-    left,right=st.columns(2,gap='large')
-    for block,(title,codes,color) in zip((left,right),pairs):
-        with block:
-            st.markdown('**'+title+'**')
-            fig=go.Figure(go.Bar(x=[P['item_means'][k] for k in codes],
-               y=[items[k] for k in codes],orientation='h',marker_color=color,
-               text=[f'{P["item_means"][k]:.2f}' for k in codes],textposition='outside',
-               hovertemplate='%{y} · 평균 %{x:.3f}/5<extra></extra>'))
-            fig.update_yaxes(autorange='reversed')
-            fig.update_xaxes(range=[0,5.4],title='5점 평균')
-            plot(viz.frame(fig,height=325),key='reliability_'+title)
-    section_title('CFA 측정모형 적합도','5점 문항을 연속형으로 근사한 ML 적합 결과이며 기업 군집·순서형 분포는 보정하지 않았습니다.')
-    cfa=pd.DataFrame([{'모형':name,'CFI':d['cfi'],'TLI':d['tli'],'RMSEA':d['rmsea'],'SRMR':d['srmr']}
-       for name,d in [('1요인',SA['one_factor']),('2요인',SA['two_factor'])]])
-    st.dataframe(cfa.round(3),use_container_width=True,hide_index=True)
-    st.markdown('**측정 결과 해석** · 1요인·2요인 모형 모두 RMSEA가 높고, 2요인 모형의 적합도 개선이 확인되지 않았습니다.')
-    st.caption('후속 검토 | 조직신뢰와 의사소통을 구분해 해석하기 전에 문항 구조와 순서형·기업 군집 보정을 추가로 검토할 필요가 있습니다.')
+    with theory_container('research_section_reliability_01',card=True):
+        research_section_header('01',"측정 신뢰도 및 타당성 진단","내적 일관성과 판별타당성의 주요 결과를 구분합니다.")
+        c1,c2,c3=st.columns(3)
+        c1.metric('조직신뢰 · Cronbach α',f'{P["alpha_trust"]:.3f}')
+        c2.metric('의사소통 · Cronbach α',f'{P["alpha_comm"]:.3f}')
+        c3.metric('2요인 CFA · 요인상관',f'{SA["latent_correlation"]:.3f}')
+        panel('측정 타당성 · 판별타당성 미확보',
+              f'두 요인 간 상관이 {SA["latent_correlation"]:.3f}이며, 2요인 CFA의 CFI {SA["two_factor"]["cfi"]:.3f}, RMSEA {SA["two_factor"]["rmsea"]:.3f}는 측정모형의 한계를 보여줍니다.',
+              'amber','내적 일관성이 양호하더라도 조직신뢰와 의사소통을 통계적으로 명확하게 구분하기는 어렵습니다.')
+
+    with theory_container('research_section_reliability_02',card=True):
+        research_section_header('02',"문항별 5점 평균","")
+        pairs=[('조직신뢰',['W23Q22D','W23Q24D','W23Q24F'],BLUE),
+               ('의사소통',['W23Q22F','W23Q24A','W23Q24B','W23Q24C'],TEAL)]
+        left,right=st.columns(2,gap='large')
+        for block,(title,codes,color) in zip((left,right),pairs):
+            with block:
+                st.markdown('**'+title+'**')
+                fig=go.Figure(go.Bar(x=[P['item_means'][k] for k in codes],
+                   y=[items[k] for k in codes],orientation='h',marker_color=color,
+                   text=[f'{P["item_means"][k]:.2f}' for k in codes],textposition='outside',
+                   hovertemplate='%{y} · 평균 %{x:.3f}/5<extra></extra>'))
+                fig.update_yaxes(autorange='reversed')
+                fig.update_xaxes(range=[0,5.4],title='5점 평균')
+                plot(viz.frame(fig,height=325),key='reliability_'+title)
+
+    with theory_container('research_section_reliability_03',card=True):
+        research_section_header('03',"CFA 측정모형 적합도","5점 문항을 연속형으로 근사한 ML 적합 결과이며 기업 군집·순서형 분포는 보정하지 않았습니다.")
+        cfa=pd.DataFrame([{'모형':name,'CFI':d['cfi'],'TLI':d['tli'],'RMSEA':d['rmsea'],'SRMR':d['srmr']}
+           for name,d in [('1요인',SA['one_factor']),('2요인',SA['two_factor'])]])
+        st.dataframe(cfa.round(3),use_container_width=True,hide_index=True)
+        st.markdown('**측정 결과 해석** · 1요인·2요인 모형 모두 RMSEA가 높고, 2요인 모형의 적합도 개선이 확인되지 않았습니다.')
+        st.caption('후속 검토 | 조직신뢰와 의사소통을 구분해 해석하기 전에 문항 구조와 순서형·기업 군집 보정을 추가로 검토할 필요가 있습니다.')
 
 elif page=='descriptive':
     page_intro('DATA ANALYSIS  /  02','기술통계 및 집단 비교','사전 집계된 통계만 조회할 수 있으며, 개인 단위 필터·역추적 가능한 조합 조회는 제공하지 않습니다.')
-    cols=st.columns(4)
-    for (key,name),col in zip(metrics.items(),cols):
-        col.metric(name,f'{P["overall_means"][key]:.2f} / 5')
-    section_title('집단별 평균 비교','집단 분류와 관심 지표를 선택하면 공개 기준을 통과한 사전 집계값만 표시됩니다.')
-    left,right=st.columns(2)
-    dimension=left.selectbox('집단 분류',[k for k in labels if k in G['field'].unique()],format_func=lambda k:labels[k])
-    metric=right.selectbox('분석 지표',list(metrics),format_func=lambda k:metrics[k])
-    d=G[(G['field']==dimension)&(G['metric']==metric)].sort_values('group_mean')
-    if len(d):
-        fig=go.Figure(go.Bar(x=d['group_mean'],y=d['group_name'],orientation='h',
-            marker_color=viz.METRIC_COLORS[metric],text=d['group_mean'].map(lambda v:f'{v:.2f}'),
-            textposition='outside',customdata=d[['n','firms_in_group']].to_numpy(),
-            hovertemplate='%{y}<br>평균 %{x:.3f}점<br>%{customdata[0]:,}명 / 기업 %{customdata[1]}개<extra></extra>'))
-        fig.add_vline(x=float(P['overall_means'][metric]),line_dash='dash',line_color='#94A3B8',annotation_text='전체 평균')
-        fig.update_xaxes(range=[0,5.4],title='5점 척도 평균')
-        fig.update_yaxes(autorange='reversed')
-        plot(viz.frame(fig,height=max(350,42*len(d)+110)),key='group_means_'+dimension+'_'+metric)
-        show=d[['group_name','n','firms_in_group','group_mean']].rename(columns={'group_name':'집단','n':'응답자','firms_in_group':'기업 수','group_mean':'평균'})
-        st.dataframe(show,use_container_width=True,hide_index=True)
-        st.download_button('집계 결과표 CSV 저장',show.to_csv(index=False).encode('utf-8-sig'),
-                           file_name='hccp_group_summary.csv',mime='text/csv')
-    else:
-        st.info('해당 선택에서 공개 기준을 통과한 집계 행이 없습니다.')
-    st.caption('공개 기준: 집단별 100명 이상·15개 기업 이상 및 비교집단에도 동일 기준을 적용한 사전 집계. 각 값은 반올림된 평균이며 원자료를 제공하지 않습니다.')
-    section_title('핵심 변수의 관찰 상관','전체 공통표본의 단순 상관과 기업 단위 부트스트랩 95% 신뢰구간입니다.')
-    plot(viz.observed_associations(OBS),key='observed_correlations')
-    st.markdown('**집단 비교의 활용** · 집단별 평균과 변수 간 상관은 현장 진단의 탐색적 근거입니다. 평균 순위만으로 판단하지 않고 HR 의사결정 페이지의 집단 규모·신뢰구간·다중비교 기준을 함께 확인합니다.')
-    st.caption('집단 평균 차이를 개인의 특성이나 정책 시행 효과로 해석하지 않습니다.')
+    with theory_container('research_section_descriptive_01',card=True):
+        research_section_header('01',"핵심 변수의 전체 평균","공통표본의 5점 척도 관찰 평균입니다.")
+        cols=st.columns(4)
+        for (key,name),col in zip(metrics.items(),cols):
+            col.metric(name,f'{P["overall_means"][key]:.2f} / 5')
+
+    with theory_container('research_section_descriptive_02',card=True):
+        research_section_header('02',"집단별 평균 비교","집단 분류와 관심 지표를 선택하면 공개 기준을 통과한 사전 집계값만 표시됩니다.")
+        left,right=st.columns(2)
+        dimension=left.selectbox('집단 분류',[k for k in labels if k in G['field'].unique()],format_func=lambda k:labels[k])
+        metric=right.selectbox('분석 지표',list(metrics),format_func=lambda k:metrics[k])
+        d=G[(G['field']==dimension)&(G['metric']==metric)].sort_values('group_mean')
+        if len(d):
+            fig=go.Figure(go.Bar(x=d['group_mean'],y=d['group_name'],orientation='h',
+                marker_color=viz.METRIC_COLORS[metric],text=d['group_mean'].map(lambda v:f'{v:.2f}'),
+                textposition='outside',customdata=d[['n','firms_in_group']].to_numpy(),
+                hovertemplate='%{y}<br>평균 %{x:.3f}점<br>%{customdata[0]:,}명 / 기업 %{customdata[1]}개<extra></extra>'))
+            fig.add_vline(x=float(P['overall_means'][metric]),line_dash='dash',line_color='#94A3B8',annotation_text='전체 평균')
+            fig.update_xaxes(range=[0,5.4],title='5점 척도 평균')
+            fig.update_yaxes(autorange='reversed')
+            plot(viz.frame(fig,height=max(350,42*len(d)+110)),key='group_means_'+dimension+'_'+metric)
+            show=d[['group_name','n','firms_in_group','group_mean']].rename(columns={'group_name':'집단','n':'응답자','firms_in_group':'기업 수','group_mean':'평균'})
+            st.dataframe(show,use_container_width=True,hide_index=True)
+            st.download_button('집계 결과표 CSV 저장',show.to_csv(index=False).encode('utf-8-sig'),
+                               file_name='hccp_group_summary.csv',mime='text/csv')
+        else:
+            st.info('해당 선택에서 공개 기준을 통과한 집계 행이 없습니다.')
+        st.caption('공개 기준: 집단별 100명 이상·15개 기업 이상 및 비교집단에도 동일 기준을 적용한 사전 집계. 각 값은 반올림된 평균이며 원자료를 제공하지 않습니다.')
+
+    with theory_container('research_section_descriptive_03',card=True):
+        research_section_header('03',"핵심 변수의 관찰 상관","전체 공통표본의 단순 상관과 기업 단위 부트스트랩 95% 신뢰구간입니다.")
+        plot(viz.observed_associations(OBS),key='observed_correlations')
+        st.markdown('**집단 비교의 활용** · 집단별 평균과 변수 간 상관은 현장 진단의 탐색적 근거입니다. 평균 순위만으로 판단하지 않고 HR 의사결정 페이지의 집단 규모·신뢰구간·다중비교 기준을 함께 확인합니다.')
+        st.caption('집단 평균 차이를 개인의 특성이나 정책 시행 효과로 해석하지 않습니다.')
 
 elif page=='ols':
     page_intro('DATA ANALYSIS  /  03','다중회귀분석 · H1–H5','개인·직무·기업 특성을 통제하고 기업 단위 군집강건 표준오차를 적용한 다중회귀분석 결과입니다.')
-    c1,c2,c3=st.columns(3)
-    c1.metric('표본',f'{P["analysis_rows"]:,}명')
-    c2.metric('기업 단위 군집',f'{P["analysis_firms"]:,}개')
-    c3.metric('핵심 연구가설','H1–H5')
-    section_title('가설별 회귀계수 및 신뢰구간','B는 다른 변수와 공변량을 통제한 조건부 관련성입니다.')
-    st.dataframe(ols_table(),hide_index=True,use_container_width=True)
-    st.markdown('**분석할 종속변수**')
-    dv=st.radio('종속변수 선택',['직무만족','이직 고려 의향'],horizontal=True,label_visibility='collapsed')
-    model='직무만족 전체 통제' if dv=='직무만족' else '전체 통제'
-    plot(viz.regression_forest(CO.loc[CO['model']==model],{**metrics,**items}),key='ols_forest_'+model)
-    st.caption(f'{model} 모형의 R² = {S["models"][model]["r2"]:.3f}. OLS 신뢰구간은 기업 단위 군집강건 표준오차에 기반합니다.')
-    section_title('의사소통 계수 변화','모형에 추가되는 설명변수·통제변수에 따라 부호가 달라질 수 있습니다.')
-    plot(viz.regression_change(CO),key='ols_coefficient_change')
-    panel('회귀분석 결과 해석',
-          'OLS에서 H1·H2·H3·H5는 가설의 예상 방향과 일치했으며, H4는 예상과 반대로 양(+)의 관련성을 보였습니다.',
-          'teal','신뢰·만족 관련 지표를 우선 모니터링하고, 소통의 방향성은 조직 맥락과 함께 검토합니다.')
-    section_title('분석 가정 및 해석상의 한계','확인된 사항과 추가 검증이 필요한 항목을 구분하여 분석 결과의 해석 범위를 제시합니다.')
-    scale_corr=V['sem_feasibility']['trust_comm_scale_corr']
-    st.dataframe(pd.DataFrame([
-        {'점검 항목':'기업 내 응답 상관·이분산','확인 상태':'추정 시 반영','확인 근거':f'{P["analysis_firms"]}개 기업 단위 군집강건 표준오차 적용','해석 및 후속 점검':'기업 내 상관과 이분산을 고려한 추론. 선형성이나 교란 문제를 해결하지는 않음'},
-        {'점검 항목':'설명변수 중첩·다중공선성','확인 상태':'부분 점검','확인 근거':f'신뢰·소통 합성척도 상관 r={scale_corr:.3f}; 전체 VIF 미확인','해석 및 후속 점검':'개별 계수의 크기·부호에 주의. 원자료로 VIF 및 설계행렬 점검 필요'},
-        {'점검 항목':'선형성·잔차 분포·영향점','확인 상태':'미확인','확인 근거':'정식 잔차 진단 결과가 저장되어 있지 않음','해석 및 후속 점검':'잔차-적합값, 잔차 분포 및 영향점 진단 필요'},
-        {'점검 항목':'5점 응답의 순서척도 특성','확인 상태':'대안 모형 비교','확인 근거':'5점 서열 응답을 연속형으로 근사하여 분석','해석 및 후속 점검':'대안 모형의 비교 결과와 가정 검토는 04 순서형 로짓에서 확인'},
-        {'점검 항목':'모형 사양 민감성','확인 상태':'부분 점검','확인 근거':'H4 단순·전체 통제 계수 부호 변화','해석 및 후속 점검':'통제변수 구성에 따른 계수 변화에 주의; 측정구조 비교는 05 SEM에서 확인'},
-        {'점검 항목':'교란·시간적 선후·조사 가중치','확인 상태':'해석 제한','확인 근거':'관측된 공변량 통제; 2023년 단면자료, 가중치 미적용','해석 및 후속 점검':'미관측 교란과 대표성에 주의. 반복 조사 및 추가 검증 필요'},
-    ]),hide_index=True,use_container_width=True)
-    st.caption('검증 범위 | 군집강건 표준오차는 추론 방법이며 가정 검정 결과가 아닙니다. 위 표는 기존 점검 결과를 정리한 것으로, 추가 통계 진단을 수행한 것은 아닙니다.')
+    with theory_container('research_section_ols_01',card=True):
+        research_section_header('01',"가설별 회귀계수 및 신뢰구간","B는 다른 변수와 공변량을 통제한 조건부 관련성입니다.")
+        c1,c2,c3=st.columns(3)
+        c1.metric('표본',f'{P["analysis_rows"]:,}명')
+        c2.metric('기업 단위 군집',f'{P["analysis_firms"]:,}개')
+        c3.metric('핵심 연구가설','H1–H5')
+        st.dataframe(ols_table(),hide_index=True,use_container_width=True)
+        st.markdown('**분석할 종속변수**')
+        dv=st.radio('종속변수 선택',['직무만족','이직 고려 의향'],horizontal=True,label_visibility='collapsed')
+        model='직무만족 전체 통제' if dv=='직무만족' else '전체 통제'
+        plot(viz.regression_forest(CO.loc[CO['model']==model],{**metrics,**items}),key='ols_forest_'+model)
+        st.caption(f'{model} 모형의 R² = {S["models"][model]["r2"]:.3f}. OLS 신뢰구간은 기업 단위 군집강건 표준오차에 기반합니다.')
+
+    with theory_container('research_section_ols_02',card=True):
+        research_section_header('02',"의사소통 계수 변화","모형에 추가되는 설명변수·통제변수에 따라 부호가 달라질 수 있습니다.")
+        plot(viz.regression_change(CO),key='ols_coefficient_change')
+        panel('회귀분석 결과 해석',
+              'OLS에서 H1·H2·H3·H5는 가설의 예상 방향과 일치했으며, H4는 예상과 반대로 양(+)의 관련성을 보였습니다.',
+              'teal','신뢰·만족 관련 지표를 우선 모니터링하고, 소통의 방향성은 조직 맥락과 함께 검토합니다.')
+
+    with theory_container('research_section_ols_03',card=True):
+        research_section_header('03',"분석 가정 및 해석상의 한계","확인된 사항과 추가 검증이 필요한 항목을 구분하여 분석 결과의 해석 범위를 제시합니다.")
+        scale_corr=V['sem_feasibility']['trust_comm_scale_corr']
+        st.dataframe(pd.DataFrame([
+            {'점검 항목':'기업 내 응답 상관·이분산','확인 상태':'추정 시 반영','확인 근거':f'{P["analysis_firms"]}개 기업 단위 군집강건 표준오차 적용','해석 및 후속 점검':'기업 내 상관과 이분산을 고려한 추론. 선형성이나 교란 문제를 해결하지는 않음'},
+            {'점검 항목':'설명변수 중첩·다중공선성','확인 상태':'부분 점검','확인 근거':f'신뢰·소통 합성척도 상관 r={scale_corr:.3f}; 전체 VIF 미확인','해석 및 후속 점검':'개별 계수의 크기·부호에 주의. 원자료로 VIF 및 설계행렬 점검 필요'},
+            {'점검 항목':'선형성·잔차 분포·영향점','확인 상태':'미확인','확인 근거':'정식 잔차 진단 결과가 저장되어 있지 않음','해석 및 후속 점검':'잔차-적합값, 잔차 분포 및 영향점 진단 필요'},
+            {'점검 항목':'5점 응답의 순서척도 특성','확인 상태':'대안 모형 비교','확인 근거':'5점 서열 응답을 연속형으로 근사하여 분석','해석 및 후속 점검':'대안 모형의 비교 결과와 가정 검토는 04 순서형 로짓에서 확인'},
+            {'점검 항목':'모형 사양 민감성','확인 상태':'부분 점검','확인 근거':'H4 단순·전체 통제 계수 부호 변화','해석 및 후속 점검':'통제변수 구성에 따른 계수 변화에 주의; 측정구조 비교는 05 SEM에서 확인'},
+            {'점검 항목':'교란·시간적 선후·조사 가중치','확인 상태':'해석 제한','확인 근거':'관측된 공변량 통제; 2023년 단면자료, 가중치 미적용','해석 및 후속 점검':'미관측 교란과 대표성에 주의. 반복 조사 및 추가 검증 필요'},
+        ]),hide_index=True,use_container_width=True)
+        st.caption('검증 범위 | 군집강건 표준오차는 추론 방법이며 가정 검정 결과가 아닙니다. 위 표는 기존 점검 결과를 정리한 것으로, 추가 통계 진단을 수행한 것은 아닙니다.')
 
 elif page=='ordinal':
     page_intro('DATA ANALYSIS  /  04','순서형 로짓 · 강건성 점검','5점 서열 응답을 고려하여 OLS와 비교하고, 비례오즈 가정 검토 결과를 함께 제시합니다.')
-    section_title('이직 고려 의향 · 순서형 로짓','OR>1은 더 높은 이직 고려 응답범주의 누적 오즈와 양(+)의 관련성입니다.')
-    table=pd.DataFrame([{'요인':e['label'],'OLS B':fmt(e['ols_coef']),
-      '순서형 로짓 B':fmt(e['ordinal_coef']),'OR':round(e['odds_ratio'],3),
-      'OR 95% CI':f'[{e["or_ci_low"]:.3f}, {e["or_ci_high"]:.3f}]'} for e in OR['findings']])
-    st.dataframe(table,hide_index=True,use_container_width=True)
-    fig=go.Figure(go.Scatter(x=[e['odds_ratio'] for e in OR['findings']],
-        y=[e['label'] for e in OR['findings']],mode='markers',marker=dict(size=12,color=BLUE),
-        error_x=dict(type='data',symmetric=False,
-          array=[e['or_ci_high']-e['odds_ratio'] for e in OR['findings']],
-          arrayminus=[e['odds_ratio']-e['or_ci_low'] for e in OR['findings']],color='#94A3B8'),
-        hovertemplate='%{y}<br>누적 오즈비 %{x:.3f}<extra></extra>'))
-    fig.add_vline(x=1,line_dash='dash',line_color='#94A3B8')
-    fig.update_xaxes(title='누적 오즈비 OR (95% 군집강건 CI)')
-    plot(viz.frame(fig,height=310),key='ordinal_or_forest')
-    section_title('직무만족 · 순서형 로짓','직무만족을 결과변수로 하는 보완적 결과로, 비례오즈 가정에 대한 별도 검정은 수행되지 않았습니다.')
-    st.dataframe(pd.DataFrame([{'요인':e['label'],'OLS B':fmt(e['ols_coef']),
-       '순서형 로짓 B':fmt(e['ordinal_coef']),'OR':round(e['odds_ratio'],3),
-       'OR 95% CI':f'[{e["or_ci_low"]:.3f}, {e["or_ci_high"]:.3f}]'} for e in OS['findings']]),hide_index=True,use_container_width=True)
-    section_title('이직 고려 의향 모형의 비례오즈 가정 검토','조직신뢰·의사소통·직무만족의 응답 경계별 계수 동일성을 Wald 검정으로 점검했습니다. 전체 변수에 대한 검정은 아닙니다.')
-    w=OR['threshold_analysis']['focus_slope_equality_wald']
-    diag=pd.DataFrame([{'변수':row['label'],'Wald χ²':round(row['wald_chi2'],3),'df':row['df'],
-      'p':'<0.001' if row['p']<.001 else f'{row["p"]:.3f}',
-      '해석':'경계별 동일성 위배 가능성' if row['p']<.05 else '위배 근거가 확인되지 않음'} for row in w['per_factor']])
-    st.dataframe(diag,hide_index=True,use_container_width=True)
-    st.markdown('**강건성 점검 결과** · 순서형 로짓에서도 H1–H5의 OLS 계수 방향이 일관되게 유지되었습니다. 다만 이직 고려 의향 모형의 비례오즈 가정에서 일부 위배 신호가 확인되었으므로, 결과의 방향적 일관성은 확인되었으나 모형의 강건성이 완전히 확보되었다고 단정할 수 없습니다.')
-    st.caption('해석 유의사항 | 이직 고려 의향 모형에서 직무만족의 경계별 계수 동일성 위배 신호가 있으며, 의사소통 오즈비의 95% 신뢰구간 하한은 1에 가깝습니다. 직무만족을 결과변수로 하는 모형의 비례오즈 가정은 별도로 검증하지 않았습니다.')
+    with theory_container('research_section_ordinal_01',card=True):
+        research_section_header('01',"이직 고려 의향 · 순서형 로짓","OR>1은 더 높은 이직 고려 응답범주의 누적 오즈와 양(+)의 관련성입니다.")
+        table=pd.DataFrame([{'요인':e['label'],'OLS B':fmt(e['ols_coef']),
+          '순서형 로짓 B':fmt(e['ordinal_coef']),'OR':round(e['odds_ratio'],3),
+          'OR 95% CI':f'[{e["or_ci_low"]:.3f}, {e["or_ci_high"]:.3f}]'} for e in OR['findings']])
+        st.dataframe(table,hide_index=True,use_container_width=True)
+        fig=go.Figure(go.Scatter(x=[e['odds_ratio'] for e in OR['findings']],
+            y=[e['label'] for e in OR['findings']],mode='markers',marker=dict(size=12,color=BLUE),
+            error_x=dict(type='data',symmetric=False,
+              array=[e['or_ci_high']-e['odds_ratio'] for e in OR['findings']],
+              arrayminus=[e['odds_ratio']-e['or_ci_low'] for e in OR['findings']],color='#94A3B8'),
+            hovertemplate='%{y}<br>누적 오즈비 %{x:.3f}<extra></extra>'))
+        fig.add_vline(x=1,line_dash='dash',line_color='#94A3B8')
+        fig.update_xaxes(title='누적 오즈비 OR (95% 군집강건 CI)')
+        plot(viz.frame(fig,height=310),key='ordinal_or_forest')
+
+    with theory_container('research_section_ordinal_02',card=True):
+        research_section_header('02',"직무만족 · 순서형 로짓","직무만족을 결과변수로 하는 보완적 결과로, 비례오즈 가정에 대한 별도 검정은 수행되지 않았습니다.")
+        st.dataframe(pd.DataFrame([{'요인':e['label'],'OLS B':fmt(e['ols_coef']),
+           '순서형 로짓 B':fmt(e['ordinal_coef']),'OR':round(e['odds_ratio'],3),
+           'OR 95% CI':f'[{e["or_ci_low"]:.3f}, {e["or_ci_high"]:.3f}]'} for e in OS['findings']]),hide_index=True,use_container_width=True)
+
+    with theory_container('research_section_ordinal_03',card=True):
+        research_section_header('03',"이직 고려 의향 모형의 비례오즈 가정 검토","조직신뢰·의사소통·직무만족의 응답 경계별 계수 동일성을 Wald 검정으로 점검했습니다. 전체 변수에 대한 검정은 아닙니다.")
+        w=OR['threshold_analysis']['focus_slope_equality_wald']
+        diag=pd.DataFrame([{'변수':row['label'],'Wald χ²':round(row['wald_chi2'],3),'df':row['df'],
+          'p':'<0.001' if row['p']<.001 else f'{row["p"]:.3f}',
+          '해석':'경계별 동일성 위배 가능성' if row['p']<.05 else '위배 근거가 확인되지 않음'} for row in w['per_factor']])
+        st.dataframe(diag,hide_index=True,use_container_width=True)
+        st.markdown('**강건성 점검 결과** · 순서형 로짓에서도 H1–H5의 OLS 계수 방향이 일관되게 유지되었습니다. 다만 이직 고려 의향 모형의 비례오즈 가정에서 일부 위배 신호가 확인되었으므로, 결과의 방향적 일관성은 확인되었으나 모형의 강건성이 완전히 확보되었다고 단정할 수 없습니다.')
+        st.caption('해석 유의사항 | 이직 고려 의향 모형에서 직무만족의 경계별 계수 동일성 위배 신호가 있으며, 의사소통 오즈비의 95% 신뢰구간 하한은 1에 가깝습니다. 직무만족을 결과변수로 하는 모형의 비례오즈 가정은 별도로 검증하지 않았습니다.')
 
 elif page=='sem':
     page_intro('DATA ANALYSIS  /  05','구조방정식 · SEM','H1–H5의 보완적 구조경로와 탐색적 간접경로 H6를 실제 저장된 추정값으로 보여줍니다.')
-    section_title('SEM 모형 적합도 및 해석 범위','탐색적 혼합형 SEM의 적합도를 여러 지표로 종합하여 판단합니다.')
-    fit=SEM['fit']; cols=st.columns(4,gap='medium')
-    for col,k in zip(cols,['cfi','tli','rmsea','srmr']):
-        col.metric(k.upper(),f'{fit[k]:.3f}')
-    a,b=st.columns(2,gap='medium')
-    with a:
-        panel('모형 적합도 · 일부 한계',
-              f'CFI {fit["cfi"]:.3f}, TLI {fit["tli"]:.3f}, SRMR {fit["srmr"]:.3f}는 비교적 양호하나, RMSEA {fit["rmsea"]:.3f}은 일반적 참고 수준(0.08)을 초과합니다.',
-              'amber','참고 수준은 절대적인 합격 기준이 아닙니다. 전체 모형의 적합성이 충분히 확보됐다고 단정하지 않습니다.')
-    with b:
-        panel('측정 타당성 · 해석 주의',
-              f'2요인 CFA의 요인상관은 {SA["latent_correlation"]:.3f}이며, 혼합형 SEM의 조직신뢰·의사소통 상관도 {SEM_EFFECTS["trust_comm_latent_observed_corr"]["estimate"]:.3f}입니다.',
-              'neutral','관측 합성지표를 사용해도 판별타당성 문제가 해결되는 것은 아닙니다. H2·H4 등 개별 경로의 해석에 주의합니다.')
-    st.caption('추정 범위 | 5점 응답을 연속형으로 근사한 최대우도 추정입니다. 기업 단위 부트스트랩은 경로계수의 신뢰구간에 반영되며, 모형 적합도 지표 자체는 기업 군집 보정되지 않았습니다.')
-    section_title('SEM 구조모형 및 경로도','조직신뢰는 3문항 잠재요인, 의사소통은 4문항 평균 관측 합성지표로 처리했습니다. 탐색적 구조경로이며 인과관계를 뜻하지 않습니다.')
-    plot(viz.sem_fitted_paths(SEM),key='sem_structure')
-    section_title('가설별 경로계수 및 신뢰구간','기업 단위 부트스트랩 95% 신뢰구간을 제시합니다.')
-    st.dataframe(pd.DataFrame([{'가설':h['id'],'경로':h['path'],'예상':h['direction'],
-       'SEM B':fmt(SEM_EFFECTS[h['id']]['estimate']),
-       '95% CI':f'[{fmt(SEM_EFFECTS[h["id"]]["ci_low"])}, {fmt(SEM_EFFECTS[h["id"]]["ci_high"])}]',
-       '판정':SEM_EFFECTS[h['id']]['classification']} for h in SEM_HYPOTHESES]),
-       hide_index=True,use_container_width=True)
-    section_title('직접·간접·전체 경로의 구분','H6는 모형에서 추정한 통계적 간접경로이며 시간적 매개효과를 입증하지 않습니다.')
-    paths=[('직접경로 H3',SEM_EFFECTS['H3']),('탐색적 간접 H6',SEM_EFFECTS['H6']),('전체 경로 합',SEM_EFFECTS['trust_total'])]
-    st.dataframe(pd.DataFrame([{'구분':name,'SEM B':fmt(e['estimate']),
-        '기업 부트스트랩 95% CI':f'[{fmt(e["ci_low"])}, {fmt(e["ci_high"])}]'}
-        for name,e in paths]),hide_index=True,use_container_width=True)
-    st.caption('각 CI는 기업 500회 재표집 결과에서 별도로 계산한 값입니다. 신뢰구간들을 단순히 더한 값이 아닙니다.')
-    st.markdown(f'**간접경로 해석** · H6의 통계적 간접경로는 {fmt(SEM_EFFECTS["H6"]["estimate"])}이며 기업 부트스트랩 95% 신뢰구간에 0을 포함하지 않습니다. 탐색적 관련성으로 해석합니다.')
-    st.caption('후속 연구 | 반복 조사에서 조직신뢰와 직무만족, 이후 이직 고려 의향을 측정하여 시간적 선후를 검토합니다.')
+    with theory_container('research_section_sem_01',card=True):
+        research_section_header('01',"SEM 모형 적합도 및 해석 범위","탐색적 혼합형 SEM의 적합도를 여러 지표로 종합하여 판단합니다.")
+        fit=SEM['fit']; cols=st.columns(4,gap='medium')
+        for col,k in zip(cols,['cfi','tli','rmsea','srmr']):
+            col.metric(k.upper(),f'{fit[k]:.3f}')
+        a,b=st.columns(2,gap='medium')
+        with a:
+            panel('모형 적합도 · 일부 한계',
+                  f'CFI {fit["cfi"]:.3f}, TLI {fit["tli"]:.3f}, SRMR {fit["srmr"]:.3f}는 비교적 양호하나, RMSEA {fit["rmsea"]:.3f}은 일반적 참고 수준(0.08)을 초과합니다.',
+                  'amber','참고 수준은 절대적인 합격 기준이 아닙니다. 전체 모형의 적합성이 충분히 확보됐다고 단정하지 않습니다.')
+        with b:
+            panel('측정 타당성 · 해석 주의',
+                  f'2요인 CFA의 요인상관은 {SA["latent_correlation"]:.3f}이며, 혼합형 SEM의 조직신뢰·의사소통 상관도 {SEM_EFFECTS["trust_comm_latent_observed_corr"]["estimate"]:.3f}입니다.',
+                  'neutral','관측 합성지표를 사용해도 판별타당성 문제가 해결되는 것은 아닙니다. H2·H4 등 개별 경로의 해석에 주의합니다.')
+        st.caption('추정 범위 | 5점 응답을 연속형으로 근사한 최대우도 추정입니다. 기업 단위 부트스트랩은 경로계수의 신뢰구간에 반영되며, 모형 적합도 지표 자체는 기업 군집 보정되지 않았습니다.')
+
+    with theory_container('research_section_sem_02',card=True):
+        research_section_header('02',"SEM 구조모형 및 경로도","조직신뢰는 3문항 잠재요인, 의사소통은 4문항 평균 관측 합성지표로 처리했습니다. 탐색적 구조경로이며 인과관계를 뜻하지 않습니다.")
+        plot(viz.sem_fitted_paths(SEM),key='sem_structure')
+
+    with theory_container('research_section_sem_03',card=True):
+        research_section_header('03',"가설별 경로계수 및 신뢰구간","기업 단위 부트스트랩 95% 신뢰구간을 제시합니다.")
+        st.dataframe(pd.DataFrame([{'가설':h['id'],'경로':h['path'],'예상':h['direction'],
+           'SEM B':fmt(SEM_EFFECTS[h['id']]['estimate']),
+           '95% CI':f'[{fmt(SEM_EFFECTS[h["id"]]["ci_low"])}, {fmt(SEM_EFFECTS[h["id"]]["ci_high"])}]',
+           '판정':SEM_EFFECTS[h['id']]['classification']} for h in SEM_HYPOTHESES]),
+           hide_index=True,use_container_width=True)
+
+    with theory_container('research_section_sem_04',card=True):
+        research_section_header('04',"직접·간접·전체 경로의 구분","H6는 모형에서 추정한 통계적 간접경로이며 시간적 매개효과를 입증하지 않습니다.")
+        paths=[('직접경로 H3',SEM_EFFECTS['H3']),('탐색적 간접 H6',SEM_EFFECTS['H6']),('전체 경로 합',SEM_EFFECTS['trust_total'])]
+        st.dataframe(pd.DataFrame([{'구분':name,'SEM B':fmt(e['estimate']),
+            '기업 부트스트랩 95% CI':f'[{fmt(e["ci_low"])}, {fmt(e["ci_high"])}]'}
+            for name,e in paths]),hide_index=True,use_container_width=True)
+        st.caption('각 CI는 기업 500회 재표집 결과에서 별도로 계산한 값입니다. 신뢰구간들을 단순히 더한 값이 아닙니다.')
+        st.markdown(f'**간접경로 해석** · H6의 통계적 간접경로는 {fmt(SEM_EFFECTS["H6"]["estimate"])}이며 기업 부트스트랩 95% 신뢰구간에 0을 포함하지 않습니다. 탐색적 관련성으로 해석합니다.')
+        st.caption('후속 연구 | 반복 조사에서 조직신뢰와 직무만족, 이후 이직 고려 의향을 측정하여 시간적 선후를 검토합니다.')
 
 elif page=='decision':
     page_intro('HR DECISION SUPPORT  /  ACTION','HR 의사결정 지원','HR 담당자, 현업 리더 및 경영진이 분석 결과를 확인하고, 실제 개선 조치를 시행하기 전에 필요한 검증 절차를 검토할 수 있습니다.')

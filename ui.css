@@ -1110,3 +1110,116 @@ h3{font-size:1.08rem!important}
   .st-key-decision_sensitivity [data-testid="stHorizontalBlock"] { flex-direction:column!important;align-items:stretch!important; }
   .st-key-decision_sensitivity [data-testid="stHorizontalBlock"] > * { width:100%!important;flex:1 1 auto!important; }
 }
+
+/* Research and analysis pages: same section hierarchy as HR decision 01–05. */
+[class*="st-key-research_section_"] {
+  box-sizing: border-box;
+  container-type: inline-size;
+  container-name: research-section;
+  background: #FFF;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+  min-width: 0;
+}
+[class*="st-key-research_section_"] .decision-section-head > div { min-width: 0; }
+[class*="st-key-research_section_"] .decision-section-head h2 { overflow-wrap: break-word; }
+[class*="st-key-research_section_"] .section-heading {
+  font-size: 15px;
+  border-left: 0;
+  padding-left: 0;
+  margin: 4px 0 4px;
+}
+[class*="st-key-research_section_"] [data-testid="stMarkdownContainer"] > p,
+[class*="st-key-research_section_"] [data-testid="stMarkdownContainer"] li {
+  font-size: 14px;
+  line-height: 1.75;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+[class*="st-key-research_section_"] [data-testid="stMetric"] {
+  min-height: 94px;
+  padding: 14px 16px;
+  border-radius: 10px;
+  background: #F8FAFC;
+  box-shadow: none;
+}
+[class*="st-key-research_section_"] [data-testid="stMetricLabel"] p {
+  font-size: 13px !important;
+  font-weight: 700 !important;
+}
+[class*="st-key-research_section_"] [data-testid="stMetricValue"] {
+  font-size: 1.65rem;
+}
+[class*="st-key-research_section_"] [data-testid="stPlotlyChart"] {
+  box-shadow: none;
+  border-radius: 10px;
+}
+[class*="st-key-research_section_"] .decision-panel {
+  min-height: 0;
+  padding: 15px 17px;
+  margin: 0;
+  border-radius: 10px;
+  box-shadow: none;
+}
+[class*="st-key-research_section_"] .decision-panel .panel-title {
+  font-size: 15px;
+  line-height: 1.55;
+}
+[class*="st-key-research_section_"] .decision-panel .panel-body {
+  font-size: 14px;
+  line-height: 1.75;
+}
+[class*="st-key-research_section_"] .decision-panel .panel-foot {
+  font-size: 12px;
+  line-height: 1.7;
+}
+.st-key-research_section_overview_02 [data-testid="stHorizontalBlock"],
+.st-key-research_section_sem_01 [data-testid="stHorizontalBlock"] {
+  align-items: stretch !important;
+}
+.st-key-research_section_overview_03 .step-list.overview-flow > div {
+  background: #F8FAFC;
+  box-shadow: none;
+  border-radius: 10px;
+}
+.st-key-theory_question {
+  box-shadow: none;
+  background: #FFF;
+  border-radius: 14px;
+}
+.st-key-research_section_theory_01 .foundation-grid {
+  grid-template-columns: repeat(3,minmax(0,1fr));
+  gap: 0;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  overflow: hidden;
+}
+.st-key-research_section_theory_01 .foundation-card {
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 16px 17px;
+}
+.st-key-research_section_theory_01 .foundation-card + .foundation-card {
+  border-left: 1px solid var(--line);
+}
+.st-key-research_section_theory_04 .theory-method-flow > div {
+  background: #F8FAFC;
+  box-shadow: none;
+  border-radius: 10px;
+}
+@container research-section (max-width: 740px) {
+  .st-key-research_section_theory_01 .foundation-grid {
+    grid-template-columns: 1fr;
+  }
+  .st-key-research_section_theory_01 .foundation-card + .foundation-card {
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
+}
+@media(max-width:800px) {
+  [class*="st-key-research_section_"] { padding: 16px; }
+}
