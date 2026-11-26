@@ -376,12 +376,14 @@ h3{font-size:1.08rem!important}
   container-type: inline-size;
   container-name: app-header;
   background: #FFF;
-  border: 1px solid var(--line);
-  border-radius: 11px;
-  padding: 12px 20px;
-  min-height: 76px;
-  margin-bottom: 19px;
-  box-shadow: var(--shadow);
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  border-radius: 4px 4px 0 0;
+  padding: 11px 14px;
+  min-height: 56px;
+  margin-bottom: 16px;
+  box-shadow: none;
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 .st-key-app_header [data-testid="stHorizontalBlock"] {
   align-items: center !important;
@@ -403,10 +405,10 @@ h3{font-size:1.08rem!important}
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  min-height: 48px;
+  min-height: 32px;
   padding: 0;
   margin: 0;
-  gap: 16px;
+  gap: 10px;
   font-size: 13px;
   font-size: clamp(9px, calc(2.2cqw - 7px), 13px);
   flex-wrap: nowrap;
@@ -417,10 +419,10 @@ h3{font-size:1.08rem!important}
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 40px;
-  width: 40px;
-  height: 40px;
-  font-size: 11px;
+  flex: 0 0 30px;
+  width: 30px;
+  height: 30px;
+  font-size: 10px;
   padding: 0;
 }
 .st-key-app_header .app-topbar strong,
@@ -431,13 +433,24 @@ h3{font-size:1.08rem!important}
   white-space: nowrap;
 }
 .st-key-app_header .app-topbar strong {
-  font-size: 17px;
-  font-size: clamp(11px, calc(2.65cqw - 7px), 17px);
+  font-size: 14px;
+  font-size: clamp(11px, calc(2.65cqw - 7px), 14px);
+  font-weight: 650;
   flex-shrink: 0;
 }
 .st-key-app_header .topbar-divider {
   flex-shrink: 0;
-  height: 22px;
+  width: 6px;
+  height: 6px;
+  background: transparent;
+  border-top: 1.5px solid #94A3B8;
+  border-right: 1.5px solid #94A3B8;
+  transform: rotate(45deg);
+  margin: 0 3px 0 0;
+}
+.st-key-app_header .topbar-page {
+  color: var(--text);
+  font-weight: 600;
 }
 .st-key-app_header .topbar-version {
   display: inline-block;
@@ -455,14 +468,14 @@ h3{font-size:1.08rem!important}
 .st-key-research_reference_info button {
   box-sizing: border-box;
   border: 1px solid #DBEAFE !important;
-  border-radius: 8px !important;
+  border-radius: 6px !important;
   background: #EFF6FF !important;
   box-shadow: none !important;
   color: #1D4ED8 !important;
-  height: 40px !important;
-  min-height: 40px !important;
-  padding: 0 13px !important;
-  gap: 7px !important;
+  height: 32px !important;
+  min-height: 32px !important;
+  padding: 0 10px !important;
+  gap: 5px !important;
   align-items: center !important;
   justify-content: center !important;
   white-space: nowrap !important;
@@ -486,7 +499,7 @@ h3{font-size:1.08rem!important}
 }
 .st-key-research_reference_link [data-testid="stIconMaterial"],
 .st-key-research_reference_info [data-testid="stIconMaterial"] {
-  font-size: 18px !important;
+  font-size: 16px !important;
   line-height: 1 !important;
   flex-shrink: 0;
 }
@@ -502,12 +515,12 @@ h3{font-size:1.08rem!important}
   outline-offset: 2px;
 }
 @media(max-width:800px) {
-  .st-key-app_header { padding: 12px; }
+  .st-key-app_header { padding: 11px 10px; }
 }
 @container app-header (max-width: 720px) {
   .st-key-app_header [data-testid="stHorizontalBlock"] { gap: 8px !important; }
   .st-key-app_header .app-topbar { gap: 8px; }
-  .st-key-app_header .app-topbar-mark { flex-basis: 32px; width: 32px; height: 32px; font-size: 9px; }
+  .st-key-app_header .app-topbar-mark { flex-basis: 30px; width: 30px; height: 30px; font-size: 9px; }
   .st-key-research_reference_link [data-testid="stButton"] button,
   .st-key-research_reference_info button { padding: 0 10px !important; }
 }
