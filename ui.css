@@ -688,3 +688,109 @@ h3{font-size:1.08rem!important}
   line-height: 1.6;
   word-break: keep-all;
 }
+
+/* HR decision page: five distinct stages, with readable subheadings. */
+[class*="st-key-decision_group_"] {
+  box-sizing: border-box;
+  background: #FFF;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 22px 24px;
+  margin-bottom: 12px;
+  box-shadow: var(--shadow);
+}
+.decision-section-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  border-bottom: 1px solid var(--line);
+}
+.decision-section-number {
+  flex: 0 0 40px;
+  width: 40px;
+  height: 40px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bluewash);
+  color: #1D4ED8;
+  border-radius: 10px;
+  font-size: 16px;
+  font-weight: 800;
+}
+.decision-section-head h2 {
+  font-size: 19px !important;
+  line-height: 1.45;
+  letter-spacing: -.025em;
+  margin: 0 0 4px !important;
+  font-weight: 780;
+}
+.decision-section-head p {
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--muted) !important;
+  margin: 0 !important;
+  word-break: keep-all;
+}
+[class*="st-key-decision_group_"] .section-heading {
+  font-size: 15px;
+  border-left: 0;
+  padding-left: 0;
+  margin: 14px 0 4px;
+}
+[class*="st-key-decision_group_"] .decision-panel {
+  min-height: 0;
+}
+[class*="st-key-decision_group_"] .decision-panel .panel-title {
+  font-size: 15px;
+}
+[class*="st-key-decision_group_"] .decision-panel .panel-body {
+  font-size: 14px;
+  line-height: 1.8;
+}
+[class*="st-key-decision_group_"] .decision-panel .panel-foot {
+  font-size: 12px;
+}
+.st-key-decision_group_03 .step-list.horizontal > div {
+  grid-template-columns: 42px minmax(0,1fr);
+  padding: 16px;
+  row-gap: 5px;
+}
+.st-key-decision_group_03 .step-list.horizontal span {
+  width: 38px;
+  height: 38px;
+  font-size: 14px;
+}
+.st-key-decision_group_03 .step-list.horizontal strong { font-size: 15px; }
+.st-key-decision_group_03 .step-list.horizontal small { font-size: 13px; word-break: keep-all; }
+.decision-limits-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(min(100%,290px),1fr));
+  gap: 12px;
+}
+.decision-limits-grid article {
+  background: #F8FAFC;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  padding: 15px 16px;
+}
+.decision-limits-grid strong {
+  display: block;
+  font-size: 14px;
+  color: var(--ink);
+  margin-bottom: 6px;
+}
+.decision-limits-grid p {
+  font-size: 13px;
+  line-height: 1.75;
+  color: var(--text);
+  margin: 0 !important;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+@media(max-width:800px) {
+  [class*="st-key-decision_group_"] { padding: 16px; }
+  .decision-section-head h2 { font-size: 17px !important; }
+  .decision-section-head { gap: 10px; }
+}
