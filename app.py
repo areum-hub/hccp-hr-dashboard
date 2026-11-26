@@ -469,7 +469,7 @@ elif page=='sem':
         'SEM RMSEA 0.090, CFA 판별타당성 문제, 의사소통 H2 부호 차이 및 단면 자료의 한계가 있습니다.')
 
 elif page=='decision':
-    page_intro('HR DECISION SUPPORT  /  ACTION','HR 의사결정 지원','HR·현업 리더·경영진이 저장된 분석 근거를 확인하고, 실제 개입 전에 수행할 검증 절차를 정리합니다.')
+    page_intro('HR DECISION SUPPORT  /  ACTION','HR 의사결정 지원','HR 담당자, 현업 리더 및 경영진이 분석 결과를 확인하고, 실제 개선 조치를 시행하기 전에 필요한 검증 절차를 검토할 수 있습니다.')
     st.caption('활용 범위 | 저장된 통계 결과를 바탕으로 집단 수준의 HR 진단을 지원합니다. 개인별 이직 예측, 자동 인사 선별 및 정책 효과 시뮬레이션은 지원하지 않습니다.')
     section_title('담당자와 관심 지표 선택','선택에 따라 조회되는 실무 절차와 분석 근거가 달라집니다. 통계값은 새로 계산되지 않습니다.')
     a,b=st.columns(2)
