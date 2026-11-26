@@ -294,6 +294,27 @@ def research_text_sections():
                 practice=practice.strip(),has_practice=bool(practice_heading))
 
 
+def render_reference_information(reference_text):
+    """Present the existing reference document by section, without rewriting it."""
+    expected=['자료 출처','참고문헌','AI 활용 및 검증','연구윤리 및 활용 범위']
+    sections=[]
+    for chunk in reference_text.split('\n### '):
+        if chunk.startswith('### '):
+            chunk=chunk[4:]
+        title,separator,body=chunk.partition('\n')
+        sections.append((title.strip(),body.strip()))
+    if [title for title,_ in sections]!=expected:
+        st.markdown(reference_text)
+        return
+    with theory_container('research_reference_content'):
+        tabs=st.tabs(expected)
+        for index,((title,body),tab) in enumerate(zip(sections,tabs),1):
+            with tab:
+                with theory_container(f'research_reference_section_{index}',card=True):
+                    research_section_header(f'{index:02d}',title)
+                    st.markdown(body)
+
+
 def research_reference_link():
     reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
     reference_label='연구 정보'
@@ -301,7 +322,7 @@ def research_reference_link():
     if dialog is not None:
         @dialog('연구 참고 정보',width='large')
         def show_reference_information():
-            st.markdown(reference_text)
+            render_reference_information(reference_text)
         # The container key scopes styling to this research reference control only.
         try:
             link_container=st.container(key='research_reference_link')
@@ -318,7 +339,7 @@ def research_reference_link():
                 show_reference_information()
     else:
         with st.expander('자료 출처 · 참고문헌 · AI 활용 · 연구윤리',expanded=False):
-            st.markdown(reference_text)
+            render_reference_information(reference_text)
 
 
 with st.sidebar:
