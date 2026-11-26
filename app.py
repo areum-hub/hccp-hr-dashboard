@@ -296,8 +296,18 @@ if page=='overview':
         )
     st.markdown('**실무질문** · '+MAIN_QUESTION)
 
-    with st.expander('자료 출처 · 참고문헌 · AI 활용 · 연구윤리 상세 확인', expanded=False):
-        st.markdown((BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8'))
+    section_title('연구 참고 정보')
+    reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
+    reference_sections={}
+    for block in ('\n'+reference_text).split('\n### ')[1:]:
+        heading,_,body=block.partition('\n')
+        reference_sections[heading.strip()]=body.strip()
+    reference_headings=['자료 출처','참고문헌','AI 활용 및 검증','연구윤리 및 활용 범위']
+    if list(reference_sections)==reference_headings:
+        for tab,heading in zip(st.tabs(reference_headings),reference_headings):
+            tab.markdown(reference_sections[heading])
+    else:
+        st.markdown(reference_text)
 
 elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
@@ -326,9 +336,6 @@ elif page=='theory':
         discussion='### 4. 이론적 해석 및 대안 설명'+theory_discussion
         discussion=discussion.replace('### 4. 대안 설명을 줄이기 위한 후속 연구 제안','### 5. 후속 연구 방향',1)
         st.markdown(discussion.strip())
-    with st.expander('선행연구 원문 서지 및 DOI 확인'):
-        references=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
-        st.markdown('### 참고문헌'+references.split('### 참고문헌',1)[1].split('### AI 활용 및 검증',1)[0])
 
 elif page=='reliability':
     page_intro('DATA ANALYSIS  /  01','측정 신뢰도 및 타당성','조직신뢰·의사소통 문항의 내적 일관성을 살펴보고, 두 구성개념을 구분할 수 있는지 점검합니다.')
