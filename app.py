@@ -103,15 +103,6 @@ def panel(title,body,kind='neutral',foot=''):
     )
 
 
-def evidence_triptych(question,interpretation,action,caution=None):
-    cols=st.columns(3,gap='medium')
-    with cols[0]: panel('분석 질문',question,'blue')
-    with cols[1]: panel('결과 해석',interpretation,'teal')
-    with cols[2]: panel('HR 의사결정',action,'purple')
-    if caution:
-        st.caption('해석 범위  |  '+caution)
-
-
 def section_title(title,note=None):
     st.markdown(f'<div class="section-heading">{escape(title)}</div>',unsafe_allow_html=True)
     if note:
@@ -288,9 +279,6 @@ if page=='overview':
 elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
                '실무질문에서 X→Y의 예상 방향을 도출하고, 가설·통제변수·매개경로와 결과 해석을 연결합니다.')
-    evidence_triptych('왜 신뢰·소통·만족을 측정하는가?',
-        '사회교환이론·JD-R 모형·직무태도 선행연구에서 연구가설의 방향을 설정합니다.',
-        '가설별 분석 근거를 바탕으로 현장에서 확인할 조직요인을 검토합니다.')
     theory_lines=(BASE/'THEORY_AND_HYPOTHESES.md').read_text(encoding='utf-8').splitlines()
     # The page already has a title; omit the standalone Markdown document heading.
     if theory_lines and theory_lines[0].startswith('# '):
@@ -346,10 +334,8 @@ elif page=='reliability':
     cfa=pd.DataFrame([{'모형':name,'CFI':d['cfi'],'TLI':d['tli'],'RMSEA':d['rmsea'],'SRMR':d['srmr']}
        for name,d in [('1요인',SA['one_factor']),('2요인',SA['two_factor'])]])
     st.dataframe(cfa.round(3),use_container_width=True,hide_index=True)
-    st.caption('적합도 해석 | 1요인·2요인 모형 모두 RMSEA가 높고, 2요인 모형의 적합도 개선이 확인되지 않았습니다.')
-    evidence_triptych('내적 일관성과 구성개념 구별은 같은가?',
-        'Cronbach α는 문항의 일관성을, CFA는 측정구조와 구성개념 간 구별 가능성을 점검합니다.',
-        '신뢰와 소통을 구분해 해석하기 전에 문항 구조와 순서형·기업 군집 보정을 추가 검토합니다.')
+    st.markdown('**측정 결과 해석** · 1요인·2요인 모형 모두 RMSEA가 높고, 2요인 모형의 적합도 개선이 확인되지 않았습니다.')
+    st.caption('후속 검토 | 조직신뢰와 의사소통을 구분해 해석하기 전에 문항 구조와 순서형·기업 군집 보정을 추가로 검토할 필요가 있습니다.')
 
 elif page=='descriptive':
     page_intro('DATA ANALYSIS  /  02','기술통계 및 집단 비교','사전 집계된 통계만 조회할 수 있으며, 개인 단위 필터·역추적 가능한 조합 조회는 제공하지 않습니다.')
@@ -379,10 +365,8 @@ elif page=='descriptive':
     st.caption('공개 기준: 집단별 100명 이상·15개 기업 이상 및 비교집단에도 동일 기준을 적용한 사전 집계. 각 값은 반올림된 평균이며 원자료를 제공하지 않습니다.')
     section_title('핵심 변수의 관찰 상관','전체 공통표본의 단순 상관과 기업 단위 부트스트랩 95% 신뢰구간입니다.')
     plot(viz.observed_associations(OBS),key='observed_correlations')
-    evidence_triptych('어떤 집단을 먼저 살펴볼 수 있는가?',
-        '집단 평균 차이와 상관은 실제 관찰 자료의 분포와 함께 보는 탐색적 근거입니다.',
-        '단순 평균 순위만으로 처방하지 않고, HR 의사결정 화면의 다중비교·집단규모 기준을 함께 확인합니다.',
-        '집단 평균 차이는 개인의 특징·행동이나 정책 시행 효과를 뜻하지 않습니다.')
+    st.markdown('**집단 비교의 활용** · 집단별 평균과 변수 간 상관은 현장 진단의 탐색적 근거입니다. 평균 순위만으로 판단하지 않고 HR 의사결정 페이지의 집단 규모·신뢰구간·다중비교 기준을 함께 확인합니다.')
+    st.caption('집단 평균 차이를 개인의 특성이나 정책 시행 효과로 해석하지 않습니다.')
 
 elif page=='ols':
     page_intro('DATA ANALYSIS  /  03','다중회귀분석 · H1–H5','기업 단위 군집강건 표준오차를 적용한 OLS 주 분석 결과를 조회합니다.')
@@ -399,6 +383,9 @@ elif page=='ols':
     st.caption(f'{model} 모형의 R² = {S["models"][model]["r2"]:.3f}. OLS 신뢰구간은 기업 단위 군집강건 표준오차에 기반합니다.')
     section_title('의사소통 계수 변화','모형에 추가되는 설명변수·통제변수에 따라 부호가 달라질 수 있습니다.')
     plot(viz.regression_change(CO),key='ols_coefficient_change')
+    panel('회귀분석 결과 해석',
+          'OLS에서 H1·H2·H3·H5는 가설의 예상 방향과 일치했으며, H4는 예상과 반대로 양(+)의 관련성을 보였습니다.',
+          'teal','신뢰·만족 관련 지표를 우선 모니터링하고, 소통의 방향성은 조직 맥락과 함께 검토합니다.')
     section_title('분석 가정 및 강건성 점검','저장된 분석에서 확인된 근거와 아직 검증되지 않은 항목을 구분합니다.')
     scale_corr=V['sem_feasibility']['trust_comm_scale_corr']
     st.dataframe(pd.DataFrame([
@@ -410,9 +397,6 @@ elif page=='ols':
         {'점검 항목':'교란·시간적 선후·조사 가중치','확인 상태':'해석 제한','확인 근거':'관측된 공변량 통제; 2023년 단면자료, 가중치 미적용','해석 및 후속 점검':'미관측 교란과 대표성에 주의. 반복 조사 및 추가 검증 필요'},
     ]),hide_index=True,use_container_width=True)
     st.caption('검증 범위 | 군집강건 표준오차는 추론 방법이며 가정 검정 결과가 아닙니다. 위 표는 기존 점검 결과를 정리한 것으로, 추가 통계 진단을 수행한 것은 아닙니다.')
-    evidence_triptych('조직신뢰·소통은 만족과 이직 고려에 어떻게 관련되는가?',
-        'OLS에서 H1·H2·H3·H5는 기대 방향과 일치했고, H4는 예상과 반대로 양(+)이었습니다.',
-        '신뢰·만족 관련 지표를 우선 모니터링하고 소통의 방향성은 조직 맥락과 함께 검토합니다.')
     with st.expander('통제변수와 추정범위'):
         st.markdown('성별·연령·학력·근속기간·직급·직무·고용형태·근로시간·산업·기업규모를 통제한 공통 분석표본 10,731명을 분석했습니다. 변수별 선정 이유는 이론 · 연구가설에서 확인할 수 있습니다.')
 
@@ -442,10 +426,8 @@ elif page=='ordinal':
       'p':'<0.001' if row['p']<.001 else f'{row["p"]:.3f}',
       '해석':'경계별 동일성 위배 가능성' if row['p']<.05 else '위배 근거가 확인되지 않음'} for row in w['per_factor']])
     st.dataframe(diag,hide_index=True,use_container_width=True)
-    evidence_triptych('서열형 모형에서도 관계 방향이 유지되는가?',
-        '이직 고려 모형에서 신뢰·만족은 OR<1, 소통은 OR>1로 방향이 유지되지만 소통 결과는 경계적입니다.',
-        'OLS와 순서형 로짓의 관계 방향을 비교하여 후속 진단에 활용합니다.',
-        '이직 고려 모형에서 직무만족의 계수 동일성 위배 신호가 있어 오즈비를 모든 응답 경계에서 동일하게 해석하기 어렵습니다.')
+    st.markdown('**강건성 검토 결과** · 직무만족과 이직 고려 의향에 대한 순서형 로짓에서 H1–H5의 OLS 계수 방향이 유지되었습니다. 다만 이직 고려 모형에서 의사소통의 신뢰구간 하한이 1에 가까워 해석에 주의해야 합니다.')
+    st.caption('비례오즈 해석 | 이직 고려 모형에서 직무만족의 계수 동일성 위배 신호가 있으므로 오즈비를 모든 응답 경계에서 동일하게 해석하기 어렵습니다.')
 
 elif page=='sem':
     page_intro('DATA ANALYSIS  /  05','구조방정식 · SEM','H1–H5의 보완적 구조경로와 탐색적 간접경로 H6를 실제 저장된 추정값으로 보여줍니다.')
@@ -477,9 +459,8 @@ elif page=='sem':
         '기업 부트스트랩 95% CI':f'[{fmt(e["ci_low"])}, {fmt(e["ci_high"])}]'}
         for name,e in paths]),hide_index=True,use_container_width=True)
     st.caption('각 CI는 기업 500회 재표집 결과에서 별도로 계산한 값입니다. 신뢰구간들을 단순히 더한 값이 아닙니다.')
-    evidence_triptych('조직신뢰–만족–이직 고려의 간접경로는 관찰되는가?',
-        f'H6 통계적 간접경로는 {fmt(SEM_EFFECTS["H6"]["estimate"])}이며 구간에 0을 포함하지 않습니다.',
-        '후속 반복 조사에서 조직신뢰와 직무만족을 함께 측정하여 간접경로의 시간적 선후를 검토합니다.')
+    st.markdown(f'**간접경로 해석** · H6의 통계적 간접경로는 {fmt(SEM_EFFECTS["H6"]["estimate"])}이며 기업 부트스트랩 95% 신뢰구간에 0을 포함하지 않습니다. 탐색적 관련성으로 해석합니다.')
+    st.caption('후속 연구 | 반복 조사에서 조직신뢰와 직무만족, 이후 이직 고려 의향을 측정하여 시간적 선후를 검토합니다.')
 
 elif page=='decision':
     page_intro('HR DECISION SUPPORT  /  ACTION','HR 의사결정 지원','HR 담당자, 현업 리더 및 경영진이 분석 결과를 확인하고, 실제 개선 조치를 시행하기 전에 필요한 검증 절차를 검토할 수 있습니다.')
@@ -569,10 +550,10 @@ elif page=='decision':
     ]),hide_index=True,use_container_width=True)
     st.caption('평가 계획 | HR은 시범사업 시작 전 기준값·평가 기간·성공 및 중단 기준을 정하고, 현업 리더는 익명 설문과 업무 맥락을 확인합니다. 가능하면 비교집단과 동일한 시점에 반복 측정하고, 경영진은 결과·비용·직원 보호 여부를 종합하여 확대 또는 중단을 판단합니다.')
     st.caption('기대효과는 후속 평가에서 확인할 목표 방향이며, 본 연구에서 검증한 정책 효과나 예측 수치가 아닙니다. 이직 고려 의향과 실제 이직률은 서로 다른 지표입니다.')
-    evidence_triptych('어떤 집단을 우선 진단하고 개선 여부를 어떻게 평가할 것인가?',
-        '기본 선별과 추가 분석 결과를 종합하여 현장 진단의 우선순위를 설정합니다.',
-        '현장 확인 결과에 따라 개선 과제를 정하고, 비용·실행 가능성·직원 보호 기준을 검토한 후 시범사업의 성과를 평가합니다.',
-        '정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
+    section_title('최종 결론 및 실무 제언')
+    panel('우선 진단에서 후속 평가까지',
+          '기본 선별과 공변량 조정 결과를 종합하여 현장 진단의 우선순위를 정합니다. 신뢰·만족 관련 지표를 모니터링하고 소통의 관련성은 현장 맥락과 함께 확인합니다. 현장 진단에서 확인된 문제에 한해 비용·실행 가능성·직원 보호 기준을 검토한 뒤 시범사업을 평가합니다.',
+          'teal','정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
 
 # Unified source footer on all eight sidebar pages.
 st.divider()
