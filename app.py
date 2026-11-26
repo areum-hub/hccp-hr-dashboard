@@ -214,7 +214,7 @@ with st.sidebar:
       '<div class="sidebar-brand"><span class="brand-symbol">PA</span>'
       '<div class="brand-text"><div class="brand-title">PEOPLE ANALYTICS</div>'
       '<div class="brand-subtitle">HR Decision Dashboard</div></div></div>'
-      '<div class="sidebar-caption">HCCPⅡ 2023 · 실증 연구</div>'
+      '<div class="sidebar-caption">HCCPⅡ 2023 · 실제 조사자료 기반</div>'
       '</div>',
       unsafe_allow_html=True,
     )
@@ -245,7 +245,7 @@ st.markdown(
 
 if page=='overview':
     st.markdown(
-      '<div class="executive-hero"><span class="executive-label">EXECUTIVE SUMMARY · 실제 조사자료 기반</span>'
+      '<div class="executive-hero"><span class="executive-label">EXECUTIVE SUMMARY</span>'
       '<h1>조직의 신뢰와 소통,<br>어디부터 진단할 것인가?</h1>'
       '<p>HCCPⅡ 근로자 조사로 조직신뢰·의사소통·직무만족·이직 고려 의향의 관련성을 검토하고, '
       'HR이 우선 진단할 집단과 실행 절차를 제안합니다.</p>'
