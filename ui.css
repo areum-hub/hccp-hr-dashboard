@@ -51,6 +51,7 @@ h3{font-size:1.08rem!important}
   margin: 0 0 4px;
   border-bottom: 1px solid var(--line);
   overflow: visible;
+  text-align: center;
 }
 [data-testid="stSidebar"] .sidebar-brand {
   display: flex;
@@ -59,6 +60,7 @@ h3{font-size:1.08rem!important}
   min-height: 40px;
   padding: 0;
   margin: 0 0 15px;
+  justify-content: center;
 }
 [data-testid="stSidebar"] .brand-symbol {
   flex: 0 0 36px;
@@ -70,23 +72,27 @@ h3{font-size:1.08rem!important}
   border-radius: 10px;
   background: #1D4ED8;
   color: #fff;
-  font-size: 12px;
+  font-size: 14px;
   font-weight: 800;
 }
 [data-testid="stSidebar"] .brand-text {min-width: 0;display:block;}
 [data-testid="stSidebar"] .brand-title {
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.4;
   color: var(--ink);
   font-weight: 800;
   letter-spacing: .018em;
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: center;
 }
 [data-testid="stSidebar"] .brand-subtitle {
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.6;
   color: var(--muted);
-  white-space: nowrap;
+  white-space: normal;
+  overflow-wrap: break-word;
+  text-align: center;
 }
 [data-testid="stSidebar"] .sidebar-caption {
   display: inline-block;
@@ -98,22 +104,24 @@ h3{font-size:1.08rem!important}
   background: #EFF6FF;
   border-radius: 999px;
   color: #1D4ED8;
-  font-size: 10px;
+  font-size: 12px;
   font-weight: 800;
   letter-spacing: .04em;
   line-height: 1.5;
   white-space: normal;
   word-break: keep-all;
+  text-align: center;
 }
 /* Native st.caption headings: no absolute, negative or forced element gaps. */
 [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
   margin: 2px 0 0 !important;
   padding: 0 4px;
   color: #8491A4 !important;
-  font-size: 10px !important;
+  font-size: 12px !important;
   font-weight: 750;
   letter-spacing: .045em;
   line-height: 1.65;
+  text-align: center;
 }
 [data-testid="stSidebar"] .stButton button,
 [data-testid="stSidebar"] [data-testid="stButton"] button {
@@ -127,19 +135,19 @@ h3{font-size:1.08rem!important}
   color: #334155 !important;
   box-shadow: none !important;
   display: flex !important;
-  justify-content: flex-start !important;
-  text-align: left !important;
-  font-size: 12px !important;
+  justify-content: center !important;
+  text-align: center !important;
+  font-size: 15px !important;
   font-weight: 560 !important;
   line-height: 1.4 !important;
   white-space: normal !important;
 }
 [data-testid="stSidebar"] .stButton button p,
 [data-testid="stSidebar"] [data-testid="stButton"] button p {
-  text-align: left !important;
+  text-align: center !important;
   white-space: normal !important;
   word-break: keep-all;
-  font-size: 12px !important;
+  font-size: 15px !important;
   margin: 0 !important;
   line-height: 1.4 !important;
 }
@@ -167,12 +175,13 @@ h3{font-size:1.08rem!important}
   border-radius: 10px;
   background: #F8FAFC;
   color: #475569;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.65;
+  text-align: center;
 }
 [data-testid="stSidebar"] .sidebar-info-label {
   color: #64748B;
-  font-size: 10px;
+  font-size: 12px;
   line-height: 1.5;
   font-weight: 650;
   margin-bottom: 5px;
@@ -196,7 +205,7 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] .sidebar-footer a {
   color: #2563EB;
   text-decoration: none;
-  font-size: 11px;
+  font-size: 13px;
   font-weight: 650;
 }
 @media (max-width: 700px) {
