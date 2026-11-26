@@ -355,15 +355,10 @@ with st.sidebar:
       '</div>',
       unsafe_allow_html=True,
     )
-    # Keep the native navigation controls and their stable keys, grouped by research stage.
-    for group_index,(group,items_in_group) in enumerate(NAV_GROUPS):
-        group_active=any(st.session_state['page']==item_key for item_key,_ in items_in_group)
+    # Use spacing and separators rather than visible stage headings.
+    # Keep the existing native navigation controls, groups and stable keys.
+    for group_index,(_,items_in_group) in enumerate(NAV_GROUPS):
         with theory_container(f'sidebar_nav_group_{group_index}'):
-            group_class='sidebar-group-title is-current' if group_active else 'sidebar-group-title'
-            st.markdown(
-                f'<div class="{group_class}"><span>{escape(group)}</span></div>',
-                unsafe_allow_html=True,
-            )
             for item_key,item_label in items_in_group:
                 is_active=(st.session_state['page']==item_key)
                 st.button(item_label,key='nav_'+item_key,type='primary' if is_active else 'secondary',
