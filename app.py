@@ -228,6 +228,7 @@ if page=='overview':
     b.metric('대상 기업',f'{P["analysis_firms"]:,}개')
     c.metric('주 검증 가설','H1–H5')
     d.metric('조사 기준 연도','2023')
+    st.caption('전체 응답자 10,759명 중 연령 결측 28명 제외 · 공개 범위: 집계 통계 및 사전 추정 결과(원자료 제외)')
     section_title('핵심 연구 결과','표본 10,731명에 대한 조건부 관련성 결과입니다. 정책 효과나 인과관계를 추정하지 않았습니다.')
     cols=st.columns(3,gap='medium')
     with cols[0]: panel('01 · 이직의도 관련 요인','조직신뢰와 직무만족은 통제 후 이직 고려 의향과 음(-)의 관련성을 보였습니다.','blue','H3·H5 · OLS 주 분석')
@@ -255,7 +256,6 @@ if page=='overview':
             '</div>',unsafe_allow_html=True,
         )
     st.markdown('**실무질문** · '+MAIN_QUESTION)
-    st.info('공식 전체 조사 근로자 10,759명에서 연령 결측 28명을 제외하여, 본 연구의 공통 분석표본은 10,731명·497개 기업입니다. 원자료가 아닌 집계 및 사전 추정 결과만 웹앱에 포함합니다.')
     c1,c2,c3=st.columns(3)
     c1.button('이론 · 연구가설 보기',key='jump_theory',use_container_width=True,on_click=move_to,args=('theory',))
     c2.button('회귀분석 결과 보기',key='jump_ols',use_container_width=True,on_click=move_to,args=('ols',))
@@ -299,7 +299,7 @@ elif page=='theory':
                      'SEM 95% CI':f'[{fmt(v["ci_low"])}, {fmt(v["ci_high"])}]',
                      '해석': ('탐색적 간접경로' if key=='H6' else '모형 간 부호 불일치' if key=='H2' else '예상과 반대' if key=='H4' else '방향 일치')})
     st.dataframe(pd.DataFrame(rows),use_container_width=True,hide_index=True)
-    st.warning('OLS와 SEM은 추정·측정 방법이 다르므로 B의 크기를 직접 비교하지 않습니다. H2의 부호 차이와 H4의 예상 반대 결과는 이론의 단순한 확증이나 반증으로 볼 수 없습니다.')
+    st.caption('해석 유의사항 | OLS와 SEM은 추정·측정 방법이 달라 계수(B)의 크기를 직접 비교할 수 없습니다. H2의 부호 차이와 H4의 예상 반대 결과만으로 이론을 확증하거나 반증할 수 없습니다.')
     with st.expander('선행연구 원문 서지 및 DOI 확인'):
         references=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
         st.markdown('### 참고문헌'+references.split('### 참고문헌',1)[1].split('### AI 활용 및 검증',1)[0])
