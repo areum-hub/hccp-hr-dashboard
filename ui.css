@@ -299,3 +299,30 @@ h3{font-size:1.08rem!important}
   outline: 2px solid #2563EB;
   outline-offset: 3px;
 }
+
+/* Match the overview footer to the dashboard's caption typography. */
+.data-source.overview-source,
+.data-source.overview-source strong,
+.data-source.overview-source a,
+.data-source.overview-source span,
+.st-key-overview_reference_link [data-testid="stButton"] button,
+.st-key-overview_reference_link [data-testid="stButton"] button p,
+.st-key-overview_reference_info button,
+.st-key-overview_reference_info button p,
+.st-key-next_overview button,
+.st-key-next_overview button p {
+  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-size: .8rem !important;
+  line-height: 1.65 !important;
+  letter-spacing: normal !important;
+}
+.data-source.overview-source strong,
+.data-source.overview-source a,
+.st-key-overview_reference_link [data-testid="stButton"] button,
+.st-key-overview_reference_link [data-testid="stButton"] button p,
+.st-key-overview_reference_info button,
+.st-key-overview_reference_info button p,
+.st-key-next_overview button,
+.st-key-next_overview button p {
+  font-weight: 500 !important;
+}
