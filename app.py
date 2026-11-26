@@ -271,7 +271,7 @@ with header_container:
         st.markdown(
           '<div class="app-topbar"><span class="app-topbar-mark">HR</span>'
           '<strong>Decision Analytics</strong><span class="topbar-divider"></span>'
-          f'<span>{escape(NAV_LABELS[page])}</span><span class="topbar-version">HCCPⅡ · 2023</span></div>',
+          f'<span class="topbar-page">{escape(NAV_LABELS[page])}</span><span class="topbar-version">HCCPⅡ · 2023</span></div>',
           unsafe_allow_html=True,
         )
     with header_info:

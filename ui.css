@@ -282,38 +282,88 @@ h3{font-size:1.08rem!important}
   .decision-panel{min-height:unset}
 }
 
-/* Shared top bar: a single card with a native research information control. */
+/* Shared top bar: intrinsic action width and balanced vertical alignment. */
 .st-key-app_header {
+  box-sizing: border-box;
   background: #FFF;
   border: 1px solid var(--line);
   border-radius: 11px;
-  padding: 6px 12px;
+  padding: 7px 15px;
+  min-height: 50px;
   margin-bottom: 19px;
   box-shadow: var(--shadow);
+}
+.st-key-app_header [data-testid="stHorizontalBlock"] {
+  align-items: center !important;
+  gap: 12px !important;
+  flex-wrap: nowrap !important;
+}
+.st-key-app_header [data-testid="stHorizontalBlock"] > :first-child {
+  flex: 1 1 0% !important;
+  width: auto !important;
+  min-width: 0 !important;
+}
+.st-key-app_header [data-testid="stHorizontalBlock"] > :last-child {
+  flex: 0 0 auto !important;
+  width: auto !important;
+  min-width: max-content !important;
 }
 .st-key-app_header .app-topbar {
   background: transparent;
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  min-height: 36px;
-  padding: 0 5px;
+  min-height: 34px;
+  padding: 0;
   margin: 0;
+  gap: 12px;
+  flex-wrap: nowrap;
+  line-height: 1.5;
+}
+.st-key-app_header .app-topbar-mark {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+}
+.st-key-app_header .app-topbar strong,
+.st-key-app_header .topbar-page {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.st-key-app_header .topbar-divider {
+  flex-shrink: 0;
+}
+.st-key-app_header .topbar-version {
+  display: inline-block;
+  flex-shrink: 0;
+  font-size: 11px;
+  line-height: 1.5;
 }
 .st-key-app_header .st-key-research_reference_link [data-testid="stButton"] {
   display: flex;
   justify-content: flex-end;
+  align-items: center;
 }
 .st-key-research_reference_link [data-testid="stButton"] button,
 .st-key-research_reference_info button {
+  box-sizing: border-box;
   border: 1px solid var(--line) !important;
   border-radius: 8px !important;
   background: #FFF !important;
   box-shadow: none !important;
   color: #475569 !important;
+  height: 34px !important;
   min-height: 34px !important;
-  padding: 4px 9px !important;
+  padding: 0 10px !important;
   gap: 5px !important;
+  align-items: center !important;
   justify-content: center !important;
   white-space: nowrap !important;
 }
@@ -333,6 +383,12 @@ h3{font-size:1.08rem!important}
   color: inherit !important;
   white-space: nowrap !important;
 }
+.st-key-research_reference_link [data-testid="stIconMaterial"],
+.st-key-research_reference_info [data-testid="stIconMaterial"] {
+  font-size: 16px !important;
+  line-height: 1 !important;
+  flex-shrink: 0;
+}
 .st-key-research_reference_link [data-testid="stButton"] button:hover,
 .st-key-research_reference_info button:hover {
   border-color: #BFDBFE !important;
@@ -345,6 +401,13 @@ h3{font-size:1.08rem!important}
   outline-offset: 2px;
 }
 @media(max-width:800px) {
-  .st-key-app_header { padding: 6px 9px; }
-  .st-key-app_header .app-topbar { gap: 8px; flex-wrap: wrap; }
+  .st-key-app_header { padding: 7px 10px; }
+  .st-key-app_header [data-testid="stHorizontalBlock"] { gap: 8px !important; }
+  .st-key-app_header .app-topbar { gap: 8px; }
+}
+@media(max-width:600px) {
+  .st-key-app_header .topbar-page,
+  .st-key-app_header .topbar-divider { display: none; }
+  .st-key-app_header .app-topbar strong { font-size: 11px; }
+  .st-key-app_header .topbar-version { font-size: 10px; }
 }
