@@ -20,6 +20,11 @@
 - Benjamini, Y., & Hochberg, Y. (1995). Controlling the false discovery rate: A practical and powerful approach to multiple testing. *Journal of the Royal Statistical Society, Series B, 57*(1), 289–300. https://doi.org/10.1111/j.2517-6161.1995.tb02031.x
 - MacKinnon, D. P., Lockwood, C. M., & Williams, J. (2004). Confidence limits for the indirect effect: Distribution of the product and resampling methods. *Multivariate Behavioral Research, 39*(1), 99–128. https://doi.org/10.1207/s15327906mbr3901_4
 
+### 추가 참고문헌 (대시보드 보완)
+
+- 양인준, 정진철. (2020). 기업체 근로자의 관계지향 문화와 이직의도 간의 관계에서 직무만족과 조직신뢰의 매개효과. *기업교육과인재연구, 22*(2), 179–211. [KCI 논문 정보](https://www.kci.go.kr/kciportal/landing/article.kci?arti_id=ART002599909)
+- Zhao, Y., Lu, Z., Cheng, X., & Li, J. (2022). The effect of organizational trust on turnover intention of rural kindergarten teachers: The mediating role of teaching efficacy and job satisfaction. *International Journal of Environmental Research and Public Health, 19*(19), 12403. https://doi.org/10.3390/ijerph191912403
+
 ### AI 활용 및 검증
 
 ChatGPT를 연구 결과의 설명서 구조화, 코드 점검, 시각화 문구와 연구 한계 정리, 참고문헌 서지 대조, 공개용 앱 분리에 활용했습니다. 원자료(근로자 응답 행)는 공개용 앱 및 저장소에 포함하지 않으며, 기존 분석의 저장된 추정값을 공개 버전에 재사용했습니다. 문서 검증은 저장 결과와 코드의 일치 여부를 확인하는 것이지 새로운 인과효과를 산출하거나 원자료 재배포 권한을 부여하는 작업이 아닙니다. 모든 AI 작성 내용은 제출자가 최종 검토해야 합니다.
