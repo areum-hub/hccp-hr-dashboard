@@ -149,13 +149,13 @@ def section_title(title,note=None):
 
 def plot(fig,key):
     fig.update_layout(
-        font=dict(family='Pretendard Variable, Pretendard, Noto Sans KR, Malgun Gothic, sans-serif',size=12,color='#334155'),
+        font=dict(family='Pretendard Variable, Pretendard, Noto Sans KR, Malgun Gothic, sans-serif',size=13,color='#334155'),
         plot_bgcolor='white', paper_bgcolor='white',
         margin=dict(l=20,r=34,t=38,b=35),
         hoverlabel=dict(bgcolor='white',font_color='#1F2937'),
     )
-    fig.update_xaxes(gridcolor='#E9EDF3',zeroline=False)
-    fig.update_yaxes(gridcolor='#E9EDF3',zeroline=False)
+    fig.update_xaxes(gridcolor='#E9EDF3',zeroline=False,automargin=True)
+    fig.update_yaxes(gridcolor='#E9EDF3',zeroline=False,automargin=True)
     st.plotly_chart(fig,use_container_width=True,key=key,config={'displaylogo':False})
 
 
@@ -246,7 +246,7 @@ def theory_path_diagram():
       <path d="M142 272 L142 295 L822 295 L822 194" stroke="#0D9488" marker-end="url(#minusArrow)"/>
       <path d="M580 160 L720 160" stroke="#0D9488" marker-end="url(#minusArrow)"/>
     </g>
-    <g font-size="16">
+    <g font-size="17">
       <text x="306" y="91" fill="#2563EB">H1 (+)</text>
       <text x="306" y="238" fill="#2563EB">H2 (+)</text>
       <text x="480" y="19" fill="#0D9488">H3 (−)</text>
@@ -257,7 +257,7 @@ def theory_path_diagram():
     <rect x="36" y="204" width="212" height="68" rx="11" fill="#EFF6FF" stroke="#BFDBFE"/>
     <rect x="366" y="126" width="214" height="68" rx="11" fill="#F5F3FF" stroke="#C4B5FD"/>
     <rect x="720" y="126" width="204" height="68" rx="11" fill="#F0FDFA" stroke="#99F6E4"/>
-    <g font-size="21" dominant-baseline="middle">
+    <g font-size="22" dominant-baseline="middle">
       <text x="142" y="82" fill="#1D4ED8">조직신뢰</text>
       <text x="142" y="238" fill="#1D4ED8">의사소통</text>
       <text x="473" y="160" fill="#6D28D9">직무만족</text>
