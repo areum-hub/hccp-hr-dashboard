@@ -78,7 +78,45 @@ if st.session_state.get('page') not in NAV_LABELS:
 
 
 def move_to(key):
-    st.session_state['page']=key
+    if key != st.session_state.get('page'):
+        st.session_state['page']=key
+        st.session_state['_page_scroll_pending']=True
+        st.session_state['_page_scroll_nonce']=st.session_state.get('_page_scroll_nonce',0)+1
+
+
+def scroll_to_page_top():
+    """Reset the main viewport only after an actual navigation event."""
+    if not st.session_state.pop('_page_scroll_pending',False):
+        return
+    # The script is static except for an internally generated integer.
+    # A new nonce ensures the zero-height iframe executes on every navigation.
+    nonce=int(st.session_state.get('_page_scroll_nonce',0))
+    script="""
+<script>
+(() => {
+    const win = window.parent;
+    const doc = win.document;
+    const reset = () => {
+        const main = doc.querySelector('[data-testid="stMain"]')
+                  || doc.querySelector('section.main')
+                  || doc.querySelector('[data-testid="stAppViewContainer"]');
+        if (main) main.scrollTop = 0;
+        const root = doc.scrollingElement;
+        if (root) root.scrollTop = 0;
+        win.scrollTo(0, 0);
+    };
+    reset();
+    requestAnimationFrame(() => requestAnimationFrame(reset));
+    setTimeout(reset, 120);
+})();
+</script>
+<!-- navigation: SCROLL_NONCE -->
+""".replace('SCROLL_NONCE',str(nonce))
+    if hasattr(st,'iframe'):
+        st.iframe(script,height=0,tab_index=-1)
+    else:
+        import streamlit.components.v1 as components
+        components.html(script,height=0,scrolling=False)
 
 
 def eyebrow(value):
@@ -553,3 +591,6 @@ if current_index<len(ALL_NAV_KEYS)-1:
     st.button('다음 화면 · '+NAV_LABELS[next_page],key='next_'+page,
               use_container_width=False,on_click=move_to,args=(next_page,))
 st.caption('연구 용도: HR 집단 진단 및 후속 검증 보조 · 개인 단위 자동 인사결정/인과적 정책 효과 추정에 사용 불가')
+
+# Run after the destination page has rendered, not on filter/widget reruns.
+scroll_to_page_top()
