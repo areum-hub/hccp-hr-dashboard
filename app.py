@@ -276,13 +276,17 @@ if page=='overview':
                    '직원 개인의 이직 위험 점수화나 자동 인사결정에 사용해서는 안 됩니다.')
 
 elif page=='theory':
-    page_intro('RESEARCH DESIGN  /  THEORY','이론적 정당화 및 연구가설',
+    page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
                '실무질문에서 X→Y의 예상 방향을 도출하고, 가설·통제변수·매개경로와 결과 해석을 연결합니다.')
     evidence_triptych('왜 신뢰·소통·만족을 측정하는가?',
         '사회교환이론·JD-R 모형·직무태도 선행연구에서 관계의 방향을 사전 설정합니다.',
         '이론과 다른 결과(H2·H4)를 숨기지 않고 추가 진단 과제로 연결합니다.',
         'HCCPⅡ 문항은 이론 전체를 직접 측정한 동일 척도가 아닙니다.')
-    st.markdown((BASE/'THEORY_AND_HYPOTHESES.md').read_text(encoding='utf-8'))
+    theory_lines=(BASE/'THEORY_AND_HYPOTHESES.md').read_text(encoding='utf-8').splitlines()
+    # The page already has a title; omit the standalone Markdown document heading.
+    if theory_lines and theory_lines[0].startswith('# '):
+        theory_lines=theory_lines[1:]
+    st.markdown('\n'.join(theory_lines).lstrip())
     section_title('H1–H6 · 예상 방향과 실제 결과','OLS는 H1–H5의 주 분석, SEM은 보완 분석이며 H6는 탐색적 간접경로입니다.')
     ols=ols_table()
     rows=[]
