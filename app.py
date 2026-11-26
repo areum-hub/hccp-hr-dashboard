@@ -382,9 +382,9 @@ except TypeError:
     header_container=st.container()
 with header_container:
     try:
-        header_main,header_info,header_version=st.columns([5.5,1,1],gap='small',vertical_alignment='center')
+        header_main,header_info=st.columns([5.5,1],gap='small',vertical_alignment='center')
     except TypeError:
-        header_main,header_info,header_version=st.columns([5.5,1,1],gap='small')
+        header_main,header_info=st.columns([5.5,1],gap='small')
     with header_main:
         st.markdown(
           '<div class="app-topbar"><span class="app-topbar-mark">HR</span>'
@@ -394,8 +394,6 @@ with header_container:
         )
     with header_info:
         research_reference_link()
-    with header_version:
-        st.markdown('<div class="topbar-version">HCCPⅡ · 2023</div>',unsafe_allow_html=True)
 
 if page=='overview':
     st.markdown(
