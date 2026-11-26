@@ -167,15 +167,28 @@ h3{font-size:1.08rem!important}
   font-size: 11px;
   line-height: 1.65;
 }
-[data-testid="stSidebar"] .sidebar-source {
-  margin: 10px 2px 3px;
+[data-testid="stSidebar"] .sidebar-info-label {
   color: #64748B;
-  font-size: 11px;
-  line-height: 1.65;
+  font-size: 10px;
+  line-height: 1.5;
+  font-weight: 650;
+  margin-bottom: 5px;
+}
+[data-testid="stSidebar"] .sidebar-meta strong {
+  color: #334155;
+  font-weight: 650;
+}
+[data-testid="stSidebar"] .sidebar-source {
+  margin-top: 8px;
   word-break: keep-all;
 }
-[data-testid="stSidebar"] .sidebar-source strong {
-  font-weight: 600;
+[data-testid="stSidebar"] .sidebar-source-note {
+  color: #64748B;
+  margin-top: 4px;
+}
+[data-testid="stSidebar"] .sidebar-source a {
+  display: inline-block;
+  margin-top: 6px;
 }
 [data-testid="stSidebar"] .sidebar-footer a {
   color: #2563EB;

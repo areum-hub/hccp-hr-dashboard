@@ -238,15 +238,17 @@ with st.sidebar:
                       use_container_width=True,on_click=move_to,args=(item_key,))
     st.markdown(
       '<div class="sidebar-footer"><div class="sidebar-meta">'
+      '<div class="sidebar-info-label">분석 표본</div>'
       '<strong>10,731명 · 497개 기업</strong><br>'
       '개별 응답 · 기업 식별정보 없음</div>'
-      '<div class="sidebar-source">'
+      '<div class="sidebar-meta sidebar-source">'
+      '<div class="sidebar-info-label">DATA SOURCE</div>'
       '<strong>한국직업능력연구원(KRIVET)</strong><br>'
-      'HCCPⅡ 제4차(2023) 근로자 조사<br>'
-      '통계값은 연구자가 산출한 추정치</div>'
+      'HCCPⅡ 제4차(2023) 근로자 조사'
+      '<div class="sidebar-source-note">통계값은 연구자가 산출한 추정치</div>'
       '<a href="https://www.krivet.re.kr/kor/sub.do?menuSn=18" '
       'target="_blank" rel="noopener noreferrer">공식 자료 보기 ↗</a>'
-      '</div>',unsafe_allow_html=True,
+      '</div></div>',unsafe_allow_html=True,
     )
 
 page=st.session_state['page']
