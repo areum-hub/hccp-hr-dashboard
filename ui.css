@@ -23,12 +23,14 @@ h1,h2,h3,h4,h5{color:var(--ink)!important;font-family:inherit!important;letter-s
 h2{font-size:1.35rem!important;margin-top:.75rem}
 h3{font-size:1.08rem!important}
 [data-testid="stDivider"]{margin:1.35rem 0;border-color:var(--line)}
-/* Sidebar / navigation: avoid overriding Streamlit layout block/gap internals. */
+/* Sidebar: unified research navigation typography and clearly separated stages. */
 [data-testid="stSidebar"] {
   background: var(--white);
   border-right: 1px solid var(--line);
+  --sidebar-font: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--sidebar-font);
 }
-/* Preserve the desktop width only while the native sidebar is expanded. */
+/* Never force a width on the native collapsed state. */
 @media (min-width: 900px) {
   [data-testid="stSidebar"][aria-expanded="true"] {
     width: 306px !important;
@@ -41,7 +43,7 @@ h3{font-size:1.08rem!important}
   padding: 1.15rem .85rem 1.1rem !important;
   overflow-x: hidden;
 }
-/* The brand and source banner share one DOM block with reserved height. */
+/* Keep the brand and dataset banner in one measured block. */
 [data-testid="stSidebar"] .sidebar-header {
   box-sizing: border-box;
   display: block;
@@ -52,15 +54,16 @@ h3{font-size:1.08rem!important}
   border-bottom: 1px solid var(--line);
   overflow: visible;
   text-align: center;
+  font-family: var(--sidebar-font);
 }
 [data-testid="stSidebar"] .sidebar-brand {
   display: flex;
   align-items: center;
+  justify-content: center;
   gap: 10px;
   min-height: 40px;
+  margin: 0 0 14px;
   padding: 0;
-  margin: 0 0 15px;
-  justify-content: center;
 }
 [data-testid="stSidebar"] .brand-symbol {
   flex: 0 0 36px;
@@ -75,12 +78,12 @@ h3{font-size:1.08rem!important}
   font-size: 14px;
   font-weight: 800;
 }
-[data-testid="stSidebar"] .brand-text {min-width: 0;display:block;}
+[data-testid="stSidebar"] .brand-text { min-width: 0; display: block; }
 [data-testid="stSidebar"] .brand-title {
   font-size: 15px;
   line-height: 1.4;
   color: var(--ink);
-  font-weight: 800;
+  font-weight: 780;
   letter-spacing: .018em;
   white-space: normal;
   overflow-wrap: break-word;
@@ -90,6 +93,7 @@ h3{font-size:1.08rem!important}
   font-size: 13px;
   line-height: 1.6;
   color: var(--muted);
+  font-weight: 500;
   white-space: normal;
   overflow-wrap: break-word;
   text-align: center;
@@ -105,30 +109,61 @@ h3{font-size:1.08rem!important}
   border-radius: 999px;
   color: #1D4ED8;
   font-size: 12px;
-  font-weight: 800;
-  letter-spacing: .04em;
+  font-weight: 700;
+  letter-spacing: -.01em;
   line-height: 1.5;
   white-space: normal;
   word-break: keep-all;
   text-align: center;
 }
-/* Native st.caption headings: no absolute, negative or forced element gaps. */
+/* Each native menu group is independently measured; avoid affecting the collapse control. */
+[data-testid="stSidebar"] [class*="st-key-sidebar_nav_group_"] {
+  gap: 5px !important;
+  margin: 0;
+  padding: 2px 0 4px;
+}
+[data-testid="stSidebar"] [class*="st-key-sidebar_nav_group_"] [data-testid="stVerticalBlock"] {
+  gap: 5px !important;
+}
+[data-testid="stSidebar"] .sidebar-group-title {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  padding: 5px 3px 4px;
+  font-family: var(--sidebar-font);
+  font-size: 13px;
+  font-weight: 750;
+  line-height: 1.55;
+  letter-spacing: -.015em;
+  text-align: center;
+  color: #64748B;
+  white-space: nowrap;
+}
+[data-testid="stSidebar"] .sidebar-group-title::before,
+[data-testid="stSidebar"] .sidebar-group-title::after {
+  content: "";
+  height: 1px;
+  flex: 1 1 0;
+  min-width: 8px;
+  background: var(--line);
+}
+[data-testid="stSidebar"] .sidebar-group-title.is-current { color: #1D4ED8; }
+[data-testid="stSidebar"] .sidebar-group-title.is-current::before,
+[data-testid="stSidebar"] .sidebar-group-title.is-current::after { background: #BFDBFE; }
 [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
   margin: 2px 0 0 !important;
-  padding: 0 4px;
-  color: #8491A4 !important;
+  font-family: var(--sidebar-font) !important;
   font-size: 12px !important;
-  font-weight: 750;
-  letter-spacing: .045em;
-  line-height: 1.65;
+  color: var(--muted) !important;
   text-align: center;
 }
-[data-testid="stSidebar"] .stButton button,
 [data-testid="stSidebar"] [data-testid="stButton"] button {
+  box-sizing: border-box;
   width: 100% !important;
-  min-height: 38px !important;
+  min-height: 40px !important;
   height: auto !important;
-  padding: 9px 12px !important;
+  padding: 9px 10px !important;
   border: 1px solid transparent !important;
   border-radius: 8px !important;
   background: transparent !important;
@@ -136,38 +171,49 @@ h3{font-size:1.08rem!important}
   box-shadow: none !important;
   display: flex !important;
   justify-content: center !important;
+  align-items: center !important;
   text-align: center !important;
+  font-family: var(--sidebar-font) !important;
   font-size: 15px !important;
-  font-weight: 560 !important;
-  line-height: 1.4 !important;
+  font-weight: 600 !important;
+  letter-spacing: -.025em !important;
+  line-height: 1.5 !important;
   white-space: normal !important;
 }
-[data-testid="stSidebar"] .stButton button p,
 [data-testid="stSidebar"] [data-testid="stButton"] button p {
+  font-family: var(--sidebar-font) !important;
   text-align: center !important;
+  color: inherit !important;
+  font-size: inherit !important;
+  font-weight: inherit !important;
+  letter-spacing: inherit !important;
+  line-height: inherit !important;
   white-space: normal !important;
   word-break: keep-all;
-  font-size: 15px !important;
+  overflow-wrap: break-word;
   margin: 0 !important;
-  line-height: 1.4 !important;
 }
-[data-testid="stSidebar"] .stButton button:hover,
 [data-testid="stSidebar"] [data-testid="stButton"] button:hover {
   background: #F1F5F9 !important;
   color: #1D4ED8 !important;
 }
-[data-testid="stSidebar"] .stButton button[kind="primary"],
-[data-testid="stSidebar"] .stButton button[data-testid="stBaseButton-primary"],
-[data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"] {
+[data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"],
+[data-testid="stSidebar"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
   color: #1D4ED8 !important;
-  border-color: #DBEAFE !important;
+  border-color: #BFDBFE !important;
   background: #EFF6FF !important;
   font-weight: 750 !important;
 }
+[data-testid="stSidebar"] [data-testid="stButton"] button:focus-visible {
+  outline: 2px solid #2563EB !important;
+  outline-offset: 2px;
+}
 [data-testid="stSidebar"] .sidebar-footer {
-  margin-top: 12px;
+  margin-top: 8px;
   border-top: 1px solid var(--line);
   padding: 12px 4px 0;
+  font-family: var(--sidebar-font);
+  text-align: center;
 }
 [data-testid="stSidebar"] .sidebar-meta {
   padding: 12px;
@@ -176,24 +222,24 @@ h3{font-size:1.08rem!important}
   background: #F8FAFC;
   color: #475569;
   font-size: 13px;
-  line-height: 1.65;
+  line-height: 1.7;
+  letter-spacing: -.015em;
   text-align: center;
+  word-break: keep-all;
+  overflow-wrap: break-word;
 }
 [data-testid="stSidebar"] .sidebar-info-label {
   color: #64748B;
   font-size: 12px;
   line-height: 1.5;
-  font-weight: 650;
+  font-weight: 700;
   margin-bottom: 5px;
 }
 [data-testid="stSidebar"] .sidebar-meta strong {
   color: #334155;
-  font-weight: 650;
+  font-weight: 730;
 }
-[data-testid="stSidebar"] .sidebar-source {
-  margin-top: 8px;
-  word-break: keep-all;
-}
+[data-testid="stSidebar"] .sidebar-source { margin-top: 8px; }
 [data-testid="stSidebar"] .sidebar-source-note {
   color: #64748B;
   margin-top: 4px;
@@ -209,8 +255,9 @@ h3{font-size:1.08rem!important}
   font-weight: 650;
 }
 @media (max-width: 700px) {
-  [data-testid="stSidebar"] [data-testid="stSidebarContent"] {padding: 1rem .65rem 1rem !important;}
-  [data-testid="stSidebar"] .sidebar-header {min-height: 112px;}
+  [data-testid="stSidebar"] [data-testid="stSidebarContent"] { padding: 1rem .65rem 1rem !important; }
+  [data-testid="stSidebar"] .sidebar-header { min-height: 112px; }
+  [data-testid="stSidebar"] [data-testid="stButton"] button { padding: 9px 8px !important; }
 }
 /* Top bar / page title */
 .app-topbar{display:flex;align-items:center;gap:12px;min-height:49px;padding:0 17px;margin-bottom:19px;

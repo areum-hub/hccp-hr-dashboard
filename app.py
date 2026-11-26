@@ -324,13 +324,19 @@ with st.sidebar:
       '</div>',
       unsafe_allow_html=True,
     )
-    for group,items_in_group in NAV_GROUPS:
-        # Native Streamlit caption reserves its own height and wraps predictably.
-        st.caption(group)
-        for item_key, item_label in items_in_group:
-            is_active=(st.session_state['page']==item_key)
-            st.button(item_label,key='nav_'+item_key,type='primary' if is_active else 'secondary',
-                      use_container_width=True,on_click=move_to,args=(item_key,))
+    # Keep the native navigation controls and their stable keys, grouped by research stage.
+    for group_index,(group,items_in_group) in enumerate(NAV_GROUPS):
+        group_active=any(st.session_state['page']==item_key for item_key,_ in items_in_group)
+        with theory_container(f'sidebar_nav_group_{group_index}'):
+            group_class='sidebar-group-title is-current' if group_active else 'sidebar-group-title'
+            st.markdown(
+                f'<div class="{group_class}"><span>{escape(group)}</span></div>',
+                unsafe_allow_html=True,
+            )
+            for item_key,item_label in items_in_group:
+                is_active=(st.session_state['page']==item_key)
+                st.button(item_label,key='nav_'+item_key,type='primary' if is_active else 'secondary',
+                          use_container_width=True,on_click=move_to,args=(item_key,))
     st.markdown(
       '<div class="sidebar-footer"><div class="sidebar-meta">'
       '<div class="sidebar-info-label">분석 표본</div>'
