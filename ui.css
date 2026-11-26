@@ -319,8 +319,8 @@ h3{font-size:1.08rem!important}
   padding: 0;
   margin: 0;
   gap: 16px;
-  font-size: 19px;
-  font-size: clamp(13px, calc(2.2cqw - 1px), 19px);
+  font-size: 17px;
+  font-size: clamp(11px, calc(2.2cqw - 3px), 17px);
   flex-wrap: nowrap;
   line-height: 1.5;
 }
@@ -332,7 +332,7 @@ h3{font-size:1.08rem!important}
   flex: 0 0 40px;
   width: 40px;
   height: 40px;
-  font-size: 17px;
+  font-size: 15px;
   padding: 0;
 }
 .st-key-app_header .app-topbar strong,
@@ -343,8 +343,8 @@ h3{font-size:1.08rem!important}
   white-space: nowrap;
 }
 .st-key-app_header .app-topbar strong {
-  font-size: 23px;
-  font-size: clamp(15px, calc(2.65cqw - 1px), 23px);
+  font-size: 21px;
+  font-size: clamp(13px, calc(2.65cqw - 3px), 21px);
   flex-shrink: 0;
 }
 .st-key-app_header .topbar-divider {
@@ -354,8 +354,8 @@ h3{font-size:1.08rem!important}
 .st-key-app_header .topbar-version {
   display: inline-block;
   flex-shrink: 0;
-  font-size: 19px;
-  font-size: clamp(13px, calc(2.2cqw - 1px), 19px);
+  font-size: 17px;
+  font-size: clamp(11px, calc(2.2cqw - 3px), 17px);
   line-height: 1.5;
 }
 .st-key-app_header .st-key-research_reference_link [data-testid="stButton"] {
@@ -384,8 +384,8 @@ h3{font-size:1.08rem!important}
 .st-key-research_reference_info button,
 .st-key-research_reference_info button p {
   font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-size: 19px !important;
-  font-size: clamp(13px, calc(2.2cqw - 1px), 19px) !important;
+  font-size: 17px !important;
+  font-size: clamp(11px, calc(2.2cqw - 3px), 17px) !important;
   line-height: 1.5 !important;
   font-weight: 650 !important;
   letter-spacing: normal !important;
@@ -419,7 +419,7 @@ h3{font-size:1.08rem!important}
 @container app-header (max-width: 720px) {
   .st-key-app_header [data-testid="stHorizontalBlock"] { gap: 8px !important; }
   .st-key-app_header .app-topbar { gap: 8px; }
-  .st-key-app_header .app-topbar-mark { flex-basis: 32px; width: 32px; height: 32px; font-size: 13px; }
+  .st-key-app_header .app-topbar-mark { flex-basis: 32px; width: 32px; height: 32px; font-size: 11px; }
   .st-key-research_reference_link [data-testid="stButton"] button,
   .st-key-research_reference_info button { padding: 0 10px !important; }
 }
