@@ -156,6 +156,7 @@ h3{font-size:1.08rem!important}
   letter-spacing: -.015em;
   text-align: center;
   color: #475569;
+  margin-bottom: 6px;
 }
 [data-testid="stSidebar"] .sidebar-group-title.is-current {
   background: #EFF6FF;
