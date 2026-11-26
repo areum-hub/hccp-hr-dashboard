@@ -331,10 +331,7 @@ def research_reference_link():
         with link_container:
             button_options=dict(key='research_reference_info',use_container_width=False,
                                 help='자료 출처 · 참고문헌 · AI 활용 · 연구윤리')
-            try:
-                opened=st.button(reference_label,icon=':material/info:',**button_options)
-            except TypeError:
-                opened=st.button(reference_label,**button_options)
+            opened=st.button(reference_label,**button_options)
             if opened:
                 show_reference_information()
     else:
@@ -385,18 +382,20 @@ except TypeError:
     header_container=st.container()
 with header_container:
     try:
-        header_main,header_info=st.columns([5.5,1],gap='small',vertical_alignment='center')
+        header_main,header_info,header_version=st.columns([5.5,1,1],gap='small',vertical_alignment='center')
     except TypeError:
-        header_main,header_info=st.columns([5.5,1],gap='small')
+        header_main,header_info,header_version=st.columns([5.5,1,1],gap='small')
     with header_main:
         st.markdown(
           '<div class="app-topbar"><span class="app-topbar-mark">HR</span>'
           '<strong>Decision Analytics</strong><span class="topbar-divider"></span>'
-          f'<span class="topbar-page">{escape(NAV_LABELS[page])}</span><span class="topbar-version">HCCPⅡ · 2023</span></div>',
+          f'<span class="topbar-page">{escape(NAV_LABELS[page])}</span></div>',
           unsafe_allow_html=True,
         )
     with header_info:
         research_reference_link()
+    with header_version:
+        st.markdown('<div class="topbar-version">HCCPⅡ · 2023</div>',unsafe_allow_html=True)
 
 if page=='overview':
     st.markdown(

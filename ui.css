@@ -233,9 +233,9 @@ h3{font-size:1.08rem!important}
   -webkit-mask: var(--nav-icon) center / contain no-repeat;
   mask: var(--nav-icon) center / contain no-repeat;
 }
-[data-testid="stSidebar"] .st-key-nav_overview button { --nav-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Crect%20x%3D%223%22%20y%3D%224%22%20width%3D%225%22%20height%3D%225%22%20rx%3D%221%22%2F%3E%3Crect%20x%3D%223%22%20y%3D%2215%22%20width%3D%225%22%20height%3D%225%22%20rx%3D%221%22%2F%3E%3Cpath%20d%3D%22M12%206.5h9M12%2017.5h9%22%2F%3E%3C%2Fsvg%3E"); }
-[data-testid="stSidebar"] .st-key-nav_theory button { --nav-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%226%22%20cy%3D%225%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%226%22%20cy%3D%2219%22%20r%3D%222%22%2F%3E%3Ccircle%20cx%3D%2218%22%20cy%3D%226%22%20r%3D%222%22%2F%3E%3Cpath%20d%3D%22M6%207v10M18%208a10%2010%200%200%201-10%2010%22%2F%3E%3C%2Fsvg%3E"); }
-[data-testid="stSidebar"] .st-key-nav_decision button { --nav-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%225%22%2F%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%221%22%2F%3E%3C%2Fsvg%3E"); }
+[data-testid="stSidebar"] .st-key-nav_overview button { --nav-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m3%2010%209-7%209%207v10a1%201%200%200%201-1%201H4a1%201%200%200%201-1-1z%22%2F%3E%3Cpath%20d%3D%22M9%2021v-8h6v8%22%2F%3E%3C%2Fsvg%3E"); }
+[data-testid="stSidebar"] .st-key-nav_theory button { --nav-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22m12%203%2010%205-10%205L2%208zM2%2012l10%205%2010-5M2%2016l10%205%2010-5%22%2F%3E%3C%2Fsvg%3E"); }
+[data-testid="stSidebar"] .st-key-nav_decision button { --nav-icon: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Cpath%20d%3D%22M5%2021V4m0%201c4-4%208%204%2014%200v10c-6%204-10-4-14%200%22%2F%3E%3C%2Fsvg%3E"); }
 [data-testid="stSidebar"] .st-key-sidebar_nav_group_1 [data-testid="stButton"] button p {
   font-variant-numeric: tabular-nums;
   white-space: pre-wrap !important;
@@ -395,7 +395,8 @@ h3{font-size:1.08rem!important}
   width: auto !important;
   min-width: 0 !important;
 }
-.st-key-app_header [data-testid="stHorizontalBlock"] > :last-child {
+.st-key-app_header [data-testid="stHorizontalBlock"] > :nth-child(2),
+.st-key-app_header [data-testid="stHorizontalBlock"] > :nth-child(3) {
   flex: 0 0 auto !important;
   width: auto !important;
   min-width: max-content !important;
@@ -453,11 +454,17 @@ h3{font-size:1.08rem!important}
   font-weight: 600;
 }
 .st-key-app_header .topbar-version {
-  display: inline-block;
-  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 32px;
+  margin: 0;
+  color: #64748B;
   font-size: 13px;
-  font-size: clamp(9px, calc(2.2cqw - 7px), 13px);
+  font-size: clamp(10px, calc(2.2cqw - 7px), 13px);
+  font-weight: 620;
   line-height: 1.5;
+  white-space: nowrap;
 }
 .st-key-app_header .st-key-research_reference_link [data-testid="stButton"] {
   display: flex;
@@ -476,6 +483,7 @@ h3{font-size:1.08rem!important}
   min-height: 32px !important;
   padding: 0 10px !important;
   gap: 5px !important;
+  display: inline-flex !important;
   align-items: center !important;
   justify-content: center !important;
   white-space: nowrap !important;
@@ -497,11 +505,18 @@ h3{font-size:1.08rem!important}
   color: inherit !important;
   white-space: nowrap !important;
 }
-.st-key-research_reference_link [data-testid="stIconMaterial"],
-.st-key-research_reference_info [data-testid="stIconMaterial"] {
-  font-size: 16px !important;
-  line-height: 1 !important;
-  flex-shrink: 0;
+/* Match the sidebar's local 16px monoline icon style. */
+.st-key-research_reference_link [data-testid="stButton"] button::before,
+.st-key-research_reference_info button::before {
+  content: "";
+  display: block;
+  width: 16px;
+  height: 16px;
+  flex: 0 0 16px;
+  background-color: currentColor;
+  opacity: .88;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22M12%2011v5m0-8h.01%22%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
+  mask: url("data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%2024%2024%22%20fill%3D%22none%22%20stroke%3D%22black%22%20stroke-width%3D%221.7%22%20stroke-linecap%3D%22round%22%20stroke-linejoin%3D%22round%22%3E%3Ccircle%20cx%3D%2212%22%20cy%3D%2212%22%20r%3D%229%22%2F%3E%3Cpath%20d%3D%22M12%2011v5m0-8h.01%22%2F%3E%3C%2Fsvg%3E") center / contain no-repeat;
 }
 .st-key-research_reference_link [data-testid="stButton"] button:hover,
 .st-key-research_reference_info button:hover {
@@ -529,6 +544,7 @@ h3{font-size:1.08rem!important}
   .st-key-app_header .topbar-divider { display: none; }
 }
 @container app-header (max-width: 400px) {
+  .st-key-app_header [data-testid="stHorizontalBlock"] > :nth-child(3) { display: none !important; }
   .st-key-app_header .topbar-version { display: none; }
   .st-key-app_header .app-topbar strong { flex-shrink: 1; }
   .st-key-research_reference_link [data-testid="stButton"] button,
