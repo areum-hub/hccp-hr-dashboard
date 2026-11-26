@@ -40,8 +40,12 @@ h3{font-size:1.08rem!important}
 }
 [data-testid="stSidebar"] [data-testid="stSidebarContent"] {
   box-sizing: border-box;
-  padding: 1.15rem .85rem 1.1rem !important;
+  padding: .85rem .7rem .85rem !important;
   overflow-x: hidden;
+}
+/* Reduce only sidebar content spacing; keep native collapse and scroll layout intact. */
+[data-testid="stSidebar"] [data-testid="stSidebarContent"] [data-testid="stVerticalBlock"] {
+  gap: 9px !important;
 }
 /* Keep the brand and dataset banner in one measured block. */
 [data-testid="stSidebar"] .sidebar-header {
@@ -49,7 +53,7 @@ h3{font-size:1.08rem!important}
   display: block;
   min-height: 0;
   width: 100%;
-  padding: 14px 10px 13px;
+  padding: 10px 9px;
   margin: 0;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -62,9 +66,9 @@ h3{font-size:1.08rem!important}
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  min-height: 40px;
-  margin: 0 0 12px;
+  gap: 8px;
+  min-height: 36px;
+  margin: 0 0 8px;
   padding: 0;
 }
 [data-testid="stSidebar"] .brand-symbol {
@@ -77,12 +81,12 @@ h3{font-size:1.08rem!important}
   border-radius: 10px;
   background: #1D4ED8;
   color: #fff;
-  font-size: 14px;
+  font-size: 12px;
   font-weight: 800;
 }
 [data-testid="stSidebar"] .brand-text { min-width: 0; display: block; }
 [data-testid="stSidebar"] .brand-title {
-  font-size: 15px;
+  font-size: 13px;
   line-height: 1.4;
   color: var(--ink);
   font-weight: 780;
@@ -92,7 +96,7 @@ h3{font-size:1.08rem!important}
   text-align: center;
 }
 [data-testid="stSidebar"] .brand-subtitle {
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.6;
   color: var(--muted);
   font-weight: 500;
@@ -105,12 +109,12 @@ h3{font-size:1.08rem!important}
   max-width: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding: 6px 10px;
+  padding: 5px 8px;
   border: 1px solid #DBEAFE;
   background: #EFF6FF;
   border-radius: 7px;
   color: #1D4ED8;
-  font-size: 12px;
+  font-size: 10px;
   font-weight: 700;
   letter-spacing: -.01em;
   line-height: 1.5;
@@ -123,27 +127,27 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] [class*="st-key-sidebar_nav_group_"] {
   box-sizing: border-box;
   min-width: 0;
-  gap: 4px !important;
+  gap: 3px !important;
   margin: 0;
-  padding: 7px;
+  padding: 5px;
   background: #FFF;
   border: 1px solid var(--line);
   border-radius: 12px;
 }
 [data-testid="stSidebar"] [class*="st-key-sidebar_nav_group_"] [data-testid="stVerticalBlock"] {
-  gap: 4px !important;
+  gap: 3px !important;
 }
 [data-testid="stSidebar"] .sidebar-group-title {
   display: flex;
   align-items: center;
   justify-content: center;
   box-sizing: border-box;
-  min-height: 31px;
-  padding: 5px 8px;
+  min-height: 28px;
+  padding: 4px 7px;
   background: #F1F5F9;
   border-radius: 7px;
   font-family: var(--sidebar-font);
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 750;
   line-height: 1.55;
   letter-spacing: -.015em;
@@ -157,16 +161,16 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
   margin: 2px 0 0 !important;
   font-family: var(--sidebar-font) !important;
-  font-size: 12px !important;
+  font-size: 10px !important;
   color: var(--muted) !important;
   text-align: center;
 }
 [data-testid="stSidebar"] [data-testid="stButton"] button {
   box-sizing: border-box;
   width: 100% !important;
-  min-height: 39px !important;
+  min-height: 34px !important;
   height: auto !important;
-  padding: 8px 9px !important;
+  padding: 6px 8px !important;
   border: 1px solid transparent !important;
   border-radius: 8px !important;
   background: transparent !important;
@@ -177,7 +181,7 @@ h3{font-size:1.08rem!important}
   align-items: center !important;
   text-align: center !important;
   font-family: var(--sidebar-font) !important;
-  font-size: 15px !important;
+  font-size: 13px !important;
   font-weight: 600 !important;
   letter-spacing: -.025em !important;
   line-height: 1.5 !important;
@@ -224,12 +228,12 @@ h3{font-size:1.08rem!important}
   text-align: center;
 }
 [data-testid="stSidebar"] .sidebar-meta {
-  padding: 12px;
+  padding: 9px 10px;
   border: 1px solid var(--line);
   border-radius: 11px;
   background: #FFF;
   color: #475569;
-  font-size: 13px;
+  font-size: 11px;
   line-height: 1.7;
   letter-spacing: -.015em;
   text-align: center;
@@ -238,34 +242,34 @@ h3{font-size:1.08rem!important}
 }
 [data-testid="stSidebar"] .sidebar-info-label {
   color: #64748B;
-  font-size: 12px;
+  font-size: 10px;
   line-height: 1.5;
   font-weight: 700;
-  margin-bottom: 5px;
+  margin-bottom: 4px;
 }
 [data-testid="stSidebar"] .sidebar-meta strong {
   color: #334155;
   font-weight: 730;
 }
-[data-testid="stSidebar"] .sidebar-source { margin-top: 8px; }
+[data-testid="stSidebar"] .sidebar-source { margin-top: 6px; }
 [data-testid="stSidebar"] .sidebar-source-note {
   color: #64748B;
   margin-top: 4px;
 }
 [data-testid="stSidebar"] .sidebar-source a {
   display: inline-block;
-  margin-top: 6px;
+  margin-top: 4px;
 }
 [data-testid="stSidebar"] .sidebar-footer a {
   color: #2563EB;
   text-decoration: none;
-  font-size: 13px;
+  font-size: 11px;
   font-weight: 650;
 }
 @media (max-width: 700px) {
-  [data-testid="stSidebar"] [data-testid="stSidebarContent"] { padding: 1rem .65rem 1rem !important; }
-  [data-testid="stSidebar"] .sidebar-header { padding: 12px 8px; }
-  [data-testid="stSidebar"] [data-testid="stButton"] button { padding: 9px 8px !important; }
+  [data-testid="stSidebar"] [data-testid="stSidebarContent"] { padding: .8rem .6rem !important; }
+  [data-testid="stSidebar"] .sidebar-header { padding: 10px 8px; }
+  [data-testid="stSidebar"] [data-testid="stButton"] button { padding: 7px 8px !important; }
 }
 /* Top bar / page title */
 .app-topbar{display:flex;align-items:center;gap:12px;min-height:49px;padding:0 17px;margin-bottom:19px;
