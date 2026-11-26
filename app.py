@@ -332,7 +332,7 @@ def research_reference_link():
             button_options=dict(key='research_reference_info',use_container_width=False,
                                 help='자료 출처 · 참고문헌 · AI 활용 · 연구윤리')
             try:
-                opened=st.button(reference_label,icon=':material/menu_book:',**button_options)
+                opened=st.button(reference_label,icon=':material/info:',**button_options)
             except TypeError:
                 opened=st.button(reference_label,**button_options)
             if opened:
