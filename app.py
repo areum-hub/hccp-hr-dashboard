@@ -252,6 +252,8 @@ if page=='overview':
       '<div class="hero-tags"><span>H1–H5 주 검증</span><span>H6 탐색적 SEM</span>'
       '<span>비인과적 관찰연구</span></div></div>',unsafe_allow_html=True,
     )
+    st.markdown('**실무질문** · '+MAIN_QUESTION)
+
     a,b,c,d=st.columns(4,gap='medium')
     a.metric('분석 근로자',f'{P["analysis_rows"]:,}명')
     b.metric('대상 기업',f'{P["analysis_firms"]:,}개')
@@ -286,7 +288,7 @@ if page=='overview':
         fig.update_xaxes(range=[0,5.4],title='전체 표본 평균(5점 척도)')
         plot(viz.frame(fig,height=325),key='overview_means')
     with right:
-        section_title('연구질문 → HR 판단','분석 결과가 실제 의사결정에 연결되는 경로')
+        section_title('연구 진행 흐름','분석 결과가 실제 HR 의사결정에 연결되는 경로')
         st.markdown(
             '<div class="step-list">'
             '<div><span>01</span><strong>실무질문과 이론</strong><small>어떤 조직요인이 직무만족·이직 고려와 관련되는가?</small></div>'
@@ -294,20 +296,21 @@ if page=='overview':
             '<div><span>03</span><strong>HR 의사결정</strong><small>진단 후보 선별 → 현장 검증 → 제한적 시범사업 평가</small></div>'
             '</div>',unsafe_allow_html=True,
         )
-    st.markdown('**실무질문** · '+MAIN_QUESTION)
 
     section_title('연구 참고 정보')
     reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
-    reference_sections={}
-    for block in ('\n'+reference_text).split('\n### ')[1:]:
-        heading,_,body=block.partition('\n')
-        reference_sections[heading.strip()]=body.strip()
-    reference_headings=['자료 출처','참고문헌','AI 활용 및 검증','연구윤리 및 활용 범위']
-    if list(reference_sections)==reference_headings:
-        for tab,heading in zip(st.tabs(reference_headings),reference_headings):
-            tab.markdown(reference_sections[heading])
+    reference_label='자료 출처 · 참고문헌 · AI 활용 · 연구윤리 보기'
+    dialog=getattr(st,'dialog',None) or getattr(st,'experimental_dialog',None)
+    if dialog is not None:
+        @dialog('연구 참고 정보',width='large')
+        def show_reference_information():
+            st.markdown(reference_text)
+        if st.button(reference_label,key='overview_reference_info',use_container_width=False):
+            show_reference_information()
     else:
-        st.markdown(reference_text)
+        # Compatibility for environments without Streamlit's dialog API.
+        with st.expander(reference_label,expanded=False):
+            st.markdown(reference_text)
 
 elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
