@@ -295,10 +295,6 @@ if page=='overview':
             '</div>',unsafe_allow_html=True,
         )
     st.markdown('**실무질문** · '+MAIN_QUESTION)
-    c1,c2,c3=st.columns(3)
-    c1.button('이론 · 연구가설 보기',key='jump_theory',use_container_width=True,on_click=move_to,args=('theory',))
-    c2.button('회귀분석 결과 보기',key='jump_ols',use_container_width=True,on_click=move_to,args=('ols',))
-    c3.button('HR 의사결정 도구',key='jump_decision',use_container_width=True,on_click=move_to,args=('decision',))
 
     with st.expander('자료 출처 · 참고문헌 · AI 활용 · 연구윤리 상세 확인', expanded=False):
         st.markdown((BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8'))
