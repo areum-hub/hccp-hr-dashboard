@@ -320,6 +320,9 @@ elif page=='reliability':
     c1.metric('조직신뢰 · Cronbach α',f'{P["alpha_trust"]:.3f}')
     c2.metric('의사소통 · Cronbach α',f'{P["alpha_comm"]:.3f}')
     c3.metric('2요인 CFA · 요인상관',f'{SA["latent_correlation"]:.3f}')
+    panel('측정 타당성 · 판별타당성 미확보',
+          f'두 요인 간 상관이 {SA["latent_correlation"]:.3f}이며, 2요인 CFA의 CFI {SA["two_factor"]["cfi"]:.3f}, RMSEA {SA["two_factor"]["rmsea"]:.3f}는 측정모형의 한계를 보여줍니다.',
+          'amber','내적 일관성이 양호하더라도 조직신뢰와 의사소통을 통계적으로 명확하게 구분하기는 어렵습니다.')
     section_title('문항별 5점 평균')
     pairs=[('조직신뢰',['W23Q22D','W23Q24D','W23Q24F'],BLUE),
            ('의사소통',['W23Q22F','W23Q24A','W23Q24B','W23Q24C'],TEAL)]
@@ -337,7 +340,8 @@ elif page=='reliability':
     section_title('CFA 측정모형 적합도','5점 문항을 연속형으로 근사한 ML 적합 결과이며 기업 군집·순서형 분포는 보정하지 않았습니다.')
     cfa=pd.DataFrame([{'모형':name,'CFI':d['cfi'],'TLI':d['tli'],'RMSEA':d['rmsea'],'SRMR':d['srmr']}
        for name,d in [('1요인',SA['one_factor']),('2요인',SA['two_factor'])]])
-    st.dataframe(cfa,use_container_width=True,hide_index=True)
+    st.dataframe(cfa.round(3),use_container_width=True,hide_index=True)
+    st.caption('적합도 해석 | 1요인·2요인 모형 모두 RMSEA가 높고, 2요인 모형의 적합도 개선이 확인되지 않았습니다. 문항 구조와 순서형·기업 군집 보정에 대한 추가 검토가 필요합니다.')
     evidence_triptych('내적 일관성과 구성개념 구별은 같은가?',
         'α 값은 문항 내적 일관성을 보여주지만 2요인 CFA의 요인상관은 0.999로 구별이 불충분합니다.',
         '신뢰와 소통의 독립적 정책효과를 전제하지 말고, 문항 구성과 측정 타당성을 재검토해야 합니다.',
@@ -431,7 +435,21 @@ elif page=='ordinal':
 
 elif page=='sem':
     page_intro('DATA ANALYSIS  /  05','구조방정식 · SEM','H1–H5의 보완적 구조경로와 탐색적 간접경로 H6를 실제 저장된 추정값으로 보여줍니다.')
-    section_title('SEM 적합 구조경로','조직신뢰는 3문항 잠재요인, 의사소통은 4문항 평균 관측 합성지표로 처리했습니다.')
+    section_title('SEM 모형 적합도 및 해석 범위','탐색적 혼합형 SEM의 적합도를 여러 지표로 종합하여 판단합니다.')
+    fit=SEM['fit']; cols=st.columns(4,gap='medium')
+    for col,k in zip(cols,['cfi','tli','rmsea','srmr']):
+        col.metric(k.upper(),f'{fit[k]:.3f}')
+    a,b=st.columns(2,gap='medium')
+    with a:
+        panel('모형 적합도 · 일부 한계',
+              f'CFI {fit["cfi"]:.3f}, TLI {fit["tli"]:.3f}, SRMR {fit["srmr"]:.3f}는 비교적 양호하나, RMSEA {fit["rmsea"]:.3f}은 일반적 참고 수준(0.08)을 초과합니다.',
+              'amber','참고 수준은 절대적인 합격 기준이 아닙니다. 전체 모형의 적합성이 충분히 확보됐다고 단정하지 않습니다.')
+    with b:
+        panel('측정 타당성 · 해석 주의',
+              f'2요인 CFA의 요인상관은 {SA["latent_correlation"]:.3f}이며, 혼합형 SEM의 조직신뢰·의사소통 상관도 {SEM_EFFECTS["trust_comm_latent_observed_corr"]["estimate"]:.3f}입니다.',
+              'neutral','관측 합성지표를 사용해도 판별타당성 문제가 해결되는 것은 아닙니다. H2·H4 등 개별 경로의 해석에 주의합니다.')
+    st.caption('추정 범위 | 5점 응답을 연속형으로 근사한 최대우도 추정입니다. 기업 단위 부트스트랩은 경로계수의 신뢰구간에 반영되며, 모형 적합도 지표 자체는 기업 군집 보정되지 않았습니다.')
+    section_title('SEM 구조경로 추정 결과','조직신뢰는 3문항 잠재요인, 의사소통은 4문항 평균 관측 합성지표로 처리했습니다. 탐색적 구조경로이며 인과관계를 뜻하지 않습니다.')
     plot(viz.sem_fitted_paths(SEM),key='sem_structure')
     section_title('SEM 추정값 · 기업 부트스트랩 95% 구간')
     st.dataframe(pd.DataFrame([{'가설':h['id'],'경로':h['path'],'예상':h['direction'],
@@ -439,9 +457,6 @@ elif page=='sem':
        '95% CI':f'[{fmt(SEM_EFFECTS[h["id"]]["ci_low"])}, {fmt(SEM_EFFECTS[h["id"]]["ci_high"])}]',
        '판정':SEM_EFFECTS[h['id']]['classification']} for h in SEM_HYPOTHESES]),
        hide_index=True,use_container_width=True)
-    fit=SEM['fit']; cols=st.columns(4)
-    for col,k in zip(cols,['cfi','tli','rmsea','srmr']):
-        col.metric(k.upper(),f'{fit[k]:.3f}')
     section_title('직접·간접·전체 경로의 구분','H6는 모형에서 추정한 통계적 간접경로이며 시간적 매개효과를 입증하지 않습니다.')
     paths=[('직접경로 H3',SEM_EFFECTS['H3']),('탐색적 간접 H6',SEM_EFFECTS['H6']),('전체 경로 합',SEM_EFFECTS['trust_total'])]
     st.dataframe(pd.DataFrame([{'구분':name,'SEM B':fmt(e['estimate']),
