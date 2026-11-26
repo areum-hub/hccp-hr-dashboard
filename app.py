@@ -263,18 +263,7 @@ if page=='overview':
     c3.button('HR 의사결정 도구',key='jump_decision',use_container_width=True,on_click=move_to,args=('decision',))
 
     with st.expander('자료 출처 · 참고문헌 · AI 활용 · 연구윤리 상세 확인', expanded=False):
-        st.markdown(
-            '**조사 출처**: 한국직업능력연구원(KRIVET), 제2차 인적자본기업패널(HCCPⅡ) '
-            '제4차(2023) 근로자 조사. 공식 전체 응답자 10,759명 중 연령 결측 '
-            '28명을 제외한 10,731명(497개 기업)이 이 과제의 분석표본입니다. '
-            '[공식 조사 안내](https://www.krivet.re.kr/kor/sub.do?menuSn=18) · '
-            '[자료 생성·활용 보고서](https://www.krivet.re.kr/kor/sub.do?menuSn=12&pstNo=PB0000000425)'
-        )
-        st.caption('원자료·개인별 응답 행·기업 식별자는 공개 앱에 포함하지 않았습니다. '
-                   '그러나 집계 결과의 공개 가능 범위는 원자료 이용약관을 확인해야 합니다.')
         st.markdown((BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8'))
-        st.warning('이 결과는 관찰자료에 기반한 집단 수준의 관련성으로, '
-                   '직원 개인의 이직 위험 점수화나 자동 인사결정에 사용해서는 안 됩니다.')
 
 elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
