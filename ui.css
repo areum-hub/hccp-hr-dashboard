@@ -288,14 +288,14 @@ h3{font-size:1.08rem!important}
   background: #FFF;
   border: 1px solid var(--line);
   border-radius: 11px;
-  padding: 7px 15px;
-  min-height: 50px;
+  padding: 10px 20px;
+  min-height: 60px;
   margin-bottom: 19px;
   box-shadow: var(--shadow);
 }
 .st-key-app_header [data-testid="stHorizontalBlock"] {
   align-items: center !important;
-  gap: 12px !important;
+  gap: 16px !important;
   flex-wrap: nowrap !important;
 }
 .st-key-app_header [data-testid="stHorizontalBlock"] > :first-child {
@@ -313,10 +313,11 @@ h3{font-size:1.08rem!important}
   border: 0;
   border-radius: 0;
   box-shadow: none;
-  min-height: 34px;
+  min-height: 38px;
   padding: 0;
   margin: 0;
-  gap: 12px;
+  gap: 16px;
+  font-size: 13px;
   flex-wrap: nowrap;
   line-height: 1.5;
 }
@@ -325,9 +326,10 @@ h3{font-size:1.08rem!important}
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  flex: 0 0 28px;
-  width: 28px;
-  height: 28px;
+  flex: 0 0 32px;
+  width: 32px;
+  height: 32px;
+  font-size: 12px;
   padding: 0;
 }
 .st-key-app_header .app-topbar strong,
@@ -337,13 +339,17 @@ h3{font-size:1.08rem!important}
   text-overflow: ellipsis;
   white-space: nowrap;
 }
+.st-key-app_header .app-topbar strong {
+  font-size: 14px;
+}
 .st-key-app_header .topbar-divider {
   flex-shrink: 0;
+  height: 18px;
 }
 .st-key-app_header .topbar-version {
   display: inline-block;
   flex-shrink: 0;
-  font-size: 11px;
+  font-size: 13px;
   line-height: 1.5;
 }
 .st-key-app_header .st-key-research_reference_link [data-testid="stButton"] {
@@ -359,10 +365,10 @@ h3{font-size:1.08rem!important}
   background: #FFF !important;
   box-shadow: none !important;
   color: #475569 !important;
-  height: 34px !important;
-  min-height: 34px !important;
-  padding: 0 10px !important;
-  gap: 5px !important;
+  height: 38px !important;
+  min-height: 38px !important;
+  padding: 0 12px !important;
+  gap: 6px !important;
   align-items: center !important;
   justify-content: center !important;
   white-space: nowrap !important;
@@ -372,7 +378,7 @@ h3{font-size:1.08rem!important}
 .st-key-research_reference_info button,
 .st-key-research_reference_info button p {
   font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-size: 11px !important;
+  font-size: 13px !important;
   line-height: 1.5 !important;
   font-weight: 650 !important;
   letter-spacing: normal !important;
@@ -385,7 +391,7 @@ h3{font-size:1.08rem!important}
 }
 .st-key-research_reference_link [data-testid="stIconMaterial"],
 .st-key-research_reference_info [data-testid="stIconMaterial"] {
-  font-size: 16px !important;
+  font-size: 18px !important;
   line-height: 1 !important;
   flex-shrink: 0;
 }
@@ -401,13 +407,17 @@ h3{font-size:1.08rem!important}
   outline-offset: 2px;
 }
 @media(max-width:800px) {
-  .st-key-app_header { padding: 7px 10px; }
+  .st-key-app_header { padding: 10px 12px; }
   .st-key-app_header [data-testid="stHorizontalBlock"] { gap: 8px !important; }
   .st-key-app_header .app-topbar { gap: 8px; }
 }
 @media(max-width:600px) {
   .st-key-app_header .topbar-page,
   .st-key-app_header .topbar-divider { display: none; }
-  .st-key-app_header .app-topbar strong { font-size: 11px; }
-  .st-key-app_header .topbar-version { font-size: 10px; }
+  .st-key-app_header .app-topbar strong { font-size: 12px; }
+  .st-key-app_header .topbar-version { font-size: 11px; }
+  .st-key-research_reference_link [data-testid="stButton"] button,
+  .st-key-research_reference_info button { padding: 0 8px !important; }
+  .st-key-research_reference_link [data-testid="stButton"] button p,
+  .st-key-research_reference_info button p { font-size: 12px !important; }
 }
