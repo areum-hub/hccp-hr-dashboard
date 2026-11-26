@@ -23,9 +23,9 @@ h1,h2,h3,h4,h5{color:var(--ink)!important;font-family:inherit!important;letter-s
 h2{font-size:1.35rem!important;margin-top:.75rem}
 h3{font-size:1.08rem!important}
 [data-testid="stDivider"]{margin:1.35rem 0;border-color:var(--line)}
-/* Sidebar: unified research navigation typography and clearly separated stages. */
+/* Sidebar: compact grouped navigation on a soft neutral canvas. */
 [data-testid="stSidebar"] {
-  background: var(--white);
+  background: #F8FAFC;
   border-right: 1px solid var(--line);
   --sidebar-font: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
   font-family: var(--sidebar-font);
@@ -47,11 +47,13 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] .sidebar-header {
   box-sizing: border-box;
   display: block;
-  min-height: 106px;
+  min-height: 0;
   width: 100%;
-  padding: 9px 4px 14px;
-  margin: 0 0 4px;
-  border-bottom: 1px solid var(--line);
+  padding: 14px 10px 13px;
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  background: #FFF;
   overflow: visible;
   text-align: center;
   font-family: var(--sidebar-font);
@@ -62,7 +64,7 @@ h3{font-size:1.08rem!important}
   justify-content: center;
   gap: 10px;
   min-height: 40px;
-  margin: 0 0 14px;
+  margin: 0 0 12px;
   padding: 0;
 }
 [data-testid="stSidebar"] .brand-symbol {
@@ -104,9 +106,9 @@ h3{font-size:1.08rem!important}
   box-sizing: border-box;
   margin: 0;
   padding: 6px 10px;
-  border: 1px solid #BFDBFE;
+  border: 1px solid #DBEAFE;
   background: #EFF6FF;
-  border-radius: 999px;
+  border-radius: 7px;
   color: #1D4ED8;
   font-size: 12px;
   font-weight: 700;
@@ -116,41 +118,42 @@ h3{font-size:1.08rem!important}
   word-break: keep-all;
   text-align: center;
 }
-/* Each native menu group is independently measured; avoid affecting the collapse control. */
+
+/* Three compact stage panels; no horizontal ornament or extra navigation controls. */
 [data-testid="stSidebar"] [class*="st-key-sidebar_nav_group_"] {
-  gap: 5px !important;
+  box-sizing: border-box;
+  min-width: 0;
+  gap: 4px !important;
   margin: 0;
-  padding: 2px 0 4px;
+  padding: 7px;
+  background: #FFF;
+  border: 1px solid var(--line);
+  border-radius: 12px;
 }
 [data-testid="stSidebar"] [class*="st-key-sidebar_nav_group_"] [data-testid="stVerticalBlock"] {
-  gap: 5px !important;
+  gap: 4px !important;
 }
 [data-testid="stSidebar"] .sidebar-group-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px;
-  padding: 5px 3px 4px;
+  box-sizing: border-box;
+  min-height: 31px;
+  padding: 5px 8px;
+  background: #F1F5F9;
+  border-radius: 7px;
   font-family: var(--sidebar-font);
   font-size: 13px;
   font-weight: 750;
   line-height: 1.55;
   letter-spacing: -.015em;
   text-align: center;
-  color: #64748B;
-  white-space: nowrap;
+  color: #475569;
 }
-[data-testid="stSidebar"] .sidebar-group-title::before,
-[data-testid="stSidebar"] .sidebar-group-title::after {
-  content: "";
-  height: 1px;
-  flex: 1 1 0;
-  min-width: 8px;
-  background: var(--line);
+[data-testid="stSidebar"] .sidebar-group-title.is-current {
+  background: #EFF6FF;
+  color: #1D4ED8;
 }
-[data-testid="stSidebar"] .sidebar-group-title.is-current { color: #1D4ED8; }
-[data-testid="stSidebar"] .sidebar-group-title.is-current::before,
-[data-testid="stSidebar"] .sidebar-group-title.is-current::after { background: #BFDBFE; }
 [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
   margin: 2px 0 0 !important;
   font-family: var(--sidebar-font) !important;
@@ -161,9 +164,9 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] [data-testid="stButton"] button {
   box-sizing: border-box;
   width: 100% !important;
-  min-height: 40px !important;
+  min-height: 39px !important;
   height: auto !important;
-  padding: 9px 10px !important;
+  padding: 8px 9px !important;
   border: 1px solid transparent !important;
   border-radius: 8px !important;
   background: transparent !important;
@@ -199,27 +202,32 @@ h3{font-size:1.08rem!important}
 }
 [data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"],
 [data-testid="stSidebar"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"] {
-  color: #1D4ED8 !important;
-  border-color: #BFDBFE !important;
-  background: #EFF6FF !important;
+  color: #FFF !important;
+  border-color: #1D4ED8 !important;
+  background: #1D4ED8 !important;
   font-weight: 750 !important;
+}
+[data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"]:hover,
+[data-testid="stSidebar"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:hover {
+  background: #1E40AF !important;
+  border-color: #1E40AF !important;
+  color: #FFF !important;
 }
 [data-testid="stSidebar"] [data-testid="stButton"] button:focus-visible {
   outline: 2px solid #2563EB !important;
   outline-offset: 2px;
 }
 [data-testid="stSidebar"] .sidebar-footer {
-  margin-top: 8px;
-  border-top: 1px solid var(--line);
-  padding: 12px 4px 0;
+  margin-top: 2px;
+  padding: 0;
   font-family: var(--sidebar-font);
   text-align: center;
 }
 [data-testid="stSidebar"] .sidebar-meta {
   padding: 12px;
   border: 1px solid var(--line);
-  border-radius: 10px;
-  background: #F8FAFC;
+  border-radius: 11px;
+  background: #FFF;
   color: #475569;
   font-size: 13px;
   line-height: 1.7;
@@ -256,7 +264,7 @@ h3{font-size:1.08rem!important}
 }
 @media (max-width: 700px) {
   [data-testid="stSidebar"] [data-testid="stSidebarContent"] { padding: 1rem .65rem 1rem !important; }
-  [data-testid="stSidebar"] .sidebar-header { min-height: 112px; }
+  [data-testid="stSidebar"] .sidebar-header { padding: 12px 8px; }
   [data-testid="stSidebar"] [data-testid="stButton"] button { padding: 9px 8px !important; }
 }
 /* Top bar / page title */
