@@ -195,17 +195,7 @@ def ols_table():
     return pd.DataFrame(rows)
 
 
-def source_line(plain=False):
-    css='data-source overview-source' if plain else 'data-source'
-    st.markdown(
-      f'<div class="{css}"><strong>DATA SOURCE</strong> · '
-      '한국직업능력연구원(KRIVET) · HCCPⅡ 제4차(2023) 근로자 조사 '
-      ' · <span>통계값은 연구자가 산출한 추정치</span></div>',
-      unsafe_allow_html=True,
-    )
-
-
-def overview_reference_footer():
+def research_reference_footer():
     reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
     reference_label='자료 출처 · 참고문헌 · AI 활용 · 연구윤리 ↗'
     dialog=getattr(st,'dialog',None) or getattr(st,'experimental_dialog',None)
@@ -215,11 +205,11 @@ def overview_reference_footer():
             st.markdown(reference_text)
         # The container key scopes link styling to this footer control only.
         try:
-            link_container=st.container(key='overview_reference_link')
+            link_container=st.container(key='research_reference_link')
         except TypeError:
             link_container=st.container()
         with link_container:
-            if st.button(reference_label,key='overview_reference_info',use_container_width=False):
+            if st.button(reference_label,key='research_reference_info',use_container_width=False):
                 show_reference_information()
     else:
         with st.expander('자료 출처 · 참고문헌 · AI 활용 · 연구윤리',expanded=False):
@@ -250,7 +240,10 @@ with st.sidebar:
       '<div class="sidebar-footer"><div class="sidebar-meta">'
       '<strong>10,731명 · 497개 기업</strong><br>'
       '개별 응답 · 기업 식별정보 없음</div>'
-      '<div class="sidebar-source">자료: KRIVET · HCCPⅡ 4차(2023)</div>'
+      '<div class="sidebar-source">'
+      '<strong>한국직업능력연구원(KRIVET)</strong><br>'
+      'HCCPⅡ 제4차(2023) 근로자 조사<br>'
+      '통계값은 연구자가 산출한 추정치</div>'
       '<a href="https://www.krivet.re.kr/kor/sub.do?menuSn=18" '
       'target="_blank" rel="noopener noreferrer">공식 자료 보기 ↗</a>'
       '</div>',unsafe_allow_html=True,
@@ -592,11 +585,9 @@ elif page=='decision':
           '기본 선별과 공변량 조정 결과를 종합하여 현장 진단의 우선순위를 정합니다. 신뢰·만족 관련 지표를 모니터링하고 소통의 관련성은 현장 맥락과 함께 확인합니다. 현장 진단에서 확인된 문제에 한해 비용·실행 가능성·직원 보호 기준을 검토한 뒤 시범사업을 평가합니다.',
           'teal','정책 ROI는 추정하지 않았으며, 개인별 위험 점수화나 자동 채용·평가·징계에 사용해서는 안 됩니다.')
 
-# Unified source footer. Page navigation is handled by the sidebar.
+# Shared reference footer on all eight pages. Source attribution is in the sidebar.
 st.divider()
-source_line(plain=True)
-if page=='overview':
-    overview_reference_footer()
+research_reference_footer()
 
 # Run after the destination page has rendered, not on filter/widget reruns.
 scroll_to_page_top()
