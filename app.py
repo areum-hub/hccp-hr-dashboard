@@ -429,14 +429,36 @@ elif page=='theory':
         section_title('1. 이론과 선행연구에서 가설을 도출하는 과정',
                       '이론에 근거한 가설의 예상 방향입니다. 실제 검증 결과와 구분합니다.')
         foundation_cards=[
-            ('H1 · H3','**사회교환이론**',
-             'Blau(1964)\n\n조직신뢰 ↑ → 직무만족 ↑  \n조직신뢰 ↑ → 이직 고려 의향 ↓','blue'),
-            ('H2 · H4','**직무요구-자원(JD-R) 모형**',
-             'Bakker & Demerouti(2007)\n\n의사소통 ↑ → 직무만족 ↑  \n의사소통 ↑ → 이직 고려 의향 ↓','blue'),
-            ('H5 · H6','**직무태도와 이직과정**',
-             'Tett & Meyer(1993)\n\n직무만족 ↑ → 이직 고려 의향 ↓  \n조직신뢰 → 직무만족 → 이직 고려 의향 (탐색적 간접경로)','blue'),
+            ('사회교환이론','Blau (1964)',
+             '신뢰와 상호성에 기반한 관계에서 긍정적인 직무태도를 예상합니다.',
+             [('H1','조직신뢰 → 직무만족','+'),
+              ('H3','조직신뢰 → 이직 고려 의향','−')]),
+            ('직무요구-자원(JD-R) 모형','Bakker & Demerouti (2007)',
+             '의사소통을 정보·지원 자원의 대리지표로 해석합니다.',
+             [('H2','의사소통 → 직무만족','+'),
+              ('H4','의사소통 → 이직 고려 의향','−')]),
+            ('직무태도와 이직과정','Tett & Meyer (1993)',
+             '직무만족과 이직 고려 의향의 관계 및 탐색적 간접경로를 검토합니다.',
+             [('H5','직무만족 → 이직 고려 의향','−'),
+              ('H6','조직신뢰 → 직무만족 → 이직 고려 의향','간접 −')]),
         ]
-        theory_cards('foundations',foundation_cards,3)
+        card_html=[]
+        for title,author,summary,paths in foundation_cards:
+            relations=[]
+            for hid,path,direction in paths:
+                tone='purple' if hid=='H6' else 'blue' if direction=='+' else 'teal'
+                relations.append(
+                    f'<div class="foundation-relation"><span class="foundation-hypothesis">{escape(hid)}</span>'
+                    f'<span class="foundation-path">{escape(path)}</span>'
+                    f'<span class="foundation-direction {tone}">{escape(direction)}</span></div>'
+                )
+            card_html.append(
+                f'<article class="foundation-card"><div class="foundation-title">{escape(title)}</div>'
+                f'<div class="foundation-author">{escape(author)}</div>'
+                f'<div class="foundation-summary">{escape(summary)}</div>'
+                '<div class="foundation-relations">'+''.join(relations)+'</div></article>'
+            )
+        st.markdown('<div class="foundation-grid">'+''.join(card_html)+'</div>',unsafe_allow_html=True)
         with st.expander('이론적 근거 및 선행연구 상세 보기',expanded=False):
             st.markdown(foundations.strip())
 
