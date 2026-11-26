@@ -149,7 +149,7 @@ def section_title(title,note=None):
 
 def plot(fig,key):
     fig.update_layout(
-        font=dict(family='Inter, Noto Sans KR, Malgun Gothic, sans-serif',size=12,color='#334155'),
+        font=dict(family='Pretendard Variable, Pretendard, Noto Sans KR, Malgun Gothic, sans-serif',size=12,color='#334155'),
         plot_bgcolor='white', paper_bgcolor='white',
         margin=dict(l=20,r=34,t=38,b=35),
         hoverlabel=dict(bgcolor='white',font_color='#1F2937'),
@@ -238,7 +238,7 @@ def theory_path_diagram():
     <marker id="minusArrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L7 4 L0 8 Z" fill="#0D9488"/></marker>
   </defs>
   <rect x="1" y="1" width="958" height="318" rx="14" fill="#FFFFFF" stroke="#E2E8F0"/>
-  <g font-family="Pretendard, Noto Sans KR, Malgun Gothic, sans-serif" text-anchor="middle" font-weight="700">
+  <g font-family="Pretendard Variable, Pretendard, Noto Sans KR, Malgun Gothic, sans-serif" text-anchor="middle" font-weight="700">
     <g fill="none" stroke-width="2.2" stroke-linejoin="round">
       <path d="M248 82 L366 143" stroke="#2563EB" marker-end="url(#plusArrow)"/>
       <path d="M248 238 L366 177" stroke="#2563EB" marker-end="url(#plusArrow)"/>

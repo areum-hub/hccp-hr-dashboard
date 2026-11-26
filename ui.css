@@ -1,5 +1,8 @@
 /* Streamlit visual layer: restrained, accessible enterprise HR analytics dashboard. */
+/* Version-pinned Pretendard variable font; local/system fallbacks remain available. */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.css');
 :root {
+  --app-font: "Pretendard Variable", "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
   --page: #F8FAFC; --ink: #0F172A; --text: #334155; --muted: #64748B;
   --line: #E2E8F0; --white: #FFF; --blue: #2563EB;
   --bluewash: #EFF6FF; --teal: #0D9488; --tealwash: #F0FDFA;
@@ -8,8 +11,12 @@
   --shadow: 0 1px 2px rgba(15,23,42,.035),0 4px 16px rgba(15,23,42,.018);
 }
 html, body, [data-testid="stApp"]{
-  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--app-font);
   font-weight:400; color:var(--ink);
+}
+/* Apply the common font to native text wrappers without overriding icon fonts. */
+[data-testid="stApp"] :is([data-testid="stMarkdownContainer"], [data-testid="stCaptionContainer"], [data-testid="stWidgetLabel"], [data-testid="stMetricLabel"], [data-testid="stMetricValue"], [data-testid="stMetricDelta"], button, input, textarea, [role="combobox"], [role="tab"]) {
+  font-family: var(--app-font) !important;
 }
 [data-testid="stAppViewContainer"], [data-testid="stMain"]{background:var(--page)}
 [data-testid="stHeader"]{background:rgba(248,250,252,.96);backdrop-filter:blur(8px)}
@@ -27,7 +34,7 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] {
   background: #FFF;
   border-right: 1px solid var(--line);
-  --sidebar-font: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+  --sidebar-font: var(--app-font);
   font-family: var(--sidebar-font);
 }
 /* Never force a width on the native collapsed state. */
@@ -53,7 +60,7 @@ h3{font-size:1.08rem!important}
   display: block;
   min-height: 0;
   width: 100%;
-  padding: 10px 9px;
+  padding: 12px 14px;
   margin: 0;
   border: 1px solid var(--line);
   border-radius: 12px;
@@ -86,17 +93,17 @@ h3{font-size:1.08rem!important}
 }
 [data-testid="stSidebar"] .brand-text { min-width: 0; display: block; }
 [data-testid="stSidebar"] .brand-title {
-  font-size: 13px;
+  font-size: 14px;
   line-height: 1.4;
   color: var(--ink);
-  font-weight: 780;
+  font-weight: 700;
   letter-spacing: .018em;
   white-space: normal;
   overflow-wrap: break-word;
   text-align: left !important;
 }
 [data-testid="stSidebar"] .brand-subtitle {
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.6;
   color: var(--muted);
   font-weight: 500;
@@ -109,13 +116,13 @@ h3{font-size:1.08rem!important}
   max-width: 100%;
   box-sizing: border-box;
   margin: 0;
-  padding: 5px 8px;
-  border: 1px solid #DBEAFE;
-  background: #EFF6FF;
-  border-radius: 7px;
-  color: #1D4ED8;
-  font-size: 10px;
-  font-weight: 700;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  border-radius: 0;
+  color: var(--muted);
+  font-size: 11px;
+  font-weight: 500;
   letter-spacing: -.01em;
   line-height: 1.5;
   white-space: normal;
@@ -149,7 +156,7 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] [data-testid="stCaptionContainer"] p {
   margin: 2px 0 0 !important;
   font-family: var(--sidebar-font) !important;
-  font-size: 10px !important;
+  font-size: 11px !important;
   color: var(--muted) !important;
   text-align: left !important;
 }
@@ -171,7 +178,7 @@ h3{font-size:1.08rem!important}
   text-align: left !important;
   font-family: var(--sidebar-font) !important;
   font-size: 13px !important;
-  font-weight: 600 !important;
+  font-weight: 500 !important;
   font-variant-numeric: tabular-nums;
   letter-spacing: -.015em !important;
   line-height: 1.5 !important;
@@ -195,6 +202,7 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] [data-testid="stButton"] button [data-testid="stMarkdownContainer"] p,
 [data-testid="stSidebar"] [data-testid="stButton"] button [data-testid="stMarkdownContainer"] span {
   font-size: 13px !important;
+  font-weight: inherit !important;
 }
 [data-testid="stSidebar"] [data-testid="stButton"] button:hover {
   background: #F1F5F9 !important;
@@ -205,7 +213,7 @@ h3{font-size:1.08rem!important}
   color: #1D4ED8 !important;
   border-color: #DBEAFE !important;
   background: #EFF6FF !important;
-  font-weight: 750 !important;
+  font-weight: 650 !important;
 }
 [data-testid="stSidebar"] [data-testid="stButton"] button[kind="primary"]:hover,
 [data-testid="stSidebar"] [data-testid="stButton"] button[data-testid="stBaseButton-primary"]:hover {
@@ -288,12 +296,12 @@ h3{font-size:1.08rem!important}
   text-align: left !important;
 }
 [data-testid="stSidebar"] .sidebar-meta {
-  padding: 9px 10px;
+  padding: 12px 14px;
   border: 1px solid var(--line);
   border-radius: 11px;
   background: #FFF;
   color: #475569;
-  font-size: 11px;
+  font-size: 12px;
   line-height: 1.7;
   letter-spacing: -.015em;
   text-align: left !important;
@@ -302,18 +310,19 @@ h3{font-size:1.08rem!important}
 }
 [data-testid="stSidebar"] .sidebar-info-label {
   color: #64748B;
-  font-size: 10px;
+  font-size: 11px;
   line-height: 1.5;
-  font-weight: 700;
+  font-weight: 650;
   margin-bottom: 4px;
 }
 [data-testid="stSidebar"] .sidebar-meta strong {
   color: #334155;
-  font-weight: 730;
+  font-weight: 650;
 }
 [data-testid="stSidebar"] .sidebar-source { margin-top: 6px; }
 [data-testid="stSidebar"] .sidebar-source-note {
   color: #64748B;
+  font-size: 11px;
   margin-top: 4px;
 }
 [data-testid="stSidebar"] .sidebar-source a {
@@ -323,14 +332,18 @@ h3{font-size:1.08rem!important}
 [data-testid="stSidebar"] .sidebar-footer a {
   color: #2563EB;
   text-decoration: none;
-  font-size: 11px;
-  font-weight: 650;
+  font-size: 12px;
+  font-weight: 600;
 }
 @media (max-width: 700px) {
   [data-testid="stSidebar"] [data-testid="stSidebarContent"] { padding: .8rem .6rem !important; }
-  [data-testid="stSidebar"] .sidebar-header { padding: 10px 8px; }
+  [data-testid="stSidebar"] .sidebar-header,
+  [data-testid="stSidebar"] .sidebar-meta { padding: 12px 12px; }
   [data-testid="stSidebar"] [data-testid="stButton"] button { padding: 7px 10px !important; }
 }
+/* Prefix slots use the same muted/active colors as the dashboard's navigation language. */
+[data-testid="stSidebar"] [class*="st-key-nav_"] button::before { color: var(--muted); }
+[data-testid="stSidebar"] [class*="st-key-nav_"] button:is([kind="primary"], [data-testid="stBaseButton-primary"], :hover)::before { color: #1D4ED8; }
 /* Top bar / page title */
 .app-topbar{display:flex;align-items:center;gap:12px;min-height:49px;padding:0 17px;margin-bottom:19px;
   background:white;border:1px solid var(--line);border-radius:11px;box-shadow:var(--shadow);
@@ -424,7 +437,7 @@ h3{font-size:1.08rem!important}
   min-height: 56px;
   margin-bottom: 16px;
   box-shadow: none;
-  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+  font-family: var(--app-font);
 }
 .st-key-app_header [data-testid="stHorizontalBlock"] {
   align-items: center !important;
@@ -532,7 +545,7 @@ h3{font-size:1.08rem!important}
 .st-key-research_reference_link [data-testid="stButton"] button p,
 .st-key-research_reference_info button,
 .st-key-research_reference_info button p {
-  font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif !important;
+  font-family: var(--app-font) !important;
   font-size: 13px !important;
   font-size: clamp(9px, calc(2.2cqw - 7px), 13px) !important;
   line-height: 1.5 !important;
@@ -1309,7 +1322,7 @@ h3{font-size:1.08rem!important}
 
 /* Reference dialog: native tabs and numbered document sections, with original Markdown. */
 .st-key-research_reference_content {
-  --reference-font: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif;
+  --reference-font: var(--app-font);
   font-family: var(--reference-font);
   min-width: 0;
 }
