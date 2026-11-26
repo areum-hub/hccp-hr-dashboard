@@ -195,14 +195,36 @@ def ols_table():
     return pd.DataFrame(rows)
 
 
-def source_line():
+def source_line(plain=False):
+    css='data-source overview-source' if plain else 'data-source'
     st.markdown(
-      '<div class="data-source"><strong>DATA SOURCE</strong> · '
+      f'<div class="{css}"><strong>DATA SOURCE</strong> · '
       '한국직업능력연구원(KRIVET) · HCCPⅡ 제4차(2023) 근로자 조사 '
       '· <a href="https://www.krivet.re.kr/kor/sub.do?menuSn=18" target="_blank">공식 조사 안내</a>'
       ' · <span>통계값은 연구자가 산출한 추정치</span></div>',
       unsafe_allow_html=True,
     )
+
+
+def overview_reference_footer():
+    reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
+    reference_label='자료 출처 · 참고문헌 · AI 활용 · 연구윤리 ↗'
+    dialog=getattr(st,'dialog',None) or getattr(st,'experimental_dialog',None)
+    if dialog is not None:
+        @dialog('연구 참고 정보',width='large')
+        def show_reference_information():
+            st.markdown(reference_text)
+        # The container key scopes link styling to this footer control only.
+        try:
+            link_container=st.container(key='overview_reference_link')
+        except TypeError:
+            link_container=st.container()
+        with link_container:
+            if st.button(reference_label,key='overview_reference_info',use_container_width=False):
+                show_reference_information()
+    else:
+        with st.expander('자료 출처 · 참고문헌 · AI 활용 · 연구윤리',expanded=False):
+            st.markdown(reference_text)
 
 
 with st.sidebar:
@@ -296,21 +318,6 @@ if page=='overview':
             '<div><span>03</span><strong>HR 의사결정</strong><small>진단 후보 선별 → 현장 검증 → 제한적 시범사업 평가</small></div>'
             '</div>',unsafe_allow_html=True,
         )
-
-    section_title('연구 참고 정보')
-    reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
-    reference_label='자료 출처 · 참고문헌 · AI 활용 · 연구윤리 보기'
-    dialog=getattr(st,'dialog',None) or getattr(st,'experimental_dialog',None)
-    if dialog is not None:
-        @dialog('연구 참고 정보',width='large')
-        def show_reference_information():
-            st.markdown(reference_text)
-        if st.button(reference_label,key='overview_reference_info',use_container_width=False):
-            show_reference_information()
-    else:
-        # Compatibility for environments without Streamlit's dialog API.
-        with st.expander(reference_label,expanded=False):
-            st.markdown(reference_text)
 
 elif page=='theory':
     page_intro('RESEARCH DESIGN  /  THEORY','이론적 배경 및 연구가설',
@@ -588,13 +595,28 @@ elif page=='decision':
 
 # Unified source footer on all eight sidebar pages.
 st.divider()
-source_line()
+source_line(plain=(page=='overview'))
+usage_note='연구 용도: HR 집단 진단 및 후속 검증 보조 · 개인 단위 자동 인사결정/인과적 정책 효과 추정에 사용 불가'
+if page=='overview':
+    overview_reference_footer()
+    st.caption(usage_note)
+    st.divider()
 current_index=ALL_NAV_KEYS.index(page)
 if current_index<len(ALL_NAV_KEYS)-1:
     next_page=ALL_NAV_KEYS[current_index+1]
-    st.button('다음 화면 · '+NAV_LABELS[next_page],key='next_'+page,
-              use_container_width=False,on_click=move_to,args=(next_page,))
-st.caption('연구 용도: HR 집단 진단 및 후속 검증 보조 · 개인 단위 자동 인사결정/인과적 정책 효과 추정에 사용 불가')
+    if page=='overview':
+        try:
+            nav_container=st.container(horizontal=True,horizontal_alignment='right')
+        except TypeError:
+            _,nav_container=st.columns([2,1])
+        with nav_container:
+            st.button('다음 화면 · '+NAV_LABELS[next_page],key='next_'+page,
+                      use_container_width=False,on_click=move_to,args=(next_page,))
+    else:
+        st.button('다음 화면 · '+NAV_LABELS[next_page],key='next_'+page,
+                  use_container_width=False,on_click=move_to,args=(next_page,))
+if page!='overview':
+    st.caption(usage_note)
 
 # Run after the destination page has rendered, not on filter/widget reruns.
 scroll_to_page_top()
