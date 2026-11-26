@@ -324,7 +324,7 @@ if page=='overview':
     with right:
         section_title('연구 진행 흐름','분석 결과가 실제 HR 의사결정에 연결되는 경로')
         st.markdown(
-            '<div class="step-list">'
+            '<div class="step-list overview-flow">'
             '<div><span>01</span><strong>실무질문과 이론</strong><small>어떤 조직요인이 직무만족·이직 고려와 관련되는가?</small></div>'
             '<div><span>02</span><strong>5단계 분석</strong><small>신뢰도 → 집단 평균 → OLS → 순서형 로짓 → SEM</small></div>'
             '<div><span>03</span><strong>HR 의사결정</strong><small>진단 후보 선별 → 현장 검증 → 제한적 시범사업 평가</small></div>'
