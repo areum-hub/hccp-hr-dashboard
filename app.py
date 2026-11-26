@@ -185,7 +185,7 @@ with st.sidebar:
       '<div class="sidebar-brand"><span class="brand-symbol">PA</span>'
       '<div class="brand-text"><div class="brand-title">PEOPLE ANALYTICS</div>'
       '<div class="brand-subtitle">HR Decision Dashboard</div></div></div>'
-      '<div class="sidebar-caption">2023 · HCCPⅡ · 공개 결과 조회판</div>'
+      '<div class="sidebar-caption">HCCPⅡ 4차(2023) · 근로자 조사</div>'
       '</div>',
       unsafe_allow_html=True,
     )
