@@ -282,66 +282,69 @@ h3{font-size:1.08rem!important}
   .decision-panel{min-height:unset}
 }
 
-/* Executive summary research-reference link. */
+/* Shared top bar: a single card with a native research information control. */
+.st-key-app_header {
+  background: #FFF;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  padding: 6px 12px;
+  margin-bottom: 19px;
+  box-shadow: var(--shadow);
+}
+.st-key-app_header .app-topbar {
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: 36px;
+  padding: 0 5px;
+  margin: 0;
+}
+.st-key-app_header .st-key-research_reference_link [data-testid="stButton"] {
+  display: flex;
+  justify-content: flex-end;
+}
 .st-key-research_reference_link [data-testid="stButton"] button,
 .st-key-research_reference_info button {
-  border: 0 !important;
-  background: transparent !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 8px !important;
+  background: #FFF !important;
   box-shadow: none !important;
-  padding: 0 !important;
-  min-height: 32px !important;
-  color: var(--blue) !important;
-  justify-content: flex-start !important;
-  text-align: left !important;
+  color: #475569 !important;
+  min-height: 34px !important;
+  padding: 4px 9px !important;
+  gap: 5px !important;
+  justify-content: center !important;
+  white-space: nowrap !important;
 }
 .st-key-research_reference_link [data-testid="stButton"] button,
 .st-key-research_reference_link [data-testid="stButton"] button p,
 .st-key-research_reference_info button,
 .st-key-research_reference_info button p {
   font-family: "Pretendard", "Noto Sans KR", "Malgun Gothic", -apple-system, BlinkMacSystemFont, sans-serif !important;
-  font-size: .8rem !important;
-  line-height: 1.65 !important;
+  font-size: 11px !important;
+  line-height: 1.5 !important;
+  font-weight: 650 !important;
   letter-spacing: normal !important;
-  font-weight: 500 !important;
-  color: var(--blue) !important;
-  white-space: normal !important;
-  word-break: keep-all;
 }
 .st-key-research_reference_link [data-testid="stButton"] button p,
 .st-key-research_reference_info button p {
   margin: 0 !important;
+  color: inherit !important;
+  white-space: nowrap !important;
 }
 .st-key-research_reference_link [data-testid="stButton"] button:hover,
 .st-key-research_reference_info button:hover {
-  text-decoration: underline;
+  border-color: #BFDBFE !important;
+  background: #EFF6FF !important;
+  color: #1D4ED8 !important;
 }
 .st-key-research_reference_link [data-testid="stButton"] button:focus-visible,
 .st-key-research_reference_info button:focus-visible {
-  outline: 2px solid var(--blue);
-  outline-offset: 3px;
-}
-
-/* Treat the summary and its native reference link as one visual card. */
-.st-key-executive_summary {
-  background: linear-gradient(113deg,#FFFFFF 0%,#FFFFFF 65%,#EFF6FF 100%);
-  border: 1px solid #DBEAFE;
-  border-radius: 16px;
-  padding: 33px 38px 22px;
-  margin-bottom: 19px;
-  box-shadow: var(--shadow);
-}
-.st-key-executive_summary .executive-hero {
-  background: transparent;
-  border: 0;
-  border-radius: 0;
-  box-shadow: none;
-  padding: 0;
-  margin: 0;
-}
-.st-key-executive_summary .st-key-research_reference_link {
-  border-top: 1px solid #DBEAFE;
-  padding-top: 8px;
+  outline: 2px solid var(--blue) !important;
+  outline-offset: 2px;
 }
 @media(max-width:800px) {
-  .st-key-executive_summary { padding: 26px 22px 18px; }
+  .st-key-app_header { padding: 6px 9px; }
+  .st-key-app_header .app-topbar { gap: 8px; flex-wrap: wrap; }
 }

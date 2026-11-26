@@ -197,7 +197,7 @@ def ols_table():
 
 def research_reference_link():
     reference_text=(BASE/'REFERENCES_AND_AI.md').read_text(encoding='utf-8')
-    reference_label='자료 출처 · 참고문헌 · AI 활용 · 연구윤리 ↗'
+    reference_label='연구 정보'
     dialog=getattr(st,'dialog',None) or getattr(st,'experimental_dialog',None)
     if dialog is not None:
         @dialog('연구 참고 정보',width='large')
@@ -209,7 +209,13 @@ def research_reference_link():
         except TypeError:
             link_container=st.container()
         with link_container:
-            if st.button(reference_label,key='research_reference_info',use_container_width=False):
+            button_options=dict(key='research_reference_info',use_container_width=False,
+                                help='자료 출처 · 참고문헌 · AI 활용 · 연구윤리')
+            try:
+                opened=st.button(reference_label,icon=':material/menu_book:',**button_options)
+            except TypeError:
+                opened=st.button(reference_label,**button_options)
+            if opened:
                 show_reference_information()
     else:
         with st.expander('자료 출처 · 참고문헌 · AI 활용 · 연구윤리',expanded=False):
@@ -252,28 +258,34 @@ with st.sidebar:
     )
 
 page=st.session_state['page']
-st.markdown(
-  '<div class="app-topbar"><span class="app-topbar-mark">HR</span>'
-  '<strong>Decision Analytics</strong><span class="topbar-divider"></span>'
-  f'<span>{escape(NAV_LABELS[page])}</span><span class="topbar-version">HCCPⅡ · 2023</span></div>',
-  unsafe_allow_html=True,
-)
+try:
+    header_container=st.container(key='app_header')
+except TypeError:
+    header_container=st.container()
+with header_container:
+    try:
+        header_main,header_info=st.columns([5.5,1],gap='small',vertical_alignment='center')
+    except TypeError:
+        header_main,header_info=st.columns([5.5,1],gap='small')
+    with header_main:
+        st.markdown(
+          '<div class="app-topbar"><span class="app-topbar-mark">HR</span>'
+          '<strong>Decision Analytics</strong><span class="topbar-divider"></span>'
+          f'<span>{escape(NAV_LABELS[page])}</span><span class="topbar-version">HCCPⅡ · 2023</span></div>',
+          unsafe_allow_html=True,
+        )
+    with header_info:
+        research_reference_link()
 
 if page=='overview':
-    try:
-        summary_container=st.container(key='executive_summary')
-    except TypeError:
-        summary_container=st.container()
-    with summary_container:
-        st.markdown(
-          '<div class="executive-hero"><span class="executive-label">EXECUTIVE SUMMARY</span>'
-          '<h1>조직의 신뢰와 소통,<br>어디부터 진단할 것인가?</h1>'
-          '<p>HCCPⅡ 근로자 조사로 조직신뢰·의사소통·직무만족·이직 고려 의향의 관련성을 검토하고, '
-          'HR이 우선 진단할 집단과 실행 절차를 제안합니다.</p>'
-          '<div class="hero-tags"><span>H1–H5 주 검증</span><span>H6 탐색적 SEM</span>'
-          '<span>비인과적 관찰연구</span></div></div>',unsafe_allow_html=True,
-        )
-        research_reference_link()
+    st.markdown(
+      '<div class="executive-hero"><span class="executive-label">EXECUTIVE SUMMARY</span>'
+      '<h1>조직의 신뢰와 소통,<br>어디부터 진단할 것인가?</h1>'
+      '<p>HCCPⅡ 근로자 조사로 조직신뢰·의사소통·직무만족·이직 고려 의향의 관련성을 검토하고, '
+      'HR이 우선 진단할 집단과 실행 절차를 제안합니다.</p>'
+      '<div class="hero-tags"><span>H1–H5 주 검증</span><span>H6 탐색적 SEM</span>'
+      '<span>비인과적 관찰연구</span></div></div>',unsafe_allow_html=True,
+    )
     st.markdown('**실무질문** · '+MAIN_QUESTION)
 
     a,b,c,d=st.columns(4,gap='medium')
