@@ -395,6 +395,17 @@ elif page=='ols':
     st.caption(f'{model} 모형의 R² = {S["models"][model]["r2"]:.3f}. OLS 신뢰구간은 기업 단위 군집강건 표준오차에 기반합니다.')
     section_title('의사소통 계수 변화','모형에 추가되는 설명변수·통제변수에 따라 부호가 달라질 수 있습니다.')
     plot(viz.regression_change(CO),key='ols_coefficient_change')
+    section_title('분석 가정 및 강건성 점검','저장된 분석에서 확인된 근거와 아직 검증되지 않은 항목을 구분합니다.')
+    scale_corr=V['sem_feasibility']['trust_comm_scale_corr']
+    st.dataframe(pd.DataFrame([
+        {'점검 항목':'기업 내 응답 상관·이분산','확인 상태':'추정 시 반영','확인 근거':f'{P["analysis_firms"]}개 기업 단위 군집강건 표준오차 적용','해석 및 후속 점검':'기업 내 상관과 이분산을 고려한 추론. 선형성이나 교란 문제를 해결하지는 않음'},
+        {'점검 항목':'설명변수 중첩·다중공선성','확인 상태':'부분 점검','확인 근거':f'신뢰·소통 합성척도 상관 r={scale_corr:.3f}; 전체 VIF 미확인','해석 및 후속 점검':'개별 계수의 크기·부호에 주의. 원자료로 VIF 및 설계행렬 점검 필요'},
+        {'점검 항목':'선형성·잔차 분포·영향점','확인 상태':'미확인','확인 근거':'정식 잔차 진단 결과가 저장되어 있지 않음','해석 및 후속 점검':'잔차-적합값, 잔차 분포 및 영향점 진단 필요'},
+        {'점검 항목':'5점 응답의 순서척도 특성','확인 상태':'대안 모형 비교','확인 근거':'순서형 로짓에서 H1–H5의 OLS 계수 방향 유지','해석 및 후속 점검':'이직 고려 모형의 직무만족 비례오즈 위배 신호; 직무만족 모형의 가정은 미검증'},
+        {'점검 항목':'모형 사양·측정구조 민감성','확인 상태':'부분 점검','확인 근거':'H4 단순·전체 통제 계수 부호 변화; H2 OLS·SEM 부호 불일치','해석 및 후속 점검':'소통의 독립적 영향이나 특정 정책 효과를 확정하지 않음'},
+        {'점검 항목':'교란·시간적 선후·조사 가중치','확인 상태':'해석 제한','확인 근거':'관측된 공변량 통제; 2023년 단면자료, 가중치 미적용','해석 및 후속 점검':'미관측 교란과 대표성에 주의. 반복 조사 및 추가 검증 필요'},
+    ]),hide_index=True,use_container_width=True)
+    st.caption('검증 범위 | 군집강건 표준오차는 추론 방법이며 가정 검정 결과가 아닙니다. 위 표는 기존 분석 결과와 설명서에 기록된 점검 범위를 정리한 것으로, VIF·잔차 진단 등을 새로 수행한 것은 아닙니다.')
     evidence_triptych('조직신뢰·소통은 만족과 이직 고려에 어떻게 관련되는가?',
         'H1·H3·H5는 기대 방향과 일치했습니다. H4는 예상과 반대로 양(+)이었습니다.',
         '신뢰·만족 관련 지표를 우선 모니터링하되, 소통의 방향성은 조직 맥락·역인과 가능성을 추가 조사합니다.',
@@ -508,6 +519,31 @@ elif page=='decision':
     if selected:
         lead=selected[0]
         st.caption(f'기본 기준 충족: {len(selected)}건. 예: {lead["dimension"]}–{lead["group_name"]}의 {lead["metric_name"]} 불리한 평균 차이 {lead["adverse_difference"]:+.3f}점. 현장 확인 후보이지 투자·개입 확정 대상이 아닙니다.')
+    followups=PR.get('adjusted_selected_follow_up',[])
+    customer_support=next((row for row in selected
+                           if row['dimension']=='직무' and row['group_name']=='대고객지원'
+                           and row['metric_name']=='이직 고려 의향'),None)
+    adjusted=next((row for row in followups
+                   if row['field']=='W23Q04' and row['code']==5 and row['metric']=='turnover'),None)
+    if customer_support is not None and adjusted is not None:
+        section_title('우선 진단 후보의 추가 분석','대고객지원 직무의 이직 고려 의향 차이를 공변량 조정 전후로 확인합니다.')
+        st.dataframe(pd.DataFrame([
+            {'분석 구분':'집단 대 나머지 평균 차이',
+             '추정값(점)':fmt(customer_support['adverse_difference']),
+             '95% CI':f'[{fmt(customer_support["adverse_ci_low"])}, {fmt(customer_support["adverse_ci_high"])}]',
+             '검정 근거':f'BH-FDR q={customer_support["q_bh_152"]:.4f}',
+             '분석 목적':'기본 선별 기준에 따른 진단 후보 도출'},
+            {'분석 구분':'공변량 조정 후 회귀계수',
+             '추정값(점)':fmt(adjusted['adjusted_coef']),
+             '95% CI':f'[{fmt(adjusted["adjusted_ci"][0])}, {fmt(adjusted["adjusted_ci"][1])}]',
+             '검정 근거':f'저장된 p={adjusted["adjusted_p"]:.4f}',
+             '분석 목적':'집단 구성·근무 여건을 고려한 탐색적 추가 검토'},
+        ]),hide_index=True,use_container_width=True)
+        panel('실무 판단 · 우선 현장 진단 근거',
+              f'대고객지원 직무의 평균 차이 {fmt(customer_support["adverse_difference"])}점은 공변량 조정 후 {fmt(adjusted["adjusted_coef"])}점으로 작아졌으나 양(+)의 방향이 유지되고 신뢰구간에 0을 포함하지 않습니다.',
+              'teal','현업 리더는 업무량·교대근무·고객응대 부담 및 조직 지원을 익명 조사로 확인하고, 확인된 원인에 한해 개선 과제를 검토합니다.')
+        st.caption('해석 범위 | 공변량 조정 결과는 후보 선별 이후의 탐색적 분석입니다. 기본 0.3점 선별 기준은 최초 평균 차이에 적용되며, 조정 후 계수를 동일 기준으로 재선별하지 않습니다. 저장된 p값을 다중검정·선별 보정된 확증적 근거로 해석하지 않습니다.')
+        st.caption('공변량 조정은 관측된 구성 차이를 일부 고려한 것이며, 직무 자체가 이직을 유발한다거나 조정 전후 차이가 특정 원인 또는 정책 효과를 증명한다는 뜻은 아닙니다.')
     section_title('민감도 조회 · 기준을 달리하면 후보는 몇 개인가?','미리 계산된 조건별 통과 건수만 표시하며, 다른 조건에서 집단 이름을 추정하지 않습니다.')
     c1,c2=st.columns(2)
     cutoff=c1.select_slider('불리한 평균 차이 기준(점)',options=[0.2,0.3,0.4],value=0.3)
