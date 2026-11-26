@@ -644,72 +644,133 @@ elif page=='decision':
     with theory_container('decision_group_01',card=True):
         st.markdown(
             '<div class="decision-section-head"><span class="decision-section-number">01</span>'
-            '<div><h2>연구 결과 종합 해석</h2><p>이론적 기대와 주 분석·보완 모형의 관찰 결과를 연결합니다.</p></div></div>',unsafe_allow_html=True,
+            '<div><h2>연구 결과 종합 해석</h2><p>분석을 통해 무엇을 확인했는가?</p></div></div>',
+            unsafe_allow_html=True,
         )
-        discussion_parts=research['discussion'].split('\n\n')
-        if len(discussion_parts)==4 and all(':** ' in part for part in discussion_parts):
-            interpretation_cards=[]
-            for part,(tag,tone) in zip(discussion_parts,(
-                ('방향 일치','teal'),('모형 간 부호 불일치','amber'),
-                ('예상과 반대','amber'),('탐색적 간접경로','purple'))):
-                heading,_,body=part.partition(':** ')
-                interpretation_cards.append((tag,heading+':**',body,tone))
-            theory_cards('interpretation',interpretation_cards,2)
-        else:
-            st.markdown(research['discussion'])
+        findings=[
+            ('H1 · H3 · H5','이론적 기대와 방향 일치','teal',
+             '조직신뢰–직무만족 (+), 조직신뢰·직무만족–이직 고려 의향 (−)',
+             '이론적 기대와 양립하는 통계적 관련성입니다. 조직신뢰 개선 정책의 효과가 입증된 것은 아닙니다.'),
+            ('H2','모형 간 부호 불일치','amber',
+             '의사소통–직무만족: OLS (+), SEM (−)',
+             '신뢰와 소통의 높은 상관, 측정구조 중첩, 통제변수와 측정 단위의 차이가 조건부 계수 민감성의 가능한 설명입니다. JD-R의 자원 경로가 확인되거나 반증되었다고 단정할 수 없습니다.'),
+            ('H4','예상과 반대','amber',
+             '의사소통–이직 고려 의향: OLS (+)',
+             '문제가 많은 부서의 소통·보고 증가, 이직을 고려하는 근로자의 소통 평가 차이 등 역인과와 업무요구·관리자 특성의 누락, 구성개념 중첩이 경쟁 설명입니다. 의사소통이 이직을 증가시킨다는 결론은 내릴 수 없습니다.'),
+            ('H6','탐색적 간접경로','purple',
+             '조직신뢰 → 직무만족 → 이직 고려 의향 (−)',
+             'SEM에서 음의 간접경로가 나타났으나 단면 설문, 측정 한계 및 높은 구성개념 상관으로 인과적 매개효과를 확증할 수 없습니다.'),
+        ]
+        finding_rows=[]
+        for hypothesis,status,tone,observed,meaning in findings:
+            finding_rows.append(
+                '<article class="decision-finding-row">'
+                f'<div class="decision-finding-label"><strong>{escape(hypothesis)}</strong>'
+                f'<span class="decision-finding-status {tone}">{escape(status)}</span></div>'
+                f'<div class="decision-finding-result"><small>확인된 관계</small><strong>{escape(observed)}</strong></div>'
+                f'<div class="decision-finding-meaning"><small>해석 및 대안 설명</small><p>{escape(meaning)}</p></div>'
+                '</article>'
+            )
+        st.markdown(
+            '<div class="decision-finding-matrix">'
+            '<div class="decision-finding-head"><span>가설 및 판정</span><span>확인된 관계</span><span>해석 및 대안 설명</span></div>'
+            +''.join(finding_rows)+'</div>',
+            unsafe_allow_html=True,
+        )
+        st.caption('가설별 추정값과 신뢰구간은 03 다중회귀 OLS, 04 순서형 로짓, 05 구조방정식 SEM에서 확인할 수 있습니다. 대안 설명은 가능성이며 실제 원인이 검증된 것은 아닙니다.')
 
     with theory_container('decision_group_02',card=True):
         st.markdown(
             '<div class="decision-section-head"><span class="decision-section-number">02</span>'
-            '<div><h2>우선 진단 대상 선정</h2><p>기본 선별 → 공변량 조정 → 선별 기준 민감도 점검</p></div></div>',unsafe_allow_html=True,
+            '<div><h2>우선 진단 대상 선정</h2><p>어떤 집단을 우선 살펴야 하는가?</p></div></div>',
+            unsafe_allow_html=True,
         )
-        section_title('우선 진단 후보 · 사전 계산된 152개 비교','기본 기준: 불리한 차이 ≥0.3점, 응답자 50명·기업 10개 이상, CI 하한>0, BH q<0.05.')
         selected=PR['selected_at_default']
-        st.dataframe(pd.DataFrame([{'집단':row['group_name'],'분류':row['dimension'],'지표':row['metric_name'],
-           '응답자':row['n'],'기업':row['firms_in_group'],
-           '불리한 평균 차이':round(row['adverse_difference'],3),
-           '95% CI':f'[{row["adverse_ci_low"]:+.3f}, {row["adverse_ci_high"]:+.3f}]',
-           'BH 보정 q':round(row['q_bh_152'],4)} for row in selected]),hide_index=True,use_container_width=True)
-        if selected:
-            st.caption(f'기본 기준 충족: {len(selected)}건. 현장 확인 후보이며 투자·개입 확정 대상은 아닙니다.')
         followups=PR.get('adjusted_selected_follow_up',[])
         customer_support=next((row for row in selected
                                if row['dimension']=='직무' and row['group_name']=='대고객지원'
                                and row['metric_name']=='이직 고려 의향'),None)
         adjusted=next((row for row in followups
                        if row['field']=='W23Q04' and row['code']==5 and row['metric']=='turnover'),None)
+        st.markdown(
+            '<div class="decision-screening">'
+            f'<div><small>사전 비교</small><strong>{PR["contrasts"]}건</strong></div>'
+            f'<div><small>기본 기준 충족</small><strong>{len(selected)}건</strong></div>'
+            '<div class="decision-screening-rule"><small>기본 선별 기준</small>'
+            '<p>불리한 평균 차이 ≥ 0.3점 · 응답자 ≥ 50명 · 기업 ≥ 10개<br>95% CI 하한 &gt; 0 · BH 보정 q &lt; 0.05</p></div>'
+            '</div>',unsafe_allow_html=True,
+        )
+        if len(selected)==1 and customer_support is not None and adjusted is not None:
+            st.markdown(
+                '<div class="decision-candidate-summary">'
+                '<div class="candidate-identity"><small>우선 현장 진단 후보</small>'
+                f'<strong>{escape(customer_support["group_name"])} 직무</strong>'
+                f'<p>{escape(customer_support["metric_name"])} · 응답자 {customer_support["n"]:,}명 · {customer_support["firms_in_group"]:,}개 기업</p></div>'
+                '<div class="candidate-comparison">'
+                '<div><small>집단 대 나머지 평균 차이</small>'
+                f'<strong>{fmt(customer_support["adverse_difference"])}점</strong>'
+                f'<p>95% CI [{fmt(customer_support["adverse_ci_low"])}, {fmt(customer_support["adverse_ci_high"])}]</p>'
+                f'<p>BH-FDR q = {customer_support["q_bh_152"]:.4f}</p>'
+                '<small>기본 선별 기준에 따른 후보 도출</small></div>'
+                '<div><small>공변량 조정 후 회귀계수</small>'
+                f'<strong>{fmt(adjusted["adjusted_coef"])}점</strong>'
+                f'<p>95% CI [{fmt(adjusted["adjusted_ci"][0])}, {fmt(adjusted["adjusted_ci"][1])}]</p>'
+                f'<p>p = {adjusted["adjusted_p"]:.4f}</p>'
+                '<small>집단 구성·근무 여건을 고려한 탐색적 검토</small></div>'
+                '</div><div class="candidate-judgment"><strong>선정 근거</strong>'
+                '<p>공변량 조정 후 차이의 크기는 작아졌지만 양(+)의 방향이 유지되고 신뢰구간에 0을 포함하지 않습니다. 현장 확인 후보이며 투자·개입 확정 대상은 아닙니다.</p></div></div>',
+                unsafe_allow_html=True,
+            )
+        else:
+            st.dataframe(pd.DataFrame([{'집단':row['group_name'],'분류':row['dimension'],'지표':row['metric_name'],
+               '응답자':row['n'],'기업':row['firms_in_group'],
+               '불리한 평균 차이':round(row['adverse_difference'],3),
+               '95% CI':f'[{row["adverse_ci_low"]:+.3f}, {row["adverse_ci_high"]:+.3f}]',
+               'BH 보정 q':round(row['q_bh_152'],4)} for row in selected]),hide_index=True,use_container_width=True)
+            if customer_support is not None and adjusted is not None:
+                section_title('우선 진단 후보의 추가 분석')
+                st.dataframe(pd.DataFrame([
+                    {'분석 구분':'집단 대 나머지 평균 차이',
+                     '추정값(점)':fmt(customer_support['adverse_difference']),
+                     '95% CI':f'[{fmt(customer_support["adverse_ci_low"])}, {fmt(customer_support["adverse_ci_high"])}]',
+                     '검정 근거':f'BH-FDR q={customer_support["q_bh_152"]:.4f}',
+                     '분석 목적':'기본 선별 기준에 따른 진단 후보 도출'},
+                    {'분석 구분':'공변량 조정 후 회귀계수',
+                     '추정값(점)':fmt(adjusted['adjusted_coef']),
+                     '95% CI':f'[{fmt(adjusted["adjusted_ci"][0])}, {fmt(adjusted["adjusted_ci"][1])}]',
+                     '검정 근거':f'p={adjusted["adjusted_p"]:.4f}',
+                     '분석 목적':'집단 구성·근무 여건을 고려한 탐색적 추가 검토'},
+                ]),hide_index=True,use_container_width=True)
         if customer_support is not None and adjusted is not None:
-            section_title('우선 진단 후보의 추가 분석','대고객지원 직무의 이직 고려 의향 차이를 공변량 조정 전후로 확인합니다.')
-            st.dataframe(pd.DataFrame([
-                {'분석 구분':'집단 대 나머지 평균 차이',
-                 '추정값(점)':fmt(customer_support['adverse_difference']),
-                 '95% CI':f'[{fmt(customer_support["adverse_ci_low"])}, {fmt(customer_support["adverse_ci_high"])}]',
-                 '검정 근거':f'BH-FDR q={customer_support["q_bh_152"]:.4f}',
-                 '분석 목적':'기본 선별 기준에 따른 진단 후보 도출'},
-                {'분석 구분':'공변량 조정 후 회귀계수',
-                 '추정값(점)':fmt(adjusted['adjusted_coef']),
-                 '95% CI':f'[{fmt(adjusted["adjusted_ci"][0])}, {fmt(adjusted["adjusted_ci"][1])}]',
-                 '검정 근거':f'p={adjusted["adjusted_p"]:.4f}',
-                 '분석 목적':'집단 구성·근무 여건을 고려한 탐색적 추가 검토'},
-            ]),hide_index=True,use_container_width=True)
-            panel('실무 판단 · 우선 현장 진단 근거',
-                  f'대고객지원 직무의 평균 차이 {fmt(customer_support["adverse_difference"])}점은 공변량 조정 후 {fmt(adjusted["adjusted_coef"])}점으로 작아졌으나 양(+)의 방향이 유지되고 신뢰구간에 0을 포함하지 않습니다.',
-                  'teal','현업 리더는 업무량·교대근무·고객응대 부담 및 조직 지원을 익명 조사로 확인하고, 확인된 원인에 한해 개선 과제를 검토합니다.')
-            st.caption('해석 범위 | 공변량 조정은 후보 선별 후 탐색적 분석으로, p값을 다중검정·선별 보정된 확증적 근거로 해석하지 않습니다. 기본 0.3점 기준은 최초 평균 차이에만 적용합니다. 조정 전후 차이는 특정 원인이나 직무의 인과효과를 증명하지 않습니다.')
-        section_title('선별 기준 민감도 점검','미리 계산된 조건별 통과 건수만 표시하며, 다른 조건에서 집단 이름을 추정하지 않습니다.')
-        c1,c2=st.columns(2)
-        cutoff=c1.select_slider('불리한 평균 차이 기준(점)',options=[0.2,0.3,0.4],value=0.3)
-        minimum=c2.select_slider('집단 내 최소 응답자 수',options=[30,50,100],value=50)
-        sensitivity=PR['sensitivity_counts'][f'g{cutoff:.1f}_n{minimum}']
-        st.metric('해당 조합에서 선별되는 집단–지표 수',f'{int(sensitivity)}건')
-        st.caption('선택한 조건은 사전 계산된 후보 건수 조회에만 적용되며, 위 기본 기준의 후보표와 추가 분석 결과는 변경되지 않습니다. 공개 평균표 기준(100명·15개 기업)과 진단 후보 선별 기준은 별개입니다.')
+            with st.expander('선정 기준 및 공변량 조정 해석 범위',expanded=False):
+                st.markdown('공변량 조정은 후보 선별 후 탐색적 분석입니다. p값을 다중검정·선별 보정된 확증적 근거로 해석하지 않습니다. 기본 0.3점 기준은 최초 평균 차이에만 적용합니다. 조정 전후 차이는 특정 원인이나 직무의 인과효과를 증명하지 않습니다.')
+                st.caption(adjusted.get('control_note',''))
+        section_title('선별 기준 민감도 점검','기본 후보를 변경하는 기능이 아니라 사전 계산된 조건별 통과 건수 조회입니다.')
+        with theory_container('decision_sensitivity'):
+            c1,c2,c3=st.columns([1,1,0.85],gap='medium')
+            cutoff=c1.select_slider('불리한 평균 차이 기준(점)',options=[0.2,0.3,0.4],value=0.3)
+            minimum=c2.select_slider('집단 내 최소 응답자 수',options=[30,50,100],value=50)
+            sensitivity=PR['sensitivity_counts'][f'g{cutoff:.1f}_n{minimum}']
+            c3.metric('선별되는 집단–지표 수',f'{int(sensitivity)}건')
+        st.caption('다른 조건에서 집단 이름을 추정하지 않으며, 위 기본 기준의 후보 및 추가 분석 결과는 변경되지 않습니다. 공개 평균표 기준(100명·15개 기업)과 진단 후보 선별 기준은 별개입니다.')
 
     with theory_container('decision_group_03',card=True):
         st.markdown(
             '<div class="decision-section-head"><span class="decision-section-number">03</span>'
-            '<div><h2>HR 의사결정 및 실행 계획</h2><p>담당자별 판단 → 현장 확인 및 시범사업 → 평가 계획</p></div></div>',unsafe_allow_html=True,
+            '<div><h2>HR 의사결정 및 실행 계획</h2><p>실무에서 어떻게 활용할 것인가?</p></div></div>',
+            unsafe_allow_html=True,
         )
-        section_title('담당자별 의사결정 지원','선택에 따라 조회되는 실무 절차와 분석 근거가 달라집니다. 통계값은 새로 계산되지 않습니다.')
+        section_title('HR 실행 3단계')
+        st.markdown(
+            '<div class="decision-execution-flow">'
+            '<article><small>01 · HR 분석·기획</small><strong>진단 후보 확인</strong><p>집단 규모·신뢰구간·다중비교·차별 위험 검토</p></article>'
+            '<article><small>02 · 현업 리더</small><strong>현장 원인 확인</strong><p>익명 의견 수렴 및 업무 프로세스 점검</p></article>'
+            '<article><small>03 · 경영진·HR 의사결정자</small><strong>시범사업 평가</strong><p>목표지표·기간·예산·사전/사후 평가</p></article>'
+            '</div>',unsafe_allow_html=True,
+        )
+        if customer_support is not None and adjusted is not None:
+            st.markdown('**현장 확인 항목** · 업무량, 교대근무, 고객응대 부담 및 조직 지원을 익명 조사로 확인하고, 확인된 원인에 한해 개선 과제를 검토합니다.')
+        section_title('담당자별 의사결정 지원','담당자와 관심 지표를 선택하면 해당 실행 과제와 분석 근거를 확인할 수 있습니다. 통계값은 새로 계산되지 않습니다.')
         a,b=st.columns(2)
         role=a.selectbox('의사결정 담당자',['HR 분석·기획','현업 리더','경영진·HR 의사결정자'])
         factor=b.selectbox('관심 조직지표',list(metrics),format_func=lambda key:metrics[key])
@@ -733,18 +794,17 @@ elif page=='decision':
         }
         title,evidence,caveat=FACTORS[factor]
         action,gate=ROLES[role]
-        col1,col2=st.columns(2,gap='medium')
-        with col1: panel(role+' · 다음 행동',action,'blue',gate)
-        with col2: panel(title+' · 분석 근거',evidence,'teal',caveat)
-        section_title('HR 실행 3단계')
         st.markdown(
-          '<div class="step-list horizontal">'
-          '<div><span>01</span><strong>진단 후보 선별</strong><small>집단 규모·CI·다중비교·차별 위험 검토</small></div>'
-          '<div><span>02</span><strong>현장 원인 확인</strong><small>익명 의견 수렴·업무 프로세스 점검</small></div>'
-          '<div><span>03</span><strong>시범사업 평가</strong><small>목표지표·기간·예산·사전/사후 평가</small></div>'
-          '</div>',unsafe_allow_html=True,
+            '<div class="decision-role-result">'
+            '<article><small>담당자 · 다음 행동</small>'
+            f'<strong>{escape(role)}</strong><p>{escape(action)}</p>'
+            f'<div class="role-result-note"><b>확인 사항</b> {escape(gate)}</div></article>'
+            '<article><small>관심 지표 · 분석 근거</small>'
+            f'<strong>{escape(title)}</strong><p>{escape(evidence)}</p>'
+            f'<div class="role-result-note"><b>해석 범위</b> {escape(caveat)}</div></article>'
+            '</div>',unsafe_allow_html=True,
         )
-        section_title('후속 평가 지표 및 기대효과','현장 진단을 거쳐 개선 과제가 확인된 경우에 적용할 시범사업 평가 계획입니다.')
+        section_title('후속 평가 지표 및 목표 방향','현장 진단을 거쳐 개선 과제가 확인된 경우에 적용할 시범사업 평가 계획입니다.')
         st.dataframe(pd.DataFrame([
             {'구분':'핵심','평가 지표':'이직 고려 의향','확인 방법':'동일 5점 문항으로 사전·사후 설문','목표 방향':'감소'},
             {'구분':'핵심','평가 지표':'직무만족','확인 방법':'동일 5점 문항으로 반복 측정','목표 방향':'향상'},
